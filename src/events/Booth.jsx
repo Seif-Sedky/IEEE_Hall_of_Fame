@@ -13,7 +13,7 @@ export default function Booth(){
  return <>
   <div className="bar-title"><h2>BOOTH TIER LIST</h2><button className="btn" onClick={()=>setAbout(true)}>? ABOUT</button></div>
   {rows.map((r,ri)=><section key={r.id} className={'tier t-'+r.id} style={{'--c':r.color}}>
-   <div className="tlabel"><b>{r.title}</b><small>{r.list.length} MEMBERS</small></div>
+   <div className="tlabel"><b>{r.title}</b><small>{r.minScore}+ POINTS</small></div>
    <div className="tbody">{r.list.map((m,i)=><button key={m.id} className="chip" style={{animationDelay:ri*250+i*60+'ms'}} onClick={()=>setSel(m)}>
     <img src={B+m.photo} alt=""/><span>{m.name}</span></button>)}</div></section>)}
   <h2 className="sec">RECRUITMENT RACE</h2>

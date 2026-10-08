@@ -1,4 +1,5 @@
 import {useState,useEffect} from 'react'
+import {createPortal} from 'react-dom'
 import {EVENTS} from './events.config.jsx'
 import Gear from './components/Gear.jsx'
 const getId=()=>location.hash.replace('#/','')||'home'
@@ -19,7 +20,7 @@ export default function App(){
   return()=>{removeEventListener('pointermove',m);r.removeEventListener('mouseleave',l)}},[])
  const ev=EVENTS.find(e=>e.id===id)||EVENTS[0],Page=ev.Component
  return <>{ph<2&&<Loader out={ph===1}/>}
- <div className="fx"/>
+ {createPortal(<div className="fx"/>, document.body)}
  <div className="app">
   <header className="card head"><img src={import.meta.env.BASE_URL+'logo.png'} alt="IEEE GUC"/><div><h1>IEEE x GUC</h1><span className="px">HALL OF FAME</span></div></header>
   <nav className="tabs">{EVENTS.map(e=><a key={e.id} href={'#/'+e.id} className={'tab'+(e.id===ev.id?' on':'')+(e.status==='soon'?' soon':'')}>{e.label}</a>)}</nav>
