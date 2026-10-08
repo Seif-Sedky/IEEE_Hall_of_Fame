@@ -4,10 +4,10 @@ body{margin:0;font-family:'DM Sans',system-ui,sans-serif;color:var(--ink);backgr
 .app{max-width:980px;margin:0 auto;padding:14px 12px 40px}
 .px{font-family:var(--px);font-size:10px;letter-spacing:.5px}.hand{font-family:var(--hand);font-size:22px}
 .card,.panel,.note{background-color:var(--paper);border:3px solid var(--ink);box-shadow:6px 6px 0 var(--ink);border-radius:12px}
-.head{display:flex;align-items:center;gap:14px;padding:14px 20px;transform:rotate(-.5deg);background:linear-gradient(135deg,var(--sun),var(--cherry),var(--sky));background-size:300% 300%;animation:flow 6s ease infinite;transition:transform .2s cubic-bezier(.3,1.7,.5,1)}
+.head{display:flex;align-items:center;gap:14px;padding:14px 20px;transform:rotate(-.5deg);background:linear-gradient(135deg,var(--sun),var(--cherry),var(--blue),var(--teal),var(--sky));background-size:500% 500%;animation:flow 12s ease-in-out infinite;transition:transform .2s cubic-bezier(.3,1.7,.5,1)}
 .head:hover{transform:rotate(1deg) scale(1.02)}
 @keyframes flow{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
-.head img{height:72px;animation:bob 2.5s ease-in-out infinite;filter:drop-shadow(3px 3px 0 var(--ink))}
+.head img{height:72px;filter:drop-shadow(3px 3px 0 var(--ink))}
 @keyframes bob{0%,100%{transform:translateY(0) rotate(-4deg)}50%{transform:translateY(-8px) rotate(4deg)}}
 .head h1{margin:0;font:36px var(--bold);color:#fff;text-shadow:3px 3px 0 var(--ink),-2px -2px 0 var(--ink),2px -2px 0 var(--ink),-2px 2px 0 var(--ink),2px 2px 0 var(--ink);letter-spacing:1px}
 .head .px{color:var(--sun);text-shadow:2px 2px 0 var(--ink);display:inline-block;animation:pulse 1.5s infinite}
