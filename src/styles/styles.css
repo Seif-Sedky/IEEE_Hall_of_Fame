@@ -1,6 +1,6 @@
 :root{--blue:#004898;--sky:#3888e8;--sun:#f8a808;--cherry:#f81840;--ink:#181020;--paper:#f8f8f8;--teal:#58a0b0;--px:'Press Start 2P',monospace;--hand:'Caveat Brush',cursive;--bold:'Archivo Black',Impact,sans-serif}
 *{box-sizing:border-box}
-body{margin:0;font-family:'DM Sans',system-ui,sans-serif;color:var(--ink);background:var(--blue);background-image:radial-gradient(circle at 20% 30%,#fff 0 3px,#0000 4px),radial-gradient(circle at 70% 60%,#fff 0 2px,#0000 3px),radial-gradient(circle at 45% 85%,#fff 0 4px,#0000 5px),radial-gradient(circle at 90% 15%,#fff 0 2px,#0000 3px);background-size:90px 90px,60px 60px,130px 130px,75px 75px}
+body{margin:0;font-family:'DM Sans',system-ui,sans-serif;color:var(--ink);background:var(--blue);background-image:radial-gradient(circle at 20% 30%,#fff 0 3px,#0000 4px),radial-gradient(circle at 70% 60%,#fff 0 2px,#0000 3px),radial-gradient(circle at 45% 85%,#fff 0 4px,#0000 5px),radial-gradient(circle at 90% 15%,#fff 0 2px,#0000 3px);background-size:90px 90px,60px 60px,130px 130px,75px 75px;background-position:calc(var(--mx,0)*10px) calc(var(--my,0)*10px),calc(var(--mx,0)*-18px) calc(var(--my,0)*14px),calc(var(--mx,0)*26px) calc(var(--my,0)*-22px),calc(var(--mx,0)*-8px) calc(var(--my,0)*-12px);transition:background-position .5s ease-out}
 .app{max-width:980px;margin:0 auto;padding:14px 12px 40px}
 .px{font-family:var(--px);font-size:10px;letter-spacing:.5px}.hand{font-family:var(--hand);font-size:22px}
 .card,.panel,.note{background-color:var(--paper);border:3px solid var(--ink);box-shadow:6px 6px 0 var(--ink);border-radius:12px}
@@ -21,7 +21,7 @@ h2{font:22px var(--bold);margin:0 0 14px;color:var(--blue)}.sec{margin-top:34px}
 .tbody{flex:1;display:flex;flex-wrap:wrap;gap:8px;padding:10px;align-content:flex-start}
 .chip{display:flex;align-items:center;gap:7px;padding:3px 8px 3px 3px;background:var(--paper);border:2px solid var(--ink);box-shadow:2px 2px 0 var(--ink);cursor:pointer;font:600 13px 'DM Sans',sans-serif;color:var(--ink);animation:drop .7s cubic-bezier(.3,1.7,.5,1) backwards}
 .chip:hover{transform:translateY(-3px) rotate(-2deg)}
-.chip img,.note img{image-rendering:pixelated;border:2px solid var(--ink);display:block}.chip img{width:34px;height:34px}
+.chip img,.note img{object-fit:cover;border:2px solid var(--ink);display:block}.chip img{width:34px;height:34px}
 .chip em{font:8px var(--px);font-style:normal;background:var(--ink);color:#fff;padding:4px 5px}
 @keyframes drop{from{transform:translateY(-60px);opacity:0}}
 .t-heroes::after{content:'';position:absolute;right:14px;top:8px;width:6px;height:6px;background:var(--sun);box-shadow:-18px 14px 0 var(--cherry),16px 22px 0 var(--sky),-38px -2px 0 var(--sun),28px -4px 0 var(--cherry);animation:blink 1.2s steps(2) infinite;pointer-events:none}
