@@ -1,6 +1,6 @@
 :root{--blue:#004898;--sky:#3888e8;--sun:#f8a808;--cherry:#f81840;--ink:#181020;--paper:#f8f8f8;--teal:#58a0b0;--px:'Press Start 2P',monospace;--hand:'Caveat Brush',cursive;--bold:'Archivo Black',Impact,sans-serif}
 *{box-sizing:border-box}
-body{margin:0;font-family:'DM Sans',system-ui,sans-serif;color:var(--ink);background:var(--blue);background-image:radial-gradient(circle at 20% 30%,#fff 0 3px,#0000 4px),radial-gradient(circle at 70% 60%,#fff 0 2px,#0000 3px),radial-gradient(circle at 45% 85%,#fff 0 4px,#0000 5px),radial-gradient(circle at 90% 15%,#fff 0 2px,#0000 3px);background-size:90px 90px,60px 60px,130px 130px,75px 75px;background-position:calc(var(--mx,0)*10px) calc(var(--my,0)*10px),calc(var(--mx,0)*-18px) calc(var(--my,0)*14px),calc(var(--mx,0)*26px) calc(var(--my,0)*-22px),calc(var(--mx,0)*-8px) calc(var(--my,0)*-12px);transition:background-position .5s ease-out}
+body{margin:0;font-family:'DM Sans',system-ui,sans-serif;color:var(--ink);background:var(--blue);background-image:radial-gradient(circle at 20% 30%,#fff 0 3px,#0000 4px),radial-gradient(circle at 70% 60%,#fff 0 2px,#0000 3px),radial-gradient(circle at 45% 85%,#fff 0 4px,#0000 5px),radial-gradient(circle at 90% 15%,#fff 0 2px,#0000 3px);background-size:90px 90px,60px 60px,130px 130px,75px 75px;background-attachment:fixed}
 .app{max-width:980px;margin:0 auto;padding:14px 12px 40px}
 .px{font-family:var(--px);font-size:10px;letter-spacing:.5px}.hand{font-family:var(--hand);font-size:22px}
 .card,.panel,.note{background-color:var(--paper);border:3px solid var(--ink);box-shadow:6px 6px 0 var(--ink);border-radius:12px}
@@ -47,3 +47,6 @@ h2{font:22px var(--bold);margin:0 0 14px;color:var(--blue)}.sec{margin-top:34px}
 .spin{animation:spin 2s steps(8) infinite}@keyframes spin{to{transform:rotate(360deg)}}
 @media(max-width:560px){.tier{flex-direction:column}.tlabel{width:auto;flex-direction:row;justify-content:space-between;border-right:0;border-bottom:3px solid var(--ink)}.head h1{font-size:24px}.panel{padding:14px}}
 @media(prefers-reduced-motion:reduce){*,::before,::after{animation:none!important;transition:none!important}}
+.fx{position:fixed;inset:0;z-index:0;pointer-events:none;background:inherit;-webkit-mask-image:radial-gradient(circle 150px at var(--cx,-999px) var(--cy,-999px),#000 35%,#0000 100%);mask-image:radial-gradient(circle 150px at var(--cx,-999px) var(--cy,-999px),#000 35%,#0000 100%);animation:jig 1.4s ease-in-out infinite alternate}
+@keyframes jig{to{background-position:14px -10px,-12px 10px,16px 12px,-10px -14px}}
+.app{position:relative;z-index:1}

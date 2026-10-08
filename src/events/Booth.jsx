@@ -24,7 +24,8 @@ export default function Booth(){
   <p style={{textAlign:'center',marginTop:34}}><a className="btn big" href={booth.driveUrl} target="_blank" rel="noreferrer">MEMORIES</a></p>
   {sel&&<Modal close={()=>setSel(null)}><img src={B+sel.photo} alt={sel.name}/><h3>{sel.name}</h3><p className="role">{sel.role}</p>
    {sel.statement&&<p className="quote">"{sel.statement}"</p>}
-   {sel.special&&<p className="px" style={{clear:'both',marginTop:16}}>FUN EVENT: {sel.special.toUpperCase()}</p>}</Modal>}
+   <ul className="stats"><li>Slots attended<b>{sel.slots} x {w.slot}</b></li><li>TikToks<b>{sel.tiktoks} x {w.tiktok}</b></li>
+    {sel.special&&<li>{sel.special}<b>+{w.special}</b></li>}{sel.bonus>0&&<li>Bonus<b>+{sel.bonus}</b></li>}<li className="tot">Total<b>{sel.score}</b></li></ul></Modal>}
   {about&&<Modal close={()=>setAbout(false)}><h3>HOW IT WORKS</h3>
    <p className="quote">Every slot you showed up for earns you points. Appearing in TikToks earns even more, and so does running a fun event to liven up the booth.</p>
    <p className="quote">Add it all up and your total decides your tier: Heroes, Soldiers or Ghosts.</p></Modal>}
