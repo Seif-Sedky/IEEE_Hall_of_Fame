@@ -1,233 +1,233 @@
 [
- {
-  "id": "youssef-mostafa",
-  "name": "Youssef Mostafa",
-  "role": "Creator",
-  "photo": "members/youssef-mostafa.jpg",
-  "statement": "Will make a terrible decision if it makes a good story."
- },
- {
-  "id": "ismaeel-awad",
-  "name": "Ismaeel Awad",
-  "role": "Co-Head of PCB Design",
-  "photo": "members/ismaeel-awad.jpg",
-  "statement": "Gets overstimulated easily."
- },
- {
-  "id": "aly-saleh",
-  "name": "Aly Saleh",
-  "role": "Co-Head of Robotics",
-  "photo": "members/aly-saleh.jpg",
-  "statement": "Clueless 99% of the time."
- },
- {
-  "id": "aya-mohamed",
-  "name": "Aya Mohamed",
-  "role": "Co-Head of Arduino",
-  "photo": "members/aya-mohamed.jpg",
-  "statement": "Runs on coffee and pure will."
- },
- {
-  "id": "yassin-nashy",
-  "name": "Yassin Nashy",
-  "role": "Co-Head of Embedded Systems",
-  "photo": "members/yassin-nashy.jpg",
-  "statement": "Apprehensive but loves doing stupid stuff."
- },
- {
-  "id": "muhammed-walid",
-  "name": "Muhammed Walid",
-  "role": "Co-Head Hardware for AI",
-  "photo": "members/muhammed-walid.jpg",
-  "statement": "Stays awake for 3 days straight."
- },
- {
-  "id": "ahmed-tamer",
-  "name": "Ahmed Tamer",
-  "role": "Co-Head of Cybersecurity",
-  "photo": "members/ahmed-tamer.jpg",
-  "statement": "Hates to work and then hates to rest even more."
- },
- {
-  "id": "tasneem-elshafey",
-  "name": "Tasneem Elshafey",
-  "role": "Co-Head of Competitive Programming",
-  "photo": "members/tasneem-elshafey.jpg",
-  "statement": "Can't work without a cup of tea."
- },
- {
-  "id": "judy-yasser",
-  "name": "Judy Yasser",
-  "role": "Co-Head of AI",
-  "photo": "members/judy-yasser.jpg",
-  "statement": "Ultimate sidequester."
- },
- {
-  "id": "mohamed-magedd",
-  "name": "Mohamed Magedd",
-  "role": "Co-Head of Software",
-  "photo": "members/mohamed-magedd.jpg",
-  "statement": "Runs purely on clean code principles."
- },
- {
-  "id": "rodina-wael",
-  "name": "Rodina Wael",
-  "role": "Head of Media ITP",
-  "photo": "members/rodina-wael.jpg",
-  "statement": "Her feelings are written on her face."
- },
- {
-  "id": "saif-abdelaziz",
-  "name": "Saif Abdelaziz",
-  "role": "Co-Head of Team Support",
-  "photo": "members/saif-abdelaziz.jpg",
-  "statement": "Has beef with first slot."
- },
- {
-  "id": "roaa-wael",
-  "name": "Roaa Wael",
-  "role": "Co-Director of Operations",
-  "photo": "members/roaa-wael.jpg",
-  "statement": "Learned several languages, forgot her own in the process."
- },
- {
-  "id": "shahd-hisham",
-  "name": "Shahd Hisham",
-  "role": "Co-Director of Operations",
-  "photo": "members/shahd-hisham.jpg",
-  "statement": "Would trade an organ for a slice of chocolate cake."
- },
- {
-  "id": "abdelrahman-mohamed",
-  "name": "Abdelrahman Mohamed",
-  "role": "Co-Head of Arduino",
-  "photo": "members/abdelrahman-mohamed.jpg",
-  "statement": "Will find the laziest way to do the hardest task."
- },
- {
-  "id": "omar-elsamalouty",
-  "name": "Omar Elsamalouty",
-  "role": "Co-Head of Robotics",
-  "photo": "members/omar-elsamalouty.jpg",
-  "statement": "Ibn el sham lover."
- },
- {
-  "id": "eyad-sameh",
-  "name": "Eyad Sameh",
-  "role": "Co-Head of PCB Design",
-  "photo": "members/eyad-sameh.jpg",
-  "statement": "Very good at overthinking."
- },
- {
-  "id": "ziad-ahmed",
-  "name": "Ziad Ahmed",
-  "role": "Co-Head Hardware for AI",
-  "photo": "members/ziad-ahmed.jpg",
-  "statement": "Runs on 90% espresso and 10% panic."
- },
- {
-  "id": "shams-raafat",
-  "name": "Shams Raafat",
-  "role": "Hardware Director",
-  "photo": "members/shams-raafat.jpg",
-  "statement": "Never ask her for her honest opinion."
- },
- {
-  "id": "fady-salah",
-  "name": "Fady Salah",
-  "role": "Co-Head of Embedded Systems",
-  "photo": "members/fady-salah.jpg",
-  "statement": "Always eating or drinking something."
- },
- {
-  "id": "abdelmoneam-elbaz",
-  "name": "Abdelmoneam Elbaz",
-  "role": "Co-Head of Competitive Programming",
-  "photo": "members/abdelmoneam-elbaz.jpg",
-  "statement": "Bronze medalist in a three-person race."
- },
- {
-  "id": "ammar-adel",
-  "name": "Ammar Adel",
-  "role": "Co-Head of AI",
-  "photo": "members/ammar-adel.jpg",
-  "statement": "Fluent in awkward smiles."
- },
- {
-  "id": "jana-saleh",
-  "name": "Jana Saleh",
-  "role": "Co-Head of Cybersecurity",
-  "photo": "members/jana-saleh.jpg",
-  "statement": "Life moto: 30kaha w rabak yefokaha."
- },
- {
-  "id": "malak-abdelgawad",
-  "name": "Malak Abdelgawad",
-  "role": "Co-Head of Software Development",
-  "photo": "members/malak-abdelgawad.jpg",
-  "statement": "Full-time matcha critic."
- },
- {
-  "id": "seif-alaa",
-  "name": "Seif Alaa",
-  "role": "Software Director",
-  "photo": "members/seif-alaa.jpg",
-  "statement": "Easily deceived with a bar of chocolate."
- },
- {
-  "id": "david-bishoy",
-  "name": "David Bishoy",
-  "role": "Co-Head of Organizing",
-  "photo": "members/david-bishoy.jpg",
-  "statement": "Ay khorooga yebza pizza."
- },
- {
-  "id": "albarra-mohamed",
-  "name": "Albarra Mohamed",
-  "role": "ITP Director",
-  "photo": "members/albarra-mohamed.jpg",
-  "statement": "Wears a football jersey 90% of the time."
- },
- {
-  "id": "sama-sherif",
-  "name": "Sama Sherif",
-  "role": "Co-Head of Organizing",
-  "photo": "members/sama-sherif.jpg",
-  "statement": "The day can't pass without green tea."
- },
- {
-  "id": "abdelrahman-tebry",
-  "name": "Abdelrahman Tebry",
-  "role": "Head of Events Planning and Logistics",
-  "photo": "members/abdelrahman-tebry.jpg",
-  "statement": "Has 43 tabs open on his laptop at all times."
- },
- {
-  "id": "hana-mohamed",
-  "name": "Hana Mohamed",
-  "role": "Co-Head of Team Support",
-  "photo": "members/hana-mohamed.jpg",
-  "statement": "Sleep-deprived 24/7."
- },
- {
-  "id": "hala-aboraya",
-  "name": "Hala Aboraya",
-  "role": "Booth Crew",
-  "photo": "members/hala-aboraya.jpg",
-  "statement": ""
- },
- {
-  "id": "omar-abouelnaga",
-  "name": "Omar Abouelnaga",
-  "role": "Booth Crew",
-  "photo": "members/omar-abouelnaga.jpg",
-  "statement": ""
- },
- {
-  "id": "sama-fayez",
-  "name": "Sama Fayez",
-  "role": "Booth Crew",
-  "photo": "members/sama-fayez.jpg",
-  "statement": ""
- }
+    {
+        "id": "youssef-mostafa",
+        "name": "Youssef Mostafa",
+        "role": "Creator",
+        "photo": "members/youssef-mostafa.jpg",
+        "statement": "Will make a terrible decision if it makes a good story."
+    },
+    {
+        "id": "ismaeel-awad",
+        "name": "Ismaeel Awad",
+        "role": "Co-Head of PCB Design",
+        "photo": "members/ismaeel-awad.jpg",
+        "statement": "Gets overstimulated easily."
+    },
+    {
+        "id": "aly-saleh",
+        "name": "Aly Saleh",
+        "role": "Co-Head of Robotics",
+        "photo": "members/aly-saleh.jpg",
+        "statement": "Clueless 99% of the time."
+    },
+    {
+        "id": "aya-mohamed",
+        "name": "Aya Mohamed",
+        "role": "Co-Head of Arduino",
+        "photo": "members/aya-mohamed.jpg",
+        "statement": "Runs on coffee and pure will."
+    },
+    {
+        "id": "yassin-nashy",
+        "name": "Yassin Nashy",
+        "role": "Co-Head of Embedded Systems",
+        "photo": "members/yassin-nashy.jpg",
+        "statement": "Apprehensive but loves doing stupid stuff."
+    },
+    {
+        "id": "muhammed-walid",
+        "name": "Muhammed Walid",
+        "role": "Co-Head Hardware for AI",
+        "photo": "members/muhammed-walid.jpg",
+        "statement": "Stays awake for 3 days straight."
+    },
+    {
+        "id": "ahmed-tamer",
+        "name": "Ahmed Tamer",
+        "role": "Co-Head of Cybersecurity",
+        "photo": "members/ahmed-tamer.jpg",
+        "statement": "Hates to work and then hates to rest even more."
+    },
+    {
+        "id": "tasneem-elshafey",
+        "name": "Tasneem Elshafey",
+        "role": "Co-Head of Competitive Programming",
+        "photo": "members/tasneem-elshafey.jpg",
+        "statement": "Can't work without a cup of tea."
+    },
+    {
+        "id": "judy-yasser",
+        "name": "Judy Yasser",
+        "role": "Co-Head of AI",
+        "photo": "members/judy-yasser.jpg",
+        "statement": "Ultimate sidequester."
+    },
+    {
+        "id": "mohamed-magedd",
+        "name": "Mohamed Maged",
+        "role": "Co-Head of Software",
+        "photo": "members/mohamed-maged.jpeg",
+        "statement": "Runs purely on clean code principles."
+    },
+    {
+        "id": "rodina-wael",
+        "name": "Rodina Wael",
+        "role": "Head of Media ITP",
+        "photo": "members/rodina-wael.jpg",
+        "statement": "Her feelings are written on her face."
+    },
+    {
+        "id": "saif-abdelaziz",
+        "name": "Saif Abdelaziz",
+        "role": "Co-Head of Team Support",
+        "photo": "members/saif-abdelaziz.jpg",
+        "statement": "Has beef with first slot."
+    },
+    {
+        "id": "roaa-wael",
+        "name": "Roaa Wael",
+        "role": "Co-Director of Operations",
+        "photo": "members/roaa-wael.jpg",
+        "statement": "Learned several languages, forgot her own in the process."
+    },
+    {
+        "id": "shahd-hisham",
+        "name": "Shahd Hisham",
+        "role": "Co-Director of Operations",
+        "photo": "members/shahd-hisham.jpg",
+        "statement": "Would trade an organ for a slice of chocolate cake."
+    },
+    {
+        "id": "abdelrahman-mohamed",
+        "name": "Abdelrahman Mohamed",
+        "role": "Co-Head of Arduino",
+        "photo": "members/abdelrahman-mohamed.jpg",
+        "statement": "Will find the laziest way to do the hardest task."
+    },
+    {
+        "id": "omar-elsamalouty",
+        "name": "Omar Elsamalouty",
+        "role": "Co-Head of Robotics",
+        "photo": "members/omar-elsamalouty.jpg",
+        "statement": "Ibn el sham lover."
+    },
+    {
+        "id": "eyad-sameh",
+        "name": "Eyad Sameh",
+        "role": "Co-Head of PCB Design",
+        "photo": "members/eyad-sameh.jpg",
+        "statement": "Very good at overthinking."
+    },
+    {
+        "id": "ziad-ahmed",
+        "name": "Ziad Ahmed",
+        "role": "Co-Head Hardware for AI",
+        "photo": "members/ziad-ahmed.jpg",
+        "statement": "Runs on 90% espresso and 10% panic."
+    },
+    {
+        "id": "shams-raafat",
+        "name": "Shams Raafat",
+        "role": "Hardware Director",
+        "photo": "members/shams-raafat.jpg",
+        "statement": "Never ask her for her honest opinion."
+    },
+    {
+        "id": "fady-salah",
+        "name": "Fady Salah",
+        "role": "Co-Head of Embedded Systems",
+        "photo": "members/fady-salah.jpg",
+        "statement": "Always eating or drinking something."
+    },
+    {
+        "id": "abdelmoneam-elbaz",
+        "name": "Abdelmoneam Elbaz",
+        "role": "Co-Head of Competitive Programming",
+        "photo": "members/abdelmoneam-elbaz.jpg",
+        "statement": "Bronze medalist in a three-person race."
+    },
+    {
+        "id": "ammar-adel",
+        "name": "Ammar Adel",
+        "role": "Co-Head of AI",
+        "photo": "members/ammar-adel.jpg",
+        "statement": "Fluent in awkward smiles."
+    },
+    {
+        "id": "jana-saleh",
+        "name": "Jana Saleh",
+        "role": "Co-Head of Cybersecurity",
+        "photo": "members/jana-saleh.jpg",
+        "statement": "Life moto: 30kaha w rabak yefokaha."
+    },
+    {
+        "id": "malak-abdelgawad",
+        "name": "Malak Abdelgawad",
+        "role": "Co-Head of Software Development",
+        "photo": "members/malak-abdelgawad.jpg",
+        "statement": "Full-time matcha critic."
+    },
+    {
+        "id": "seif-alaa",
+        "name": "Seif Alaa",
+        "role": "Software Director",
+        "photo": "members/seif-alaa.jpg",
+        "statement": "Easily deceived with a bar of chocolate."
+    },
+    {
+        "id": "david-bishoy",
+        "name": "David Bishoy",
+        "role": "Co-Head of Organizing",
+        "photo": "members/david-bishoy.jpeg",
+        "statement": "Ay khorooga yebza pizza."
+    },
+    {
+        "id": "albaraa-mohamed",
+        "name": "Albaraa Mohamed",
+        "role": "ITP Director",
+        "photo": "members/albarra-mohamed.jpg",
+        "statement": "Wears a football jersey 90% of the time."
+    },
+    {
+        "id": "sama-sherif",
+        "name": "Sama Sherif",
+        "role": "Co-Head of Organizing",
+        "photo": "members/sama-sherif.jpg",
+        "statement": "The day can't pass without green tea."
+    },
+    {
+        "id": "abdelrahman-tebry",
+        "name": "Abdelrahman Tebry",
+        "role": "Head of Events Planning and Logistics",
+        "photo": "members/abdelrahman-tebry.jpg",
+        "statement": "Has 43 tabs open on his laptop at all times."
+    },
+    {
+        "id": "hana-mohamed",
+        "name": "Hana Mohamed",
+        "role": "Co-Head of Team Support",
+        "photo": "members/hana-mohamed.jpg",
+        "statement": "Sleep-deprived 24/7."
+    },
+    {
+        "id": "hala-aboraya",
+        "name": "Hala Aboraya",
+        "role": "Booth Crew",
+        "photo": "members/hala-aboraya.jpeg",
+        "statement": ""
+    },
+    {
+        "id": "omar-abouelnaga",
+        "name": "Omar Abouelnaga",
+        "role": "Booth Crew",
+        "photo": "members/omar-abouelnaga.jpeg",
+        "statement": ""
+    },
+    {
+        "id": "sama-fayez",
+        "name": "Sama Fayez",
+        "role": "Booth Crew",
+        "photo": "members/sama-fayez.jpeg",
+        "statement": ""
+    }
 ]
