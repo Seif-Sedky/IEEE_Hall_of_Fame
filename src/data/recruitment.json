@@ -1,16 +1,123 @@
 ﻿{
   "teams": [
-    { "name": "Team Name", "photo": "", "memberIds": ["rodina-wael", "omar-abouelnaga", "abdelmoneam-elbaz"], "recruits": 0 },
-    { "name": "Team Name", "photo": "", "memberIds": ["albarra-mohamed", "aya-mohamed", "tasneem-elshafey"], "recruits": 0 },
-    { "name": "Team Name", "photo": "", "memberIds": ["fady-salah", "sama-sherif", "roaa-wael"], "recruits": 0 },
-    { "name": "Team Name", "photo": "", "memberIds": ["hala-aboraya", "saif-abdelaziz", "lojaine"], "recruits": 0 },
-    { "name": "Team Name", "photo": "", "memberIds": ["youssef-mostafa", "malak-abdelgawad", "shahd-hisham"], "recruits": 0 },
-    { "name": "Team Name", "photo": "", "memberIds": ["shams-raafat", "abdelrahman-mohamed", "omar-elsamalouty"], "recruits": 0 },
-    { "name": "Team Name", "photo": "", "memberIds": ["jana-saleh", "mohamed-magedd", "ahmed-tamer"], "recruits": 0 },
-    { "name": "Team Name", "photo": "", "memberIds": ["seif-alaa", "ismaeel-awad"], "recruits": 0 },
-    { "name": "Team Name", "photo": "", "memberIds": ["muhammed-walid", "adham-hany", "ziad-ahmed"], "recruits": 0 },
-    { "name": "Team Name", "photo": "", "memberIds": ["abdelrahman-tebry", "ammar-adel", "eyad-sameh"], "recruits": 0 },
-    { "name": "Team Name", "photo": "", "memberIds": ["sama-fayez", "yassin-nashy", "aly-saleh"], "recruits": 0 },
-    { "name": "Team Name", "photo": "", "memberIds": ["hana-mohamed", "david-bishoy", "judy-yasser"], "recruits": 0 }
+    {
+      "name": "Team Name",
+      "photo": "",
+      "memberIds": [
+        "rodina-wael",
+        "omar-abouelnaga",
+        "abdelmoneam-elbaz"
+      ],
+      "recruits": 0
+    },
+    {
+      "name": "Team Name",
+      "photo": "",
+      "memberIds": [
+        "albarra-mohamed",
+        "aya-mohamed",
+        "tasneem-elshafey"
+      ],
+      "recruits": 0
+    },
+    {
+      "name": "Team Name",
+      "photo": "",
+      "memberIds": [
+        "fady-salah",
+        "sama-sherif",
+        "roaa-wael"
+      ],
+      "recruits": 0
+    },
+    {
+      "name": "Team Name",
+      "photo": "",
+      "memberIds": [
+        "hala-aboraya",
+        "saif-abdelaziz",
+        "lojaine"
+      ],
+      "recruits": 0
+    },
+    {
+      "name": "Khaliha 3la Allah",
+      "photo": "",
+      "memberIds": [
+        "youssef-mostafa",
+        "malak-abdelgawad",
+        "shahd-hisham"
+      ],
+      "recruits": 0
+    },
+    {
+      "name": "Team Name",
+      "photo": "",
+      "memberIds": [
+        "shams-raafat",
+        "abdelrahman-mohamed",
+        "omar-elsamalouty"
+      ],
+      "recruits": 0
+    },
+    {
+      "name": "Team Name",
+      "photo": "",
+      "memberIds": [
+        "jana-saleh",
+        "mohamed-magedd",
+        "ahmed-tamer"
+      ],
+      "recruits": 0
+    },
+    {
+      "name": "QR Man",
+      "photo": "",
+      "memberIds": [
+        "seif-alaa",
+        "ismaeel-awad"
+      ],
+      "recruits": 0
+    },
+    {
+      "name": "Team Name",
+      "photo": "",
+      "memberIds": [
+        "muhammed-walid",
+        "adham-hany",
+        "ziad-ahmed"
+      ],
+      "recruits": 0
+    },
+    {
+      "name": "Team Name",
+      "photo": "",
+      "memberIds": [
+        "abdelrahman-tebry",
+        "ammar-adel",
+        "eyad-sameh"
+      ],
+      "recruits": 0
+    },
+    {
+      "name": "Team Name",
+      "photo": "",
+      "memberIds": [
+        "sama-fayez",
+        "yassin-nashy",
+        "aly-saleh"
+      ],
+      "recruits": 0
+    },
+    {
+      "name": "Team Name",
+      "photo": "",
+      "memberIds": [
+        "hana-mohamed",
+        "david-bishoy",
+        "judy-yasser"
+      ],
+      "recruits": 0
+    }
   ]
 }
