@@ -65,14 +65,14 @@
     {
         "id": "mohamed-magedd",
         "name": "Mohamed Maged",
-        "role": "Co-Head of Software",
+        "role": "Co-Head of Software Development",
         "photo": "members/mohamed-maged.jpeg",
         "statement": "Runs purely on clean code principles."
     },
     {
         "id": "rodina-wael",
         "name": "Rodina Wael",
-        "role": "Head of Media ITP",
+        "role": "Head of Media JTP",
         "photo": "members/rodina-wael.jpg",
         "statement": "Her feelings are written on her face."
     },
@@ -212,21 +212,21 @@
     {
         "id": "hala-aboraya",
         "name": "Hala Aboraya",
-        "role": "Booth Crew",
+        "role": "Media Head",
         "photo": "members/hala-aboraya.jpeg",
         "statement": ""
     },
     {
         "id": "omar-abouelnaga",
         "name": "Omar Abouelnaga",
-        "role": "Booth Crew",
+        "role": "Design Head",
         "photo": "members/omar-abouelnaga.jpeg",
         "statement": ""
     },
     {
         "id": "sama-fayez",
         "name": "Sama Fayez",
-        "role": "Booth Crew",
+        "role": "Creative Head",
         "photo": "members/sama-fayez.jpeg",
         "statement": ""
     }
