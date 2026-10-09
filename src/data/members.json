@@ -214,20 +214,20 @@
         "name": "Hala Aboraya",
         "role": "Media Head",
         "photo": "members/hala-aboraya.jpeg",
-        "statement": ""
+        "statement": "Operates on vibes and misplaced confidence"
     },
     {
         "id": "omar-abouelnaga",
         "name": "Omar Abouelnaga",
         "role": "Design Head",
         "photo": "members/omar-abouelnaga.jpeg",
-        "statement": ""
+        "statement": "Loves Romcoms"
     },
     {
         "id": "sama-fayez",
         "name": "Sama Fayez",
         "role": "Creative Head",
         "photo": "members/sama-fayez.jpeg",
-        "statement": ""
+        "statement": "Would sell you for a smashed burger"
     }
 ]
