@@ -1,3 +1,64 @@
 {
- "teams": []
+  "teams": [
+    {
+      "name": "Team Name",
+      "memberIds": ["rodina-wael", "omar-abouelnaga", "abdelmoneam-elbaz"],
+      "recruits": 0
+    },
+    {
+      "name": "Team Name",
+      "memberIds": ["albarra-mohamed", "aya-mohamed", "tasneem-elshafey"],
+      "recruits": 0
+    },
+    {
+      "name": "Team Name",
+      "memberIds": ["fady-salah", "sama-sherif", "roaa-wael"],
+      "recruits": 0
+    },
+    {
+      "name": "Team Name",
+      "memberIds": ["hala-aboraya", "saif-abdelaziz", "lojaine"],
+      "recruits": 0
+    },
+    {
+      "name": "Team Name",
+      "memberIds": ["youssef-mostafa", "malak-abdelgawad", "shahd-hisham"],
+      "recruits": 0
+    },
+    {
+      "name": "Team Name",
+      "memberIds": ["shams-raafat", "abdelrahman-mohamed", "omar-elsamalouty"],
+      "recruits": 0
+    },
+    {
+      "name": "Team Name",
+      "memberIds": ["jana-saleh", "mohamed-magedd", "ahmed-tamer"],
+      "recruits": 0
+    },
+    {
+      "name": "Team Name",
+      "memberIds": ["seif-alaa", "ismaeel-awad"],
+      "recruits": 0
+    },
+    {
+      "name": "Team Name",
+      "memberIds": ["muhammed-walid", "adham-hany", "ziad-ahmed"],
+      "recruits": 0
+    },
+    {
+      "name": "Team Name",
+      "memberIds": ["abdelrahman-tebry", "ammar-adel", "eyad-sameh"],
+      "recruits": 0
+    },
+    {
+      "name": "Team Name",
+      "memberIds": ["sama-fayez", "yassin-nashy", "aly-saleh"],
+      "recruits": 0
+    },
+    {
+      "name": "Team Name",
+      "memberIds": ["hana-mohamed", "david-bishoy", "judy-yasser"],
+      "recruits": 0
+    }
+  ]
 }
