@@ -229,5 +229,19 @@
         "role": "Creative Head",
         "photo": "members/sama-fayez.jpeg",
         "statement": "Would sell you for a smashed burger"
+    },
+    {
+        "id": "lojaine",
+        "name": "Lojaine",
+        "role": "FR Co-head",
+        "photo": "members/lojaine.jpeg",
+        "statement": ""
+    },
+    {
+        "id": "adham-hany",
+        "name": "Adham Hany",
+        "role": "FR Co-head",
+        "photo": "members/adham-hany.jpeg",
+        "statement": ""
     }
 ]
