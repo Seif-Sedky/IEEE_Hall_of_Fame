@@ -28,10 +28,10 @@
     "scores": [
         {
             "memberId": "youssef-mostafa",
-            "slots": 9,
+            "slots": 11,
             "tiktoks": 4,
             "special": "",
-            "score": 17
+            "score": 19
         },
         {
             "memberId": "ismaeel-awad",
@@ -49,10 +49,10 @@
         },
         {
             "memberId": "aya-mohamed",
-            "slots": 2,
+            "slots": 3,
             "tiktoks": 0,
             "special": "",
-            "score": 2
+            "score": 3
         },
         {
             "memberId": "yassin-nashy",
@@ -85,9 +85,9 @@
         {
             "memberId": "judy-yasser",
             "slots": 4,
-            "tiktoks": 0,
+            "tiktoks": 1,
             "special": "",
-            "score": 4
+            "score": 6
         },
         {
             "memberId": "mohamed-magedd",
@@ -238,10 +238,10 @@
         },
         {
             "memberId": "hala-aboraya",
-            "slots": 6,
+            "slots": 7,
             "tiktoks": 0,
             "special": "",
-            "score": 12,
+            "score": 13,
             "bonus": 6,
             "bonusName": "Videographer"
         },
