@@ -250,14 +250,18 @@
             "slots": 4,
             "tiktoks": 2,
             "special": "",
-            "score": 8
+            "score": 11,
+            "bonus": 3,
+            "bonusName": "Booth Decoration"
         },
         {
             "memberId": "sama-fayez",
             "slots": 2,
             "tiktoks": 2,
             "special": "",
-            "score": 6
+            "score": 9,
+            "bonus": 3,
+            "bonusName": "Booth Decoration"
         }
     ]
 }
