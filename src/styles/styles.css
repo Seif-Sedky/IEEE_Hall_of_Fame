@@ -51,7 +51,7 @@ h2{font:22px var(--bold);margin:0 0 14px;color:var(--blue)}.sec{margin-top:34px}
 .tiles{display:grid;grid-template-columns:repeat(4,44px);gap:6px}.tiles i{height:44px;animation:pop2 .4s steps(3) backwards}@keyframes pop2{from{transform:scale(0)}}
 .bar{width:200px;max-width:80%;height:18px;border:3px solid var(--ink);background:#fff;margin:14px auto}.bar span{display:block;height:100%;background:var(--sun);animation:fill 1.6s steps(10) infinite}@keyframes fill{from{width:0}}
 .spin{animation:spin 2s steps(8) infinite}@keyframes spin{to{transform:rotate(360deg)}}
-@media(max-width:560px){.tier{flex-direction:column}.tlabel{width:auto;flex-direction:row;justify-content:space-between;border-right:0;border-bottom:3px solid var(--ink)}.head h1{font-size:24px}.panel{padding:14px}}
+@media(max-width:560px){.tier{flex-direction:column}.tlabel{width:auto;flex-direction:row;justify-content:space-between;border-right:0;border-bottom:3px solid var(--ink)}.head h1{font-size:24px}.panel{padding:14px}.note h3{font-size:28px;word-wrap:break-word}}
 @media(prefers-reduced-motion:reduce){*,::before,::after{animation:none!important;transition:none!important}}
 .fx{position:fixed;inset:0;z-index:0;pointer-events:none;background:inherit;-webkit-mask-image:radial-gradient(circle 150px at var(--cx,-999px) var(--cy,-999px),#000 35%,#0000 100%);mask-image:radial-gradient(circle 150px at var(--cx,-999px) var(--cy,-999px),#000 35%,#0000 100%);animation:jig 1.4s ease-in-out infinite alternate}
 @keyframes jig{to{background-position:14px -10px,-12px 10px,16px 12px,-10px -14px}}
