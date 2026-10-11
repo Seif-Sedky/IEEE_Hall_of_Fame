@@ -85,14 +85,14 @@
         {
             "memberId": "judy-yasser",
             "slots": 7,
-            "tiktoks": 1,
+            "tiktoks": 2,
             "special": "",
             "score": 9
         },
         {
             "memberId": "mohamed-magedd",
             "slots": 3,
-            "tiktoks": 0,
+            "tiktoks": 1,
             "special": "",
             "score": 3
         },
@@ -190,14 +190,14 @@
         {
             "memberId": "malak-abdelgawad",
             "slots": 5,
-            "tiktoks": 1,
+            "tiktoks": 2,
             "special": "Exposure therapy",
             "score": 10
         },
         {
             "memberId": "seif-alaa",
             "slots": 15,
-            "tiktoks": 2,
+            "tiktoks": 3,
             "special": "",
             "score": 19
         },
@@ -211,7 +211,7 @@
         {
             "memberId": "albarra-mohamed",
             "slots": 11,
-            "tiktoks": 4,
+            "tiktoks": 5,
             "special": "",
             "score": 19
         },
@@ -232,7 +232,7 @@
         {
             "memberId": "hana-mohamed",
             "slots": 9,
-            "tiktoks": 2,
+            "tiktoks": 3,
             "special": "",
             "score": 13
         },
@@ -242,7 +242,7 @@
             "tiktoks": 0,
             "special": "",
             "score": 18,
-            "bonus": 6,
+            "bonus": 7,
             "bonusName": "Videographer"
         },
         {
@@ -257,7 +257,7 @@
         {
             "memberId": "sama-fayez",
             "slots": 6,
-            "tiktoks": 2,
+            "tiktoks": 3,
             "special": "",
             "score": 13,
             "bonus": 3,
