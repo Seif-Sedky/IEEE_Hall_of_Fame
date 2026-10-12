@@ -1,7 +1,7 @@
 ﻿{
   "teams": [
     {
-      "name": "Team Name",
+      "name": "Ghost Team",
       "photo": "",
       "memberIds": [
         "rodina-wael",
@@ -21,7 +21,7 @@
       "recruits": 65
     },
     {
-      "name": "Team Name",
+      "name": "Ghost Team",
       "photo": "",
       "memberIds": [
         "fady-salah",
@@ -80,7 +80,7 @@
       "recruits": 70
     },
     {
-      "name": "Team Name",
+      "name": "Ghost Team",
       "photo": "",
       "memberIds": [
         "muhammed-walid",
@@ -100,7 +100,7 @@
       "recruits": 0
     },
     {
-      "name": "Team Name",
+      "name": "Ghost Team",
       "photo": "",
       "memberIds": [
         "sama-fayez",
@@ -110,7 +110,7 @@
       "recruits": 40
     },
     {
-      "name": "Team Name",
+      "name": "Ghost Team",
       "photo": "",
       "memberIds": [
         "hana-mohamed",
