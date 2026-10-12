@@ -154,10 +154,10 @@
         },
         {
             "memberId": "shams-raafat",
-            "slots": 5,
+            "slots": 9,
             "tiktoks": 0,
             "special": "",
-            "score": 5
+            "score": 9
         },
         {
             "memberId": "fady-salah",
@@ -197,9 +197,9 @@
         {
             "memberId": "seif-alaa",
             "slots": 15,
-            "tiktoks": 3,
+            "tiktoks": 4,
             "special": "",
-            "score": 19
+            "score": 23
         },
         {
             "memberId": "david-bishoy",
@@ -213,7 +213,7 @@
             "slots": 11,
             "tiktoks": 5,
             "special": "",
-            "score": 19
+            "score": 21
         },
         {
             "memberId": "sama-sherif",
