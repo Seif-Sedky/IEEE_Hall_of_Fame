@@ -68,7 +68,7 @@ function RecruitBoard({ onSelect }) {
   const sorted = [...rec.teams].map((t, origIdx) => ({ ...t, origIdx })).sort((a, b) => b.recruits - a.recruits)
   const allTied = sorted.every(t => t.recruits === sorted[0].recruits)
   const isGhost = t => t.recruits === 0 || t.name === 'Ghost Team' || t.name.toLowerCase().includes('ghost')
-  const isHero = t => t.recruits > 20
+  const isHero = t => !isGhost(t) && t.recruits > 20
   return <div className="rboard-grid">
     {sorted.map((t, rank) => {
       const medal = !allTied && rank < 3 ? MEDALS[rank] : null
@@ -78,7 +78,7 @@ function RecruitBoard({ onSelect }) {
         style={{ '--tilt': CARD_TILTS[t.origIdx % CARD_TILTS.length], '--delay': rank * 55 + 'ms' }}
         onClick={() => onSelect({ ...t, rank, medal, palette: CARD_PALETTES[t.origIdx % CARD_PALETTES.length] })}>
         {medal && <span className="rcard-medal">{medal}</span>}
-        {hero && <Confetti />}
+        {hero && !ghost && <Confetti />}
         <div className="rcard-photo" style={{ background: ghost ? '#181020' : CARD_PALETTES[t.origIdx % CARD_PALETTES.length] }}>
           {t.photo && <img src={B + t.photo} alt={t.name} />}
         </div>
@@ -115,8 +115,7 @@ export default function Booth() {
     {rows.map((r, ri) => {
       const isHeroRow = r.id === 'heroes'
       const isGhostRow = r.id === 'ghosts'
-      return <section key={r.id} className={'tier t-' + r.id + (isGhostRow ? ' tier-ghost' : '') + (isHeroRow ? ' tier-hero' : '')} style={{ '--c': r.color, position: 'relative' }}>
-        {isHeroRow && <Confetti />}
+      return <section key={r.id} className={'tier t-' + r.id + (isGhostRow ? ' tier-ghost' : '') + (isHeroRow ? ' tier-hero' : '')} style={{ '--c': r.color }}>
         <div className="tlabel"><b>{r.title}</b><small>{r.minScore}+ POINTS</small></div>
         <div className="tbody">{r.list.map((m, i) => <button key={m.id} className={'chip' + (isGhostRow ? ' chip-ghost' : '') + (isHeroRow ? ' chip-hero' : '')} style={{ animationDelay: ri * 250 + i * 60 + 'ms' }} onClick={() => setSel(m)}>
           <img src={B + m.photo} alt="" /><span>{m.name}</span></button>)}</div></section>
