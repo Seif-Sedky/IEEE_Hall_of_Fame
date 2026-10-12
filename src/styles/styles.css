@@ -66,17 +66,15 @@ h2{font:22px var(--bold);margin:0 0 14px;color:var(--blue)}.sec{margin-top:34px}
 .rcard-score{font-size:11px;color:var(--cherry);margin-top:2px;display:block}
 .rcard-medal{position:absolute;top:-14px;right:-10px;font-size:28px;filter:drop-shadow(2px 2px 0 var(--ink));z-index:2;line-height:1}
 @media(max-width:560px){.rboard-grid{grid-template-columns:repeat(2,1fr);gap:12px}}
-/* Ghost card: eerie pulsing shadow animation */
-.rcard-ghost{animation:drop .55s cubic-bezier(.3,1.7,.5,1) var(--delay,0ms) backwards,ghost-haunt 2.4s ease-in-out infinite;border-color:#7b2fff!important}
+/* Ghost card: subtle dark shadow breathing animation */
+.rcard-ghost{animation:drop .55s cubic-bezier(.3,1.7,.5,1) var(--delay,0ms) backwards,ghost-haunt 3.2s ease-in-out infinite;border-color:var(--ink)!important}
 @keyframes ghost-haunt{
- 0%,100%{box-shadow:0 0 0 0 #7b2fff00,0 0 14px 4px #7b2fff44,5px 5px 0 var(--ink)}
- 25%{box-shadow:0 0 18px 8px #7b2fffbb,0 0 36px 16px #181020aa,-4px -4px 0 #7b2fff}
- 50%{box-shadow:0 0 8px 2px #9d00ff66,0 0 28px 10px #7b2fff88,6px 6px 0 #2a0060}
- 75%{box-shadow:0 0 22px 10px #7b2fffcc,0 0 44px 20px #181020cc,-6px -6px 0 #7b2fff}
+ 0%,100%{box-shadow:5px 5px 0 var(--ink),0 0 6px 1px rgba(0,0,0,.2)}
+ 50%{box-shadow:5px 5px 0 var(--ink),0 0 16px 4px rgba(0,0,0,.45)}
 }
-.rcard-ghost .rcard-body .rcard-name{color:#9d00ff}
-.rcard-ghost .rcard-photo::after{content:'👻';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:36px;animation:ghost-float 2.2s ease-in-out infinite;pointer-events:none;z-index:2}
-@keyframes ghost-float{0%,100%{transform:translate(-50%,-50%) scale(1) rotate(-5deg);opacity:.85}50%{transform:translate(-50%,-58%) scale(1.12) rotate(5deg);opacity:1}}
+.rcard-ghost .rcard-body .rcard-name{color:var(--ink)}
+.rcard-ghost .rcard-photo::after{content:'👻';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:32px;animation:ghost-float 2.8s ease-in-out infinite;pointer-events:none;z-index:2}
+@keyframes ghost-float{0%,100%{transform:translate(-50%,-50%) scale(1) rotate(-4deg);opacity:.45}50%{transform:translate(-50%,-56%) scale(1.06) rotate(4deg);opacity:.7}}
 /* Hero card: golden celebratory glow */
 .rcard-hero{overflow:visible;animation:drop .55s cubic-bezier(.3,1.7,.5,1) var(--delay,0ms) backwards,hero-glow 1.8s ease-in-out infinite;border-color:var(--sun)!important}
 @keyframes hero-glow{
