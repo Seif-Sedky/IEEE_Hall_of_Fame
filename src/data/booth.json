@@ -105,10 +105,10 @@
         },
         { //
             "memberId": "saif-abdelaziz",
-            "slots": 6,
+            "slots": 9,
             "tiktoks": 1,
             "special": "",
-            "score": 8
+            "score": 11
         },
         {
             "memberId": "roaa-wael",
@@ -208,14 +208,14 @@
             "special": "",
             "score": 17
         },
-        { //
+        {
             "memberId": "albarra-mohamed",
             "slots": 18,
             "tiktoks": 5,
             "special": "",
             "score": 28
         },
-        { //
+        {
             "memberId": "sama-sherif",
             "slots": 13,
             "tiktoks": 0,
