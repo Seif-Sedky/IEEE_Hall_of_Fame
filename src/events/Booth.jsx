@@ -79,7 +79,7 @@ function RecruitBoard({ onSelect }) {
         onClick={() => onSelect({ ...t, rank, medal, palette: CARD_PALETTES[t.origIdx % CARD_PALETTES.length] })}>
         {medal && <span className="rcard-medal">{medal}</span>}
         {hero && <Confetti />}
-        <div className="rcard-photo" style={{ background: CARD_PALETTES[t.origIdx % CARD_PALETTES.length] }}>
+        <div className="rcard-photo" style={{ background: ghost ? '#181020' : CARD_PALETTES[t.origIdx % CARD_PALETTES.length] }}>
           {t.photo && <img src={B + t.photo} alt={t.name} />}
         </div>
         <div className="rcard-body">
@@ -112,10 +112,15 @@ export default function Booth() {
   const [sel, setSel] = useState(null), [about, setAbout] = useState(false), [selTeam, setSelTeam] = useState(null)
   return <>
     <div className="bar-title"><h2>BOOTH TIER LIST</h2><button className="btn" onClick={() => setAbout(true)}>? ABOUT</button></div>
-    {rows.map((r, ri) => <section key={r.id} className={'tier t-' + r.id} style={{ '--c': r.color }}>
-      <div className="tlabel"><b>{r.title}</b><small>{r.minScore}+ POINTS</small></div>
-      <div className="tbody">{r.list.map((m, i) => <button key={m.id} className="chip" style={{ animationDelay: ri * 250 + i * 60 + 'ms' }} onClick={() => setSel(m)}>
-        <img src={B + m.photo} alt="" /><span>{m.name}</span></button>)}</div></section>)}
+    {rows.map((r, ri) => {
+      const isHeroRow = r.id === 'heroes'
+      const isGhostRow = r.id === 'ghosts'
+      return <section key={r.id} className={'tier t-' + r.id + (isGhostRow ? ' tier-ghost' : '') + (isHeroRow ? ' tier-hero' : '')} style={{ '--c': r.color, position: 'relative' }}>
+        {isHeroRow && <Confetti />}
+        <div className="tlabel"><b>{r.title}</b><small>{r.minScore}+ POINTS</small></div>
+        <div className="tbody">{r.list.map((m, i) => <button key={m.id} className={'chip' + (isGhostRow ? ' chip-ghost' : '') + (isHeroRow ? ' chip-hero' : '')} style={{ animationDelay: ri * 250 + i * 60 + 'ms' }} onClick={() => setSel(m)}>
+          <img src={B + m.photo} alt="" /><span>{m.name}</span></button>)}</div></section>
+    })}
     <h2 className="sec">RECRUITMENT RACE</h2>
     {rec.teams.some(t => t.recruits > 0)
       ? <RecruitBoard onSelect={setSelTeam} />
