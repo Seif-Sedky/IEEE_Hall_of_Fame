@@ -1,4 +1,4 @@
-import {useState} from 'react'
+import {useState,useEffect,useRef} from 'react'
 import members from '../data/members.json'
 import booth from '../data/booth.json'
 import rec from '../data/recruitment.json'
@@ -23,16 +23,70 @@ const CARD_PALETTES=[
  'linear-gradient(135deg,#58a0b0,#f81840)',
  'linear-gradient(135deg,#f8a808,#3888e8)',
 ]
-function RecruitBoard({onSelect}){
+function Confetti({active}){
+ const canvasRef=useRef(null)
+ const anim=useRef(null)
+ useEffect(()=>{
+  if(!active){if(anim.current)cancelAnimationFrame(anim.current);return}
+  const canvas=canvasRef.current;if(!canvas)return
+  const ctx=canvas.getContext('2d')
+  canvas.width=canvas.offsetWidth;canvas.height=canvas.offsetHeight
+  const W=canvas.width,H=canvas.height
+  const COLORS=['#f81840','#f8a808','#3888e8','#58a0b0','#004898','#fff','#181020']
+  const SHAPES=['rect','circle','ribbon']
+  const pieces=Array.from({length:38},(_,i)=>({
+   x:Math.random()*W,y:-10-Math.random()*60,
+   w:Math.random()*7+4,h:Math.random()*4+3,
+   color:COLORS[i%COLORS.length],
+   shape:SHAPES[i%SHAPES.length],
+   vx:(Math.random()-.5)*2.2,
+   vy:Math.random()*2.5+1.2,
+   angle:Math.random()*360,
+   spin:(Math.random()-.5)*5,
+   opacity:1
+  }))
+  let frame=0
+  function draw(){
+   ctx.clearRect(0,0,W,H)
+   frame++
+   pieces.forEach(p=>{
+    p.x+=p.vx;p.y+=p.vy;p.angle+=p.spin
+    if(p.y>H+20){p.y=-10;p.x=Math.random()*W;p.vy=Math.random()*2.5+1.2}
+    if(frame>360)p.opacity=Math.max(0,p.opacity-.004)
+    ctx.save()
+    ctx.globalAlpha=p.opacity
+    ctx.translate(p.x,p.y)
+    ctx.rotate(p.angle*Math.PI/180)
+    ctx.fillStyle=p.color
+    if(p.shape==='circle'){ctx.beginPath();ctx.arc(0,0,p.w/2,0,Math.PI*2);ctx.fill()}
+    else if(p.shape==='ribbon'){ctx.beginPath();ctx.moveTo(-p.w,0);ctx.bezierCurveTo(-p.w/2,-p.h,p.w/2,p.h,p.w,0);ctx.bezierCurveTo(p.w/2,p.h,-p.w/2,-p.h,-p.w,0);ctx.fill()}
+    else{ctx.fillRect(-p.w/2,-p.h/2,p.w,p.h)}
+    ctx.restore()
+   })
+   anim.current=requestAnimationFrame(draw)
+  }
+  draw()
+  return()=>{cancelAnimationFrame(anim.current)}
+ },[active])
+ return <canvas ref={canvasRef} style={{position:'absolute',inset:0,width:'100%',height:'100%',pointerEvents:'none',zIndex:3,borderRadius:'inherit'}}/>
+}
+function RecruitBoard({onSelect,animActive}){
  const sorted=[...rec.teams].map((t,origIdx)=>({...t,origIdx})).sort((a,b)=>b.recruits-a.recruits)
  const allTied=sorted.every(t=>t.recruits===sorted[0].recruits)
+ const isGhost=t=>t.recruits===0||t.name==='Ghost Team'||t.name.toLowerCase().includes('ghost')
+ const isHero=t=>t.recruits>30
  return <div className="rboard-grid">
   {sorted.map((t,rank)=>{
    const medal=!allTied&&rank<3?MEDALS[rank]:null
-   return <button key={t.origIdx} className={'rcard'+(rank===0&&!allTied?' rcard-top':'')}
+   const ghost=isGhost(t),hero=isHero(t)
+   let extraClass=''
+   if(animActive&&ghost)extraClass=' rcard-ghost'
+   if(animActive&&hero)extraClass=' rcard-hero'
+   return <button key={t.origIdx} className={'rcard'+(rank===0&&!allTied?' rcard-top':'')+extraClass}
      style={{'--tilt':CARD_TILTS[t.origIdx%CARD_TILTS.length],'--delay':rank*55+'ms'}}
      onClick={()=>onSelect({...t,rank,medal,palette:CARD_PALETTES[t.origIdx%CARD_PALETTES.length]})}>
     {medal&&<span className="rcard-medal">{medal}</span>}
+    {animActive&&hero&&<Confetti active={animActive&&hero}/>}
     <div className="rcard-photo" style={{background:CARD_PALETTES[t.origIdx%CARD_PALETTES.length]}}>
      {t.photo
       ?<img src={B+t.photo} alt={t.name}/>
@@ -66,6 +120,11 @@ function TeamModal({team,close}){
 }
 export default function Booth(){
  const [sel,setSel]=useState(null),[about,setAbout]=useState(false),[selTeam,setSelTeam]=useState(null)
+ const [animActive,setAnimActive]=useState(true)
+ useEffect(()=>{
+  const t=setTimeout(()=>setAnimActive(false),10000)
+  return()=>clearTimeout(t)
+ },[])
  return <>
   <div className="bar-title"><h2>BOOTH TIER LIST</h2><button className="btn" onClick={()=>setAbout(true)}>? ABOUT</button></div>
   {rows.map((r,ri)=><section key={r.id} className={'tier t-'+r.id} style={{'--c':r.color}}>
@@ -74,8 +133,8 @@ export default function Booth(){
     <img src={B+m.photo} alt=""/><span>{m.name}</span></button>)}</div></section>)}
   <h2 className="sec">RECRUITMENT RACE</h2>
   {rec.teams.some(t=>t.recruits>0)
-   ?<RecruitBoard onSelect={setSelTeam}/>
-   :<><RecruitBoard onSelect={setSelTeam}/><div className="ph" style={{marginTop:12}}><p className="px">RACE IN PROGRESS</p><p className="hand">Scores are all tied at zero — the hunt has just begun!</p></div></>}
+   ?<RecruitBoard onSelect={setSelTeam} animActive={animActive}/>
+   :<><RecruitBoard onSelect={setSelTeam} animActive={animActive}/><div className="ph" style={{marginTop:12}}><p className="px">RACE IN PROGRESS</p><p className="hand">Scores are all tied at zero — the hunt has just begun!</p></div></>}
   <h2 className="sec">BOOTH OUTING</h2><div className="ph"><p className="px">COMING SOON</p></div>
   <p style={{textAlign:'center',marginTop:34}}><a className="btn big" href={booth.driveUrl} target="_blank" rel="noreferrer">MEMORIES</a></p>
   {sel&&<Modal close={()=>setSel(null)}><img src={B+sel.photo} alt={sel.name}/><h3>{sel.name}</h3><p className="role">{sel.role}</p>
