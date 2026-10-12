@@ -35,17 +35,17 @@
         },
         {
             "memberId": "ismaeel-awad",
-            "slots": 12,
+            "slots": 17,
             "tiktoks": 0,
             "special": "",
-            "score": 12
+            "score": 17
         },
         {
             "memberId": "aly-saleh",
-            "slots": 4,
+            "slots": 5,
             "tiktoks": 0,
             "special": "",
-            "score": 4
+            "score": 5
         },
         {
             "memberId": "aya-mohamed",
@@ -84,10 +84,10 @@
         },
         {
             "memberId": "judy-yasser",
-            "slots": 11,
+            "slots": 12,
             "tiktoks": 2,
             "special": "",
-            "score": 15
+            "score": 16
         },
         {
             "memberId": "mohamed-magedd",
@@ -98,12 +98,12 @@
         },
         {
             "memberId": "rodina-wael",
-            "slots": 14,
+            "slots": 18,
             "tiktoks": 2,
             "special": "",
-            "score": 18
+            "score": 22
         },
-        {
+        { //
             "memberId": "saif-abdelaziz",
             "slots": 6,
             "tiktoks": 1,
@@ -126,24 +126,24 @@
         },
         {
             "memberId": "abdelrahman-mohamed",
+            "slots": 9,
+            "tiktoks": 0,
+            "special": "",
+            "score": 9
+        },
+        {
+            "memberId": "omar-elsamalouty",
+            "slots": 15,
+            "tiktoks": 0,
+            "special": "PS4",
+            "score": 15
+        },
+        {
+            "memberId": "eyad-sameh",
             "slots": 8,
             "tiktoks": 0,
             "special": "",
             "score": 8
-        },
-        {
-            "memberId": "omar-elsamalouty",
-            "slots": 12,
-            "tiktoks": 0,
-            "special": "PS4",
-            "score": 12
-        },
-        {
-            "memberId": "eyad-sameh",
-            "slots": 7,
-            "tiktoks": 0,
-            "special": "",
-            "score": 7
         },
         {
             "memberId": "ziad-ahmed",
@@ -154,10 +154,10 @@
         },
         {
             "memberId": "shams-raafat",
-            "slots": 12,
+            "slots": 15,
             "tiktoks": 0,
             "special": "",
-            "score": 12
+            "score": 15
         },
         {
             "memberId": "fady-salah",
@@ -175,17 +175,17 @@
         },
         {
             "memberId": "ammar-adel",
-            "slots": 2,
+            "slots": 3,
             "tiktoks": 0,
             "special": "",
-            "score": 2
+            "score": 3
         },
         {
             "memberId": "jana-saleh",
-            "slots": 13,
+            "slots": 17,
             "tiktoks": 2,
             "special": "",
-            "score": 17
+            "score": 21
         },
         {
             "memberId": "malak-abdelgawad",
@@ -196,26 +196,26 @@
         },
         {
             "memberId": "seif-alaa",
-            "slots": 19,
+            "slots": 24,
             "tiktoks": 4,
             "special": "",
-            "score": 27
+            "score": 32
         },
         {
             "memberId": "david-bishoy",
-            "slots": 12,
+            "slots": 17,
             "tiktoks": 0,
             "special": "",
-            "score": 12
+            "score": 17
         },
-        {
+        { //
             "memberId": "albarra-mohamed",
-            "slots": 15,
+            "slots": 18,
             "tiktoks": 5,
             "special": "",
-            "score": 25
+            "score": 28
         },
-        {
+        { //
             "memberId": "sama-sherif",
             "slots": 13,
             "tiktoks": 0,
@@ -224,42 +224,42 @@
         },
         {
             "memberId": "abdelrahman-tebry",
-            "slots": 11,
+            "slots": 14,
             "tiktoks": 0,
             "special": "",
-            "score": 11
+            "score": 14
         },
         {
             "memberId": "hana-mohamed",
-            "slots": 11,
+            "slots": 14,
             "tiktoks": 3,
             "special": "",
-            "score": 15
+            "score": 18
         },
         {
             "memberId": "hala-aboraya",
-            "slots": 16,
+            "slots": 21,
             "tiktoks": 0,
             "special": "",
-            "score": 22,
+            "score": 27,
             "bonus": 7,
             "bonusName": "Videographer"
         },
         {
             "memberId": "omar-abouelnaga",
-            "slots": 9,
+            "slots": 10,
             "tiktoks": 2,
             "special": "",
-            "score": 16,
+            "score": 17,
             "bonus": 3,
             "bonusName": "Booth Decoration"
         },
         {
             "memberId": "sama-fayez",
-            "slots": 6,
+            "slots": 12,
             "tiktoks": 3,
             "special": "",
-            "score": 13,
+            "score": 19,
             "bonus": 3,
             "bonusName": "Booth Decoration"
         }
