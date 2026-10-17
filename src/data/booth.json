@@ -50,9 +50,9 @@
         {
             "memberId": "aya-mohamed",
             "slots": 9,
-            "tiktoks": 0,
+            "tiktoks": 1,
             "special": "",
-            "score": 7
+            "score": 9
         },
         {
             "memberId": "yassin-nashy",
@@ -115,14 +115,18 @@
             "slots": 6,
             "tiktoks": 0,
             "special": "",
-            "score": 6
+            "score": 8,
+            "bonus": 2,
+            "bonusName": "Booth Closing Organization"
         },
         {
             "memberId": "shahd-hisham",
             "slots": 1,
             "tiktoks": 0,
             "special": "",
-            "score": 1
+            "score": 2,
+            "bonus": 1,
+            "bonusName": "Booth Closing Organization"
         },
         {
             "memberId": "abdelrahman-mohamed",
