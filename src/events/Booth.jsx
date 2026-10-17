@@ -124,7 +124,7 @@ export default function Booth() {
     {rec.teams.some(t => t.recruits > 0)
       ? <RecruitBoard onSelect={setSelTeam} />
       : <><RecruitBoard onSelect={setSelTeam} /><div className="ph" style={{ marginTop: 12 }}><p className="px">RACE IN PROGRESS</p><p className="hand">Scores are all tied at zero — the hunt has just begun!</p></div></>}
-    <h2 className="sec">BOOTH OUTING</h2><div className="ph"><p className="px">COMING SOON</p></div>
+    
     <p style={{ textAlign: 'center', marginTop: 34 }}><a className="btn big" href={booth.driveUrl} target="_blank" rel="noreferrer">MEMORIES</a></p>
     {sel && <Modal close={() => setSel(null)}><img src={B + sel.photo} alt={sel.name} /><h3>{sel.name}</h3><p className="role">{sel.role}</p>
       {sel.statement && <p className="quote">"{sel.statement}"</p>}
