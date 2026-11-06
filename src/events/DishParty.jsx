@@ -495,7 +495,7 @@ function WalkingCharacter({ person, track, startProgress, speed, styleConfig, on
       onMouseLeave={() => setHover(false)}
       title={`${person.name} (${person.dish || 'Good Vibes'})`}
     >
-      {isVibes && <span className="dp-vibes-crown" aria-hidden="true">★</span>}
+      {isVibes && <span className="dp-vibes-crown" aria-hidden="true"></span>}
 
       {hover && (
         <div className="dp-char-bubble">
