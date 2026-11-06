@@ -607,10 +607,6 @@ function DishCard({ person, close }) {
           </div>
         )}
 
-        {member.statement && (
-          <p className="quote dp-modal-quote">"{member.statement}"</p>
-        )}
-
         {/* Pixel decoration dots */}
         <div className="dp-modal-dots" aria-hidden="true">
           {['#f81840','#3888e8','#f8a808','#58a0b0','#004898','#f81840','#3888e8','#f8a808'].map((c, i) => (
