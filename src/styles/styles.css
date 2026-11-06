@@ -408,6 +408,260 @@ h2{font:22px var(--bold);margin:0 0 14px;color:var(--blue)}.sec{margin-top:34px}
 .dp-modal-quote{font-size:20px;color:var(--blue);margin:10px 0 6px}
 .dp-modal-dots{display:flex;gap:5px;margin-top:12px;justify-content:center}
 .dp-modal-dots span{width:8px;height:8px;display:block;border:1px solid var(--ink);image-rendering:pixelated}
+.dp-modal-cake-btn{margin-top:12px;width:100%;text-align:center}
+
+/* ═══════════════════════════════════════════════════════
+   MEMORY HIGHLIGHTS & DEPARTURE SCENE
+═══════════════════════════════════════════════════════ */
+
+/* ── Fallback Photo Placeholder ──────────────────────── */
+.dp-photo-ph{
+  width:100%;height:100%;min-height:160px;
+  background:repeating-linear-gradient(45deg,#f4eedb,#f4eedb 10px,#ebe1c7 10px,#ebe1c7 20px);
+  border:2px dashed var(--ink);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:6px;padding:16px;text-align:center;
+}
+.dp-ph-emoji{font-size:32px;line-height:1}
+.dp-ph-title{font-size:8px;color:var(--blue)}
+.dp-ph-note{font-size:6px;color:var(--cherry);opacity:.85}
+
+/* ── Decorative Washi Tape ───────────────────────────── */
+.dp-tape{
+  position:absolute;z-index:10;pointer-events:none;
+  background:rgba(248,168,8,.75);
+  backdrop-filter:blur(2px);
+  border-left:1px dashed rgba(0,0,0,.25);
+  border-right:1px dashed rgba(0,0,0,.25);
+  box-shadow:0 1px 3px rgba(0,0,0,.2);
+}
+.dp-tape-center{
+  top:-10px;left:50%;transform:translateX(-50%) rotate(-2deg);
+  width:55px;height:18px;
+}
+.dp-tape-top-left{
+  top:-8px;left:14px;transform:rotate(-18deg);
+  width:50px;height:18px;
+}
+.dp-tape-top-right{
+  top:-8px;right:14px;transform:rotate(18deg);
+  width:50px;height:18px;
+}
+
+/* ── Act 2: Cake Highlight Hero ──────────────────────── */
+.dp-cake-hero{
+  margin-top:28px;
+  position:relative;
+}
+.dp-cake-badge{
+  display:inline-flex;align-items:center;gap:6px;
+  background:var(--cherry);color:#fff;
+  font-size:8px;padding:6px 12px;
+  border:3px solid var(--ink);box-shadow:3px 3px 0 var(--ink);
+  margin-bottom:-12px;margin-left:16px;position:relative;z-index:5;
+}
+.dp-cake-card{
+  background:linear-gradient(135deg,#fff 0%,#fff9f0 100%);
+  border:3px solid var(--ink);box-shadow:5px 5px 0 var(--ink);
+  padding:20px;
+  display:grid;grid-template-columns:minmax(240px,1.1fr) 1fr;
+  gap:22px;align-items:center;cursor:pointer;
+  transition:transform .12s cubic-bezier(.3,1.7,.5,1);
+}
+.dp-cake-card:hover{transform:translate(-2px,-3px) scale(1.01)}
+.dp-cake-photo-wrap{
+  position:relative;
+  aspect-ratio:4/3;overflow:hidden;
+  border:3px solid var(--ink);box-shadow:3px 3px 0 var(--ink);
+  background:#fff;
+}
+.dp-cake-photo{
+  width:100%;height:100%;object-fit:cover;display:block;
+  transition:transform .3s ease;
+}
+.dp-cake-card:hover .dp-cake-photo{transform:scale(1.04)}
+.dp-cake-overlay{
+  position:absolute;inset:0;
+  background:rgba(24,16,32,.35);
+  display:flex;align-items:center;justify-content:center;
+  opacity:0;transition:opacity .15s ease;
+}
+.dp-cake-card:hover .dp-cake-overlay{opacity:1}
+.dp-cake-zoom{
+  background:var(--sun);color:var(--ink);
+  font-size:8px;padding:6px 10px;
+  border:2px solid var(--ink);box-shadow:2px 2px 0 var(--ink);
+}
+.dp-cake-details{display:flex;flex-direction:column;gap:6px}
+.dp-cake-tag{font-size:7px;color:var(--cherry);letter-spacing:1px}
+.dp-cake-title{font:24px var(--bold);color:var(--ink);margin:2px 0 0;line-height:1.15}
+.dp-cake-sub{font-size:22px;color:var(--blue);margin:0;line-height:1.1}
+.dp-cake-cap{font-size:14px;color:var(--ink);opacity:.85;line-height:1.4;margin:4px 0 8px}
+.dp-cake-footer{display:flex;align-items:center;gap:8px;border-top:2px dotted var(--ink);padding-top:8px}
+.dp-cake-heart{font-size:18px}
+.dp-cake-credit{font-size:8px;color:var(--cherry)}
+
+/* ── Act 4: Candid Scrapbook Polaroids ───────────────── */
+.dp-scrapbook-sec{margin-top:36px}
+.dp-scrapbook-title{color:var(--blue);margin-bottom:2px}
+.dp-scrapbook-sub{font-size:20px;color:var(--ink);opacity:.8;margin:0 0 16px}
+.dp-scrapbook-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(230px,1fr));
+  gap:22px;
+}
+.dp-polaroid{
+  background:#fff;
+  border:3px solid var(--ink);box-shadow:4px 4px 0 var(--ink);
+  padding:12px 12px 14px;
+  display:flex;flex-direction:column;gap:10px;
+  cursor:pointer;text-align:left;font:inherit;
+  transform:rotate(var(--tilt,0deg));
+  transition:transform .15s steps(2),box-shadow .15s steps(1);
+  position:relative;
+}
+.dp-polaroid:hover{
+  transform:rotate(0deg) translateY(-6px) scale(1.03);
+  box-shadow:6px 8px 0 var(--ink);
+  z-index:15;
+}
+.dp-polaroid-photo-frame{
+  width:100%;aspect-ratio:4/3;overflow:hidden;
+  border:2px solid var(--ink);background:#f4eedb;
+}
+.dp-polaroid-img{
+  width:100%;height:100%;object-fit:cover;display:block;
+  transition:transform .2s ease;
+}
+.dp-polaroid:hover .dp-polaroid-img{transform:scale(1.05)}
+.dp-polaroid-caption{display:flex;flex-direction:column;gap:4px;padding:2px 4px 0}
+.dp-polaroid-title{font-size:8px;color:var(--cherry);line-height:1.2}
+.dp-polaroid-text{font-size:18px;color:var(--ink);margin:0;line-height:1.2}
+
+/* ── Act 5: Departure Epilogue Scene ─────────────────── */
+.dp-departure-scene{
+  margin-top:48px;
+  background:linear-gradient(180deg,#120c24 0%,#1c1336 50%,#281640 100%);
+  border:4px solid var(--ink);box-shadow:6px 6px 0 var(--ink);
+  border-radius:10px;
+  padding:26px 20px 22px;
+  color:#fff;
+  position:relative;overflow:hidden;
+}
+.dp-departure-sky{
+  position:absolute;inset:0;pointer-events:none;z-index:1;
+}
+.dp-star{
+  position:absolute;color:var(--sun);font-family:monospace;
+  animation:star-twinkle 2s ease-in-out infinite alternate;
+}
+.dp-star.s1{top:12px;left:18%;font-size:16px;animation-delay:0s}
+.dp-star.s2{top:32px;right:22%;font-size:14px;animation-delay:.6s}
+.dp-star.s3{top:58px;left:34%;font-size:18px;animation-delay:1.2s}
+.dp-star.s4{top:20px;right:40%;font-size:14px;animation-delay:.3s}
+.dp-star.s5{top:72px;right:15%;font-size:16px;animation-delay:.9s}
+.dp-star.s6{top:45px;left:10%;font-size:14px;animation-delay:1.5s}
+.dp-moon{
+  position:absolute;top:16px;right:26px;font-size:32px;
+  filter:drop-shadow(0 0 12px rgba(248,168,8,.6));
+}
+@keyframes star-twinkle{
+  0%{opacity:.3;transform:scale(.8)}
+  100%{opacity:1;transform:scale(1.2)}
+}
+.dp-departure-header{
+  position:relative;z-index:2;text-align:center;margin-bottom:18px;
+}
+.dp-departure-badge{
+  display:inline-block;
+  background:var(--sun);color:var(--ink);
+  font-size:7px;padding:3px 8px;
+  border:2px solid var(--ink);box-shadow:2px 2px 0 var(--ink);
+  margin-bottom:8px;
+}
+.dp-departure-heading{
+  font:28px var(--bold);color:#fff;margin:0 0 4px;
+  text-shadow:3px 3px 0 var(--ink);
+}
+.dp-departure-sub{font-size:22px;color:var(--sun);margin:0}
+
+/* Film Strip Styling */
+.dp-film-wrap{
+  position:relative;z-index:2;
+  display:flex;align-items:center;justify-content:center;
+  background:#080510;border:3px solid var(--ink);
+  box-shadow:4px 4px 0 var(--ink);
+  padding:10px 0;margin:12px auto;
+  max-width:700px;cursor:pointer;
+  transition:transform .12s cubic-bezier(.3,1.7,.5,1);
+}
+.dp-film-wrap:hover{transform:scale(1.015)}
+.dp-film-sprockets{
+  display:flex;flex-direction:column;gap:12px;padding:0 8px;
+}
+.dp-film-sprockets span{
+  width:10px;height:14px;background:#fff;border-radius:2px;display:block;
+  box-shadow:inset 1px 1px 0 rgba(0,0,0,.3);
+}
+.dp-film-frame{
+  position:relative;flex:1;
+  aspect-ratio:16/9;overflow:hidden;
+  border:2px solid #222;background:#181020;
+}
+.dp-departure-photo{
+  width:100%;height:100%;object-fit:cover;display:block;
+  transition:transform .3s ease;
+}
+.dp-film-wrap:hover .dp-departure-photo{transform:scale(1.03)}
+.dp-film-overlay{
+  position:absolute;inset:0;
+  background:rgba(16,10,32,.4);
+  display:flex;align-items:center;justify-content:center;
+  opacity:0;transition:opacity .15s ease;
+}
+.dp-film-wrap:hover .dp-film-overlay{opacity:1}
+.dp-film-zoom{
+  background:var(--cherry);color:#fff;
+  font-size:8px;padding:6px 12px;
+  border:2px solid var(--ink);box-shadow:2px 2px 0 var(--ink);
+}
+
+.dp-departure-footer{
+  position:relative;z-index:2;text-align:center;margin-top:16px;
+  display:flex;flex-direction:column;align-items:center;gap:10px;
+}
+.dp-departure-quote{
+  font-size:24px;color:#f8f8f8;max-width:580px;margin:0 auto;line-height:1.2;
+}
+.dp-departure-credit{font-size:8px;color:var(--sun);letter-spacing:1px}
+.dp-replay-btn{
+  margin-top:6px;background:var(--sun);color:var(--ink);
+  font-size:9px;padding:8px 14px;
+}
+
+/* ── Lightbox Photo Modal ────────────────────────────── */
+.dp-photo-modal{
+  width:min(100%,600px);
+  padding:32px 20px 20px;
+}
+.dp-photo-modal-frame{
+  width:100%;aspect-ratio:16/10;overflow:hidden;
+  border:3px solid var(--ink);box-shadow:3px 3px 0 var(--ink);
+  background:#181020;margin-bottom:12px;
+}
+.dp-photo-modal-img{width:100%;height:100%;object-fit:contain;display:block}
+.dp-photo-modal-title{font-size:36px;margin:0 0 2px;color:var(--ink)}
+.dp-photo-modal-sub{font-size:8px;color:var(--cherry);margin:0 0 8px}
+.dp-photo-modal-cap{font-size:15px;line-height:1.4;margin:0}
+
+@media(max-width:560px){
+  .dp-cake-card{grid-template-columns:1fr;gap:14px;padding:14px}
+  .dp-cake-title{font-size:20px}
+  .dp-scrapbook-grid{grid-template-columns:1fr}
+  .dp-departure-heading{font-size:22px}
+  .dp-departure-quote{font-size:18px}
+  .dp-film-sprockets{display:none}
+}
 
 @media(max-width:560px){
   .dp-scene{height:320px}

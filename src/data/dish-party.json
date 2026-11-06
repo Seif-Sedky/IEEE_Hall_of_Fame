@@ -24,5 +24,33 @@
     { "memberId": "seif-alaa",          "dish": "Chocolate Cake & Ro2a2 bel Gebna", "emoji": "🍰", "dishType": "sweet"    },
     { "memberId": "eyad-sameh",         "dish": null,                               "emoji": "✨", "dishType": "vibes"    },
     { "memberId": "rodina-wael",        "dish": null,                               "emoji": "✨", "dishType": "vibes"    }
-  ]
+  ],
+  "memories": {
+    "cake": {
+      "title": "THE IEEE RED VELVET CAKE",
+      "subtitle": "The Sweetest Highlight · Baked with Love",
+      "caption": "The true crown jewel of the feast table. Almost too majestic to cut!",
+      "photo": "dish-party/cake.jpg"
+    },
+    "snaps": [
+      {
+        "id": "feast",
+        "title": "THE FEAST IN FULL SWING",
+        "caption": "Nothing brings people together like good food and endless laughs.",
+        "photo": "dish-party/feast.jpg"
+      },
+      {
+        "id": "vibes",
+        "title": "ENERGY OFF THE CHARTS",
+        "caption": "Pure chaos, great jokes, and the best team spirit.",
+        "photo": "dish-party/vibes.jpg"
+      }
+    ],
+    "departure": {
+      "title": "WHEN WE WERE ALL LEAVING",
+      "subtitle": "End of the Night · Farewell Scene",
+      "caption": "Stomachs full, hearts fuller. The night ended, but the family stays forever. Until the next adventure! 🌙✨",
+      "photo": "dish-party/leaving.jpg"
+    }
+  }
 }

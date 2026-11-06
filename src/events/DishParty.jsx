@@ -118,7 +118,7 @@ const CHARACTER_STYLES = {
     shirtColor: '#f81840',
     pantsColor: '#1c3144',
     shoesColor: '#ffffff',
-    accessoryColor: '#f81840',
+    accessoryColor: '#f8a808',
   },
   'hala-aboraya': {
     archetype: 'long',
@@ -317,30 +317,23 @@ function PixelSprite({ styleConfig, frame = 0, flipped = false }) {
   const arch = ARCHETYPES[archetype] || ARCHETYPES.short
   const hairRows = arch.hairTop
 
-  // Construct full 12×15 sprite
   const rows = [
     hairRows[0],
     hairRows[1],
     hairRows[2],
     hairRows[3],
     hairRows[4],
-    // Row 5: neck
     archetype === 'hijab' ? '..AAAAAAAA..' : '....SSSS....',
-    // Row 6: shoulders / upper shirt
     archetype === 'long'
       ? '.HHTTTTTTHH.'
       : archetype === 'hijab'
       ? '.AATTTTTTAA.'
       : '.TTTTTTTTTT.',
-    // Row 7: chest
     archetype === 'long'
       ? '.HHTTTTTTHH.'
       : '.TTTTTTTTTT.',
-    // Row 8: torso
     '..TTTTTTTT..',
-    // Row 9: waist
     '..PPPPPPPP..',
-    // Rows 10-14: walk frame animation
     ...(frame % 2 === 0
       ? [
           '..PP....PP..',
@@ -403,25 +396,18 @@ function PixelSprite({ styleConfig, frame = 0, flipped = false }) {
 }
 
 // ── Perimeter Path Around the Table ──────────────────────────────────────────
-// Ensures characters circulate exclusively in the corridor around the table,
-// NEVER stepping onto the tabletop and NEVER wandering far off to scene bounds.
 function getPerimeterPos(t, track, speed) {
   const { xMin, xMax, yTop, yBottom } = track
   const tNorm = ((t % 1) + 1) % 1
 
   let x, y, baseDir, zIndex
 
-  // Segments (Clockwise):
-  // 0.00 -> 0.35: Top edge (behind table)
-  // 0.35 -> 0.50: Right edge
-  // 0.50 -> 0.85: Bottom edge (in front of table)
-  // 0.85 -> 1.00: Left edge
   if (tNorm < 0.35) {
     const u = tNorm / 0.35
     x = xMin + u * (xMax - xMin)
     y = yTop
-    baseDir = 1 // moving right
-    zIndex = 4 // behind the table
+    baseDir = 1
+    zIndex = 4
   } else if (tNorm < 0.50) {
     const u = (tNorm - 0.35) / 0.15
     x = xMax
@@ -432,8 +418,8 @@ function getPerimeterPos(t, track, speed) {
     const u = (tNorm - 0.50) / 0.35
     x = xMax - u * (xMax - xMin)
     y = yBottom
-    baseDir = -1 // moving left
-    zIndex = 8 // in front of the table
+    baseDir = -1
+    zIndex = 8
   } else {
     const u = (tNorm - 0.85) / 0.15
     x = xMin
@@ -442,47 +428,48 @@ function getPerimeterPos(t, track, speed) {
     zIndex = u > 0.5 ? 4 : 8
   }
 
-  // Face movement direction
   const dir = speed >= 0 ? baseDir : -baseDir
-
   return { x, y, dir, zIndex }
 }
 
-// ── Concentric Orbit Tracks Around the Table ──────────────────────────────────
 const TRACKS = [
-  // Inner track
   { xMin: 14, xMax: 86, yTop: 19, yBottom: 76 },
-  // Mid track
   { xMin: 11, xMax: 89, yTop: 15, yBottom: 80 },
-  // Outer track
   { xMin: 8,  xMax: 92, yTop: 12, yBottom: 84 },
 ]
 
 // ── Walking Character Component ───────────────────────────────────────────────
 function WalkingCharacter({ person, track, startProgress, speed, styleConfig, onClick }) {
-  const [progress, setProgress] = useState(startProgress)
   const [frame, setFrame] = useState(0)
   const [hover, setHover] = useState(false)
-  const animRef = useRef(null)
+  const charRef = useRef(null)
+  const spriteRef = useRef(null)
   const progressRef = useRef(startProgress)
   const hoverRef = useRef(false)
   hoverRef.current = hover
 
   useEffect(() => {
+    let animId
     let lastTs = performance.now()
     function loop(ts) {
       const dt = Math.min(ts - lastTs, 100)
       lastTs = ts
-      if (!hoverRef.current) {
+      if (!hoverRef.current && charRef.current) {
         progressRef.current = (progressRef.current + speed * (dt / 16.6)) % 1
         if (progressRef.current < 0) progressRef.current += 1
-        setProgress(progressRef.current)
+        const pos = getPerimeterPos(progressRef.current, track, speed)
+        charRef.current.style.left = `${pos.x}%`
+        charRef.current.style.top = `${pos.y}%`
+        charRef.current.style.zIndex = pos.zIndex
+        if (spriteRef.current) {
+          spriteRef.current.style.transform = pos.dir < 0 ? 'scaleX(-1)' : 'none'
+        }
       }
-      animRef.current = requestAnimationFrame(loop)
+      animId = requestAnimationFrame(loop)
     }
-    animRef.current = requestAnimationFrame(loop)
-    return () => cancelAnimationFrame(animRef.current)
-  }, [speed])
+    animId = requestAnimationFrame(loop)
+    return () => cancelAnimationFrame(animId)
+  }, [speed, track])
 
   useEffect(() => {
     if (hover) return
@@ -490,27 +477,26 @@ function WalkingCharacter({ person, track, startProgress, speed, styleConfig, on
     return () => clearInterval(id)
   }, [hover])
 
-  const pos = getPerimeterPos(progress, track, speed)
+  const initialPos = getPerimeterPos(startProgress, track, speed)
   const label = person.name.split(' ')[0]
   const isVibes = person.dishType === 'vibes'
 
   return (
     <div
+      ref={charRef}
       className={`dp-char${isVibes ? ' dp-char-vibes' : ''}${hover ? ' dp-char-hover' : ''}`}
       style={{
-        left: `${pos.x}%`,
-        top: `${pos.y}%`,
-        zIndex: hover ? 35 : pos.zIndex,
+        left: `${initialPos.x}%`,
+        top: `${initialPos.y}%`,
+        zIndex: hover ? 35 : initialPos.zIndex,
       }}
       onClick={() => onClick(person)}
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
       title={`${person.name} (${person.dish || 'Good Vibes'})`}
     >
-      {/* Golden crown badge for Eyad & Rodina */}
       {isVibes && <span className="dp-vibes-crown" aria-hidden="true">★</span>}
 
-      {/* Speech bubble on hover */}
       {hover && (
         <div className="dp-char-bubble">
           <span className="dp-bubble-emoji">{person.emoji}</span>
@@ -518,14 +504,13 @@ function WalkingCharacter({ person, track, startProgress, speed, styleConfig, on
         </div>
       )}
 
-      {/* Unique Pixel Sprite */}
-      <PixelSprite
-        styleConfig={styleConfig}
-        frame={frame}
-        flipped={pos.dir < 0}
-      />
+      <div ref={spriteRef} style={{ display: 'block', transform: initialPos.dir < 0 ? 'scaleX(-1)' : 'none' }}>
+        <PixelSprite
+          styleConfig={styleConfig}
+          frame={frame}
+        />
+      </div>
 
-      {/* Arcade Name Tag */}
       <span className="dp-char-name px">{label}</span>
     </div>
   )
@@ -565,10 +550,11 @@ const DISH_TYPE_COLORS = {
   vibes: '#f8a808',
 }
 
-function DishCard({ person, close }) {
+function DishCard({ person, close, onOpenCake }) {
   const member = byId[person.memberId]
   if (!member) return null
   const isVibes = person.dishType === 'vibes'
+  const isCake = person.dish && person.dish.toLowerCase().includes('red velvet')
   const typeColor = DISH_TYPE_COLORS[person.dishType] || '#004898'
   const typeLabel = DISH_TYPE_LABELS[person.dishType] || 'DISH'
 
@@ -577,7 +563,6 @@ function DishCard({ person, close }) {
       <div className="dp-modal note" onClick={e => e.stopPropagation()}>
         <button className="x" onClick={close}>X</button>
 
-        {/* Pixel art header bar */}
         <div className="dp-modal-header" style={{ '--hc': typeColor }}>
           <span className="dp-modal-emoji">{person.emoji}</span>
           <span className="px dp-modal-type">{typeLabel}</span>
@@ -591,7 +576,6 @@ function DishCard({ person, close }) {
           </div>
         </div>
 
-        {/* Special tribute note only when Eyad or Rodina is pressed */}
         {isVibes ? (
           <div className="dp-vibes-box">
             <p className="px" style={{ fontSize: 8, color: typeColor, marginBottom: 8 }}>SPECIAL CONTRIBUTION</p>
@@ -607,7 +591,18 @@ function DishCard({ person, close }) {
           </div>
         )}
 
-        {/* Pixel decoration dots */}
+        {isCake && onOpenCake && (
+          <button
+            className="btn big dp-modal-cake-btn"
+            onClick={() => {
+              close()
+              onOpenCake()
+            }}
+          >
+            🎂 VIEW THE IEEE CAKE MOMENT 📸
+          </button>
+        )}
+
         <div className="dp-modal-dots" aria-hidden="true">
           {['#f81840','#3888e8','#f8a808','#58a0b0','#004898','#f81840','#3888e8','#f8a808'].map((c, i) => (
             <span key={i} style={{ background: c }} />
@@ -627,11 +622,186 @@ function Steam({ x, delay }) {
   )
 }
 
+// ── Smart Memory Image with Retro Polaroid Fallback ───────────────────────────
+function MemoryImage({ src, alt, className = '' }) {
+  const [error, setError] = useState(false)
+  const fullSrc = src ? (src.startsWith('http') ? src : B + src) : ''
+
+  if (!src || error) {
+    return (
+      <div className={`dp-photo-ph ${className}`}>
+        <span className="dp-ph-emoji">📸</span>
+        <span className="px dp-ph-title">{alt || 'PARTY MEMORY'}</span>
+        <span className="dp-ph-note px">PHOTO SAVED IN MEMORY</span>
+      </div>
+    )
+  }
+
+  return (
+    <img
+      src={fullSrc}
+      alt={alt}
+      className={className}
+      onError={() => setError(true)}
+      loading="lazy"
+    />
+  )
+}
+
+// ── Photo Modal Lightbox ─────────────────────────────────────────────────────
+function PhotoModal({ item, close }) {
+  if (!item) return null
+  return (
+    <div className="overlay" onClick={close}>
+      <div className="dp-photo-modal note" onClick={e => e.stopPropagation()}>
+        <button className="x" onClick={close}>X</button>
+        <div className="dp-photo-modal-frame">
+          <MemoryImage src={item.photo} alt={item.title} className="dp-photo-modal-img" />
+        </div>
+        <h3 className="dp-photo-modal-title hand">{item.title}</h3>
+        {item.subtitle && <p className="px dp-photo-modal-sub">{item.subtitle}</p>}
+        {item.caption && <p className="dp-photo-modal-cap">{item.caption}</p>}
+      </div>
+    </div>
+  )
+}
+
+// ── IEEE Cake Highlight Showcase ─────────────────────────────────────────────
+function CakeHighlight({ cake, onOpen }) {
+  if (!cake) return null
+  return (
+    <section className="dp-cake-hero">
+      <div className="dp-cake-badge px">
+        <span>✨</span> THE SWEETEST HIGHLIGHT <span>✨</span>
+      </div>
+
+      <div className="dp-cake-card" onClick={() => onOpen(cake)}>
+        <div className="dp-cake-photo-wrap">
+          <div className="dp-tape dp-tape-top-left" aria-hidden="true" />
+          <div className="dp-tape dp-tape-top-right" aria-hidden="true" />
+          <MemoryImage src={cake.photo} alt={cake.title} className="dp-cake-photo" />
+          <div className="dp-cake-overlay">
+            <span className="px dp-cake-zoom">🔍 CLICK TO ADMIRE</span>
+          </div>
+        </div>
+
+        <div className="dp-cake-details">
+          <span className="px dp-cake-tag">CROWN JEWEL OF THE TABLE</span>
+          <h3 className="dp-cake-title">{cake.title}</h3>
+          <p className="hand dp-cake-sub">{cake.subtitle}</p>
+          <p className="dp-cake-cap">{cake.caption}</p>
+          <div className="dp-cake-footer">
+            <span className="dp-cake-heart">❤️</span>
+            <span className="px dp-cake-credit">
+              BROUGHT BY ROAA WAEL WITH IEEE COLORS
+            </span>
+          </div>
+        </div>
+      </div>
+    </section>
+  )
+}
+
+// ── Polaroid Scrapbook Snaps ─────────────────────────────────────────────────
+function ScrapbookSnaps({ snaps, onOpen }) {
+  if (!snaps || snaps.length === 0) return null
+  return (
+    <section className="dp-scrapbook-sec">
+      <h2 className="sec dp-scrapbook-title">PARTY CHRONICLES 📸</h2>
+      <p className="hand dp-scrapbook-sub">Candid snaps from the unforgettable feast.</p>
+      <div className="dp-scrapbook-grid">
+        {snaps.map((snap, idx) => {
+          const tilts = ['-1.8deg', '2.2deg', '-1.2deg', '1.5deg']
+          const tilt = tilts[idx % tilts.length]
+          return (
+            <button
+              key={snap.id || idx}
+              className="dp-polaroid"
+              style={{ '--tilt': tilt }}
+              onClick={() => onOpen(snap)}
+            >
+              <div className="dp-tape dp-tape-center" aria-hidden="true" />
+              <div className="dp-polaroid-photo-frame">
+                <MemoryImage src={snap.photo} alt={snap.title} className="dp-polaroid-img" />
+              </div>
+              <div className="dp-polaroid-caption">
+                <strong className="px dp-polaroid-title">{snap.title}</strong>
+                <p className="hand dp-polaroid-text">{snap.caption}</p>
+              </div>
+            </button>
+          )
+        })}
+      </div>
+    </section>
+  )
+}
+
+// ── The Departure Scene: "When We Were All Leaving" ───────────────────────────
+function DepartureScene({ departure, onOpen }) {
+  if (!departure) return null
+  return (
+    <section className="dp-departure-scene">
+      {/* 8-bit Twilight Starry Sky Header */}
+      <div className="dp-departure-sky" aria-hidden="true">
+        <span className="dp-star s1">✦</span>
+        <span className="dp-star s2">★</span>
+        <span className="dp-star s3">.</span>
+        <span className="dp-star s4">✦</span>
+        <span className="dp-star s5">★</span>
+        <span className="dp-star s6">.</span>
+        <span className="dp-moon">🌙</span>
+      </div>
+
+      <div className="dp-departure-header">
+        <span className="px dp-departure-badge">FINAL SCENE · EPILOGUE</span>
+        <h3 className="dp-departure-heading">{departure.title}</h3>
+        <p className="hand dp-departure-sub">{departure.subtitle}</p>
+      </div>
+
+      {/* Cinematic Film-Strip Framed Photo */}
+      <div className="dp-film-wrap" onClick={() => onOpen(departure)}>
+        <div className="dp-film-sprockets left" aria-hidden="true">
+          {[...Array(6)].map((_, i) => <span key={i} />)}
+        </div>
+
+        <div className="dp-film-frame">
+          <MemoryImage
+            src={departure.photo}
+            alt={departure.title}
+            className="dp-departure-photo"
+          />
+          <div className="dp-film-overlay">
+            <span className="px dp-film-zoom">🔍 VIEW FULL SIZE</span>
+          </div>
+        </div>
+
+        <div className="dp-film-sprockets right" aria-hidden="true">
+          {[...Array(6)].map((_, i) => <span key={i} />)}
+        </div>
+      </div>
+
+      {/* Nostalgic Farewell Message */}
+      <div className="dp-departure-footer">
+        <p className="hand dp-departure-quote">"{departure.caption}"</p>
+        <div className="dp-departure-credit px">
+          <span>🎮 LEVEL COMPLETE</span> · <span>MEMORIES UNLOCKED</span>
+        </div>
+        <button
+          className="btn dp-replay-btn"
+          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+        >
+          ↑ BACK TO THE FEAST TABLE
+        </button>
+      </div>
+    </section>
+  )
+}
+
 // ── Main DishParty Component ─────────────────────────────────────────────────
 export default function DishParty() {
   const [selected, setSelected] = useState(null)
+  const [photoModal, setPhotoModal] = useState(null)
 
-  // Enrich attendees with member details
   const attendees = useMemo(() => {
     return dishPartyData.attendees.map((a, i) => {
       const m = byId[a.memberId] || {}
@@ -639,17 +809,13 @@ export default function DishParty() {
     })
   }, [])
 
-  // Food on table (excluding vibes merchants)
   const tableFood = attendees.filter(a => a.dish !== null)
 
-  // Configure movement parameters for each attendee around the table
   const characterConfigs = useMemo(() => {
     const total = attendees.length
     return attendees.map((a, i) => {
       const track = TRACKS[i % TRACKS.length]
-      // Stagger starting progress smoothly around the table
       const startProgress = (i * (1 / total) + (i % 3) * 0.02) % 1
-      // Alternating speeds and directions (clockwise & counter-clockwise)
       const dirSign = i % 2 === 0 ? 1 : -1
       const speed = dirSign * (0.00038 + (i % 4) * 0.00007)
       const styleConfig = CHARACTER_STYLES[a.memberId] || {
@@ -666,6 +832,7 @@ export default function DishParty() {
   }, [attendees])
 
   const contributors = attendees.filter(a => a.dishType !== 'vibes')
+  const memories = dishPartyData.memories || {}
 
   return (
     <div className="dp-root">
@@ -675,10 +842,8 @@ export default function DishParty() {
         <span className="px dp-subtitle">CLICK A CHARACTER TO SEE THEIR DISH</span>
       </div>
 
-      {/* ── Scene: Big Table with Characters Orbiting Around It ── */}
+      {/* ── Act 1: The Banquet Feast Table Scene ── */}
       <div className="dp-scene" role="region" aria-label="Dish Party Scene">
-
-        {/* Characters circulating around the table */}
         {attendees.map((person, i) => (
           <WalkingCharacter
             key={person.memberId}
@@ -691,31 +856,26 @@ export default function DishParty() {
           />
         ))}
 
-        {/* ── The Big Banquet Table ── */}
         <div className="dp-table-wrap">
           <div className="dp-table">
             <div className="dp-table-label px">THE FEAST TABLE</div>
 
-            {/* Steam wisps */}
             {[15, 32, 50, 68, 83].map((x, i) => (
               <Steam key={i} x={x} delay={i * 400} />
             ))}
 
-            {/* Food items on the table */}
             <div className="dp-food-grid">
               {tableFood.map((item, idx) => (
                 <FoodItem key={item.memberId} item={item} idx={idx} onClick={setSelected} />
               ))}
             </div>
 
-            {/* Table legs */}
             <div className="dp-table-legs">
               <span /><span /><span /><span />
             </div>
           </div>
         </div>
 
-        {/* Pixel floor decoration */}
         <div className="dp-floor" aria-hidden="true">
           {[...Array(32)].map((_, i) => (
             <span key={i} className="dp-tile" style={{ '--ti': i }} />
@@ -723,7 +883,15 @@ export default function DishParty() {
         </div>
       </div>
 
-      {/* ── The Full Menu ── */}
+      {/* ── Act 2: The IEEE Cake Highlight (Centerpiece Celebration) ── */}
+      {memories.cake && (
+        <CakeHighlight
+          cake={memories.cake}
+          onOpen={setPhotoModal}
+        />
+      )}
+
+      {/* ── Act 3: The Full Menu ── */}
       <h2 className="sec dp-legend-title">THE FULL MENU</h2>
       <div className="dp-legend">
         {contributors.map(a => (
@@ -740,8 +908,38 @@ export default function DishParty() {
         ))}
       </div>
 
-      {/* ── Modal (Shows dish profile, or special tribute when Eyad or Rodina is pressed) ── */}
-      {selected && <DishCard person={selected} close={() => setSelected(null)} />}
+      {/* ── Act 4: The Candid Scrapbook Snaps ── */}
+      {memories.snaps && memories.snaps.length > 0 && (
+        <ScrapbookSnaps
+          snaps={memories.snaps}
+          onOpen={setPhotoModal}
+        />
+      )}
+
+      {/* ── Act 5: The Departure Scene (When We Were All Leaving) ── */}
+      {memories.departure && (
+        <DepartureScene
+          departure={memories.departure}
+          onOpen={setPhotoModal}
+        />
+      )}
+
+      {/* ── Profile Modal (Shows dish profile, or special tribute when Eyad or Rodina is pressed) ── */}
+      {selected && (
+        <DishCard
+          person={selected}
+          close={() => setSelected(null)}
+          onOpenCake={memories.cake ? () => setPhotoModal(memories.cake) : null}
+        />
+      )}
+
+      {/* ── Photo Lightbox Modal ── */}
+      {photoModal && (
+        <PhotoModal
+          item={photoModal}
+          close={() => setPhotoModal(null)}
+        />
+      )}
     </div>
   )
 }
