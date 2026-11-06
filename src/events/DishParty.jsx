@@ -298,7 +298,7 @@ const CHARACTER_STYLES = {
     shirtColor: '#f06292',
     pantsColor: '#181020',
     shoesColor: '#ffffff',
-    accessoryColor: '#f8a808',
+    accessoryColor: '#f8a808 ',
   },
 }
 
