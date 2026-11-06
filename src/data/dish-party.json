@@ -1,53 +1,173 @@
 {
   "attendees": [
-    { "memberId": "omar-abouelnaga",    "dish": "Pina Colada",                      "emoji": "🍹", "dishType": "drink"    },
-    { "memberId": "malak-abdelgawad",   "dish": "Mojito",                           "emoji": "🍸", "dishType": "drink"    },
-    { "memberId": "judy-yasser",        "dish": "Hot Honey Chicken Tenders",        "emoji": "🍗", "dishType": "food"     },
-    { "memberId": "sama-fayez",         "dish": "Tuna Salad",                       "emoji": "🥗", "dishType": "food"     },
-    { "memberId": "hala-aboraya",       "dish": "Brownies & Arabic Coffee",         "emoji": "🍫", "dishType": "sweet"    },
-    { "memberId": "shahd-hisham",       "dish": "Manakeesh",                        "emoji": "🫓", "dishType": "food"     },
-    { "memberId": "sama-sherif",        "dish": "Savoury Pie (Feteer)",             "emoji": "🥧", "dishType": "food"     },
-    { "memberId": "roaa-wael",          "dish": "IEEE Red Velvet Cake",             "emoji": "🎂", "dishType": "sweet"    },
-    { "memberId": "youssef-mostafa",    "dish": "Shawerma",                         "emoji": "🌯", "dishType": "food"     },
-    { "memberId": "albarra-mohamed",    "dish": "Cookies",                          "emoji": "🍪", "dishType": "sweet"    },
-    { "memberId": "hana-mohamed",       "dish": "Sugar Pie",                        "emoji": "🥮", "dishType": "sweet"    },
-    { "memberId": "david-bishoy",       "dish": "English Cake",                     "emoji": "🍰", "dishType": "sweet"    },
-    { "memberId": "jana-saleh",         "dish": "Golash Helw",                      "emoji": "🧁", "dishType": "sweet"    },
-    { "memberId": "tasneem-elshafey",   "dish": "White Pasta",                      "emoji": "🍝", "dishType": "food"     },
-    { "memberId": "shams-raafat",       "dish": "M7shy Wara2 3enab",                "emoji": "🍃", "dishType": "food"     },
-    { "memberId": "omar-elsamalouty",   "dish": "Crepe",                            "emoji": "🥞", "dishType": "sweet"    },
-    { "memberId": "ismaeel-awad",       "dish": "Nachos",                           "emoji": "🌮", "dishType": "food"     },
-    { "memberId": "abdelrahman-mohamed","dish": "Negresco Pasta",                   "emoji": "🍝", "dishType": "food"     },
-    { "memberId": "ahmed-tamer",        "dish": "Cups, Plates & Utensils",          "emoji": "🍽️", "dishType": "supplies" },
-    { "memberId": "mohamed-magedd",     "dish": "Tea",                              "emoji": "🫖", "dishType": "drink"    },
-    { "memberId": "abdelrahman-tebry",  "dish": "Shish Tawook Rice",                "emoji": "🍚", "dishType": "food"     },
-    { "memberId": "seif-alaa",          "dish": "Chocolate Cake & Ro2a2 bel Gebna", "emoji": "🍰", "dishType": "sweet"    },
-    { "memberId": "eyad-sameh",         "dish": null,                               "emoji": "✨", "dishType": "vibes"    },
-    { "memberId": "rodina-wael",        "dish": null,                               "emoji": "✨", "dishType": "vibes"    }
+    {
+      "memberId": "omar-abouelnaga",
+      "dish": "Pina Colada",
+      "emoji": "🍹",
+      "dishType": "drink"
+    },
+    {
+      "memberId": "malak-abdelgawad",
+      "dish": "Mojito",
+      "emoji": "🍸",
+      "dishType": "drink"
+    },
+    {
+      "memberId": "judy-yasser",
+      "dish": "Hot Honey Chicken Tenders",
+      "emoji": "🍗",
+      "dishType": "food"
+    },
+    {
+      "memberId": "sama-fayez",
+      "dish": "Tuna Salad",
+      "emoji": "🥗",
+      "dishType": "food"
+    },
+    {
+      "memberId": "hala-aboraya",
+      "dish": "Brownies & Arabic Coffee",
+      "emoji": "🍫",
+      "dishType": "sweet"
+    },
+    {
+      "memberId": "shahd-hisham",
+      "dish": "Manakeesh",
+      "emoji": "🫓",
+      "dishType": "food"
+    },
+    {
+      "memberId": "sama-sherif",
+      "dish": "Savoury Pie (Feteer)",
+      "emoji": "🥧",
+      "dishType": "food"
+    },
+    {
+      "memberId": "roaa-wael",
+      "dish": "IEEE Red Velvet Cake",
+      "emoji": "🎂",
+      "dishType": "sweet"
+    },
+    {
+      "memberId": "youssef-mostafa",
+      "dish": "Shawerma",
+      "emoji": "🌯",
+      "dishType": "food"
+    },
+    {
+      "memberId": "albarra-mohamed",
+      "dish": "Cookies",
+      "emoji": "🍪",
+      "dishType": "sweet"
+    },
+    {
+      "memberId": "hana-mohamed",
+      "dish": "Sugar Pie",
+      "emoji": "🥮",
+      "dishType": "sweet"
+    },
+    {
+      "memberId": "david-bishoy",
+      "dish": "English Cake",
+      "emoji": "🍰",
+      "dishType": "sweet"
+    },
+    {
+      "memberId": "jana-saleh",
+      "dish": "Golash Helw",
+      "emoji": "🧁",
+      "dishType": "sweet"
+    },
+    {
+      "memberId": "tasneem-elshafey",
+      "dish": "White Pasta",
+      "emoji": "🍝",
+      "dishType": "food"
+    },
+    {
+      "memberId": "shams-raafat",
+      "dish": "M7shy Wara2 3enab",
+      "emoji": "🍃",
+      "dishType": "food"
+    },
+    {
+      "memberId": "omar-elsamalouty",
+      "dish": "Crepe",
+      "emoji": "🥞",
+      "dishType": "sweet"
+    },
+    {
+      "memberId": "ismaeel-awad",
+      "dish": "Nachos",
+      "emoji": "🌮",
+      "dishType": "food"
+    },
+    {
+      "memberId": "abdelrahman-mohamed",
+      "dish": "Negresco Pasta",
+      "emoji": "🍝",
+      "dishType": "food"
+    },
+    {
+      "memberId": "ahmed-tamer",
+      "dish": "Cups, Plates & Utensils",
+      "emoji": "🍽️",
+      "dishType": "supplies"
+    },
+    {
+      "memberId": "mohamed-magedd",
+      "dish": "Tea",
+      "emoji": "🫖",
+      "dishType": "drink"
+    },
+    {
+      "memberId": "abdelrahman-tebry",
+      "dish": "Shish Tawook Rice",
+      "emoji": "🍚",
+      "dishType": "food"
+    },
+    {
+      "memberId": "seif-alaa",
+      "dish": "Chocolate Cake & Ro2a2 bel Gebna",
+      "emoji": "🍰",
+      "dishType": "sweet"
+    },
+    {
+      "memberId": "eyad-sameh",
+      "dish": null,
+      "emoji": "✨",
+      "dishType": "vibes"
+    },
+    {
+      "memberId": "rodina-wael",
+      "dish": null,
+      "emoji": "✨",
+      "dishType": "vibes"
+    }
   ],
   "memories": {
     "cake": {
       "title": "THE IEEE RED VELVET CAKE",
-      "subtitle": "The Sweetest Highlight · Baked with Love",
-      "caption": "The true crown jewel of the feast table. Crafted with IEEE blue & gold details. Almost too majestic to cut!",
+      "subtitle": "The \"Sweetest Highlight\" · Baked with Love",
+      "caption": "The crown jewel of the feast table. Crafted with IEEE blue & gold details. Almost too majestic to cut!",
       "photo": "dishparty/dpCake.jpeg"
     },
     "snaps": [
       {
         "id": "dp1",
-        "title": "SUNSET ON THE ROOFTOP",
-        "caption": "Catching the golden hour vibes before the feast began.",
+        "title": "FEASTING ON THE SUNSET",
+        "caption": "Anddd the feast began! Nothing beats bonding over food.",
         "photo": "dishparty/dp1.jpeg"
       },
       {
         "id": "dp2",
-        "title": "THE SACRED SPREAD",
+        "title": "DESSERT TIME",
         "caption": "Pies, sweets, and plates stacked high. Pure bliss.",
         "photo": "dishparty/dp2.jpeg"
       },
       {
         "id": "dp3",
-        "title": "DESSERT PROTOCOL",
+        "title": "CUTTING THE CHOCOLATE CAKE",
         "caption": "Careful slicing, generous portions, zero regrets.",
         "photo": "dishparty/dp3.jpeg"
       },
@@ -66,7 +186,7 @@
       {
         "id": "dp6",
         "title": "LATE NIGHT CONVERSATIONS",
-        "caption": "When the food was finished but no one wanted to leave.",
+        "caption": "When the food is finished, ITS COFFEE & CHAT TIME.",
         "photo": "dishparty/dp6.jpeg"
       }
     ],
