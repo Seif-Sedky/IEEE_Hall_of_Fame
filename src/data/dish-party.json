@@ -29,28 +29,52 @@
     "cake": {
       "title": "THE IEEE RED VELVET CAKE",
       "subtitle": "The Sweetest Highlight · Baked with Love",
-      "caption": "The true crown jewel of the feast table. Almost too majestic to cut!",
-      "photo": "dish-party/cake.jpg"
+      "caption": "The true crown jewel of the feast table. Crafted with IEEE blue & gold details. Almost too majestic to cut!",
+      "photo": "dishparty/dpCake.jpeg"
     },
     "snaps": [
       {
-        "id": "feast",
-        "title": "THE FEAST IN FULL SWING",
-        "caption": "Nothing brings people together like good food and endless laughs.",
-        "photo": "dish-party/feast.jpg"
+        "id": "dp1",
+        "title": "SUNSET ON THE ROOFTOP",
+        "caption": "Catching the golden hour vibes before the feast began.",
+        "photo": "dishparty/dp1.jpeg"
       },
       {
-        "id": "vibes",
-        "title": "ENERGY OFF THE CHARTS",
-        "caption": "Pure chaos, great jokes, and the best team spirit.",
-        "photo": "dish-party/vibes.jpg"
+        "id": "dp2",
+        "title": "THE SACRED SPREAD",
+        "caption": "Pies, sweets, and plates stacked high. Pure bliss.",
+        "photo": "dishparty/dp2.jpeg"
+      },
+      {
+        "id": "dp3",
+        "title": "DESSERT PROTOCOL",
+        "caption": "Careful slicing, generous portions, zero regrets.",
+        "photo": "dishparty/dp3.jpeg"
+      },
+      {
+        "id": "dp4",
+        "title": "SAVOURY DELIGHTS",
+        "caption": "Negresco, tenders, manakeesh and everything delicious.",
+        "photo": "dishparty/dp4.jpeg"
+      },
+      {
+        "id": "dp5",
+        "title": "MID-BITE CAUGHT IN 4K",
+        "caption": "The face of someone experiencing culinary perfection.",
+        "photo": "dishparty/dp5.jpeg"
+      },
+      {
+        "id": "dp6",
+        "title": "LATE NIGHT CONVERSATIONS",
+        "caption": "When the food was finished but no one wanted to leave.",
+        "photo": "dishparty/dp6.jpeg"
       }
     ],
     "departure": {
       "title": "WHEN WE WERE ALL LEAVING",
       "subtitle": "End of the Night · Farewell Scene",
-      "caption": "Stomachs full, hearts fuller. The night ended, but the family stays forever. Until the next adventure! 🌙✨",
-      "photo": "dish-party/leaving.jpg"
+      "caption": "Walking out together under the night streetlights. Stomachs full, hearts fuller. The party ended, but the family stays forever. Until the next adventure! 🌙✨",
+      "photo": "dishparty/dpEnd.jpeg"
     }
   }
 }

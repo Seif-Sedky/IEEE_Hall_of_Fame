@@ -623,11 +623,36 @@ function Steam({ x, delay }) {
 }
 
 // ── Smart Memory Image with Retro Polaroid Fallback ───────────────────────────
-function MemoryImage({ src, alt, className = '' }) {
-  const [error, setError] = useState(false)
-  const fullSrc = src ? (src.startsWith('http') ? src : B + src) : ''
+const ALT_MAP = {
+  'dishparty/dpCake.jpeg': 'dishparty/cake.jpeg',
+  'dishparty/cake.jpeg': 'dishparty/dpCake.jpeg',
+  'dishparty/dpEnd.jpeg': 'dishparty/leaving.jpeg',
+  'dishparty/leaving.jpeg': 'dishparty/dpEnd.jpeg',
+}
 
-  if (!src || error) {
+function MemoryImage({ src, alt, className = '' }) {
+  const [currentSrc, setCurrentSrc] = useState(src)
+  const [error, setError] = useState(false)
+  const [triedAlt, setTriedAlt] = useState(false)
+
+  useEffect(() => {
+    setCurrentSrc(src)
+    setError(false)
+    setTriedAlt(false)
+  }, [src])
+
+  const fullSrc = currentSrc ? (currentSrc.startsWith('http') ? currentSrc : B + currentSrc) : ''
+
+  const handleError = () => {
+    if (!triedAlt && currentSrc && ALT_MAP[currentSrc]) {
+      setTriedAlt(true)
+      setCurrentSrc(ALT_MAP[currentSrc])
+    } else {
+      setError(true)
+    }
+  }
+
+  if (!currentSrc || error) {
     return (
       <div className={`dp-photo-ph ${className}`}>
         <span className="dp-ph-emoji">📸</span>
@@ -642,7 +667,7 @@ function MemoryImage({ src, alt, className = '' }) {
       src={fullSrc}
       alt={alt}
       className={className}
-      onError={() => setError(true)}
+      onError={handleError}
       loading="lazy"
     />
   )
