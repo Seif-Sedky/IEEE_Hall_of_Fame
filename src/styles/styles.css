@@ -116,3 +116,280 @@ h2{font:22px var(--bold);margin:0 0 14px;color:var(--blue)}.sec{margin-top:34px}
 .fx{position:fixed;inset:0;z-index:0;pointer-events:none;background:inherit;-webkit-mask-image:radial-gradient(circle 150px at var(--cx,-999px) var(--cy,-999px),#000 35%,#0000 100%);mask-image:radial-gradient(circle 150px at var(--cx,-999px) var(--cy,-999px),#000 35%,#0000 100%);animation:jig 1.4s ease-in-out infinite alternate}
 @keyframes jig{to{background-position:14px -10px,-12px 10px,16px 12px,-10px -14px}}
 .app{position:relative;z-index:1}
+
+/* ═══════════════════════════════════════════════════════
+   DISH PARTY
+═══════════════════════════════════════════════════════ */
+
+/* Root */
+.dp-root{display:flex;flex-direction:column;gap:0}
+.dp-title-row{margin-bottom:16px;align-items:flex-end;flex-wrap:wrap;gap:8px}
+.dp-title{font:28px var(--bold);color:var(--cherry);margin:0;text-shadow:3px 3px 0 var(--ink)}
+.dp-subtitle{font-size:7px;color:var(--blue);opacity:.8}
+
+/* ── Scene ───────────────────────────────────────────── */
+.dp-scene{
+  position:relative;
+  width:100%;
+  height:340px;
+  overflow:hidden;
+  background:linear-gradient(180deg,#e8f4f8 0%,#c5dfe8 60%,#b0cdd8 100%);
+  border:3px solid var(--ink);
+  box-shadow:5px 5px 0 var(--ink);
+  border-radius:8px;
+  image-rendering:pixelated;
+}
+
+/* ── Pixel floor tiles ───────────────────────────────── */
+.dp-floor{
+  position:absolute;
+  bottom:0;left:0;right:0;
+  height:52px;
+  display:flex;
+  pointer-events:none;
+  z-index:1;
+}
+.dp-tile{
+  flex:1;
+  height:100%;
+  background:color-mix(in srgb,var(--blue) calc(var(--ti,0)*2%+30%),var(--paper));
+  border-top:2px solid var(--ink);
+  border-right:1px solid #0003;
+  image-rendering:pixelated;
+  animation:tile-blink 4s steps(1) calc(var(--ti,0)*120ms) infinite;
+}
+@keyframes tile-blink{0%,89%,100%{opacity:1}90%,99%{opacity:.6}}
+
+/* ── The Big Table ───────────────────────────────────── */
+.dp-table-wrap{
+  position:absolute;
+  left:50%;top:50%;
+  transform:translate(-50%,-50%);
+  z-index:5;
+}
+.dp-table{
+  position:relative;
+  width:clamp(300px,70vw,620px);
+  min-height:130px;
+  background:linear-gradient(180deg,#8B4513 0%,#6B3410 50%,#5a2d0c 100%);
+  border:4px solid var(--ink);
+  box-shadow:6px 6px 0 var(--ink),inset 0 2px 0 rgba(255,255,255,.2);
+  border-radius:6px;
+  padding:14px 10px 10px;
+  image-rendering:pixelated;
+}
+/* Wood grain lines */
+.dp-table::before{
+  content:'';position:absolute;inset:0;border-radius:4px;pointer-events:none;
+  background:repeating-linear-gradient(90deg,transparent,transparent 40px,rgba(0,0,0,.08) 41px);
+}
+.dp-table-label{
+  position:absolute;top:-18px;left:50%;transform:translateX(-50%);
+  background:var(--sun);color:var(--ink);
+  font-size:7px;padding:3px 10px;
+  border:2px solid var(--ink);box-shadow:2px 2px 0 var(--ink);
+  white-space:nowrap;
+}
+
+/* Table legs */
+.dp-table-legs{
+  position:absolute;
+  bottom:-22px;left:0;right:0;
+  display:flex;justify-content:space-between;
+  padding:0 20px;
+  pointer-events:none;
+  z-index:-1;
+}
+.dp-table-legs span{
+  width:14px;height:22px;
+  background:#5a2d0c;
+  border:3px solid var(--ink);
+  border-top:0;
+  image-rendering:pixelated;
+}
+
+/* ── Food grid on table ──────────────────────────────── */
+.dp-food-grid{
+  display:flex;flex-wrap:wrap;gap:4px;
+  justify-content:center;align-items:center;
+  padding:4px 6px 6px;
+  min-height:90px;
+}
+.dp-food-item{
+  background:var(--paper);
+  border:2px solid var(--ink);
+  box-shadow:2px 2px 0 var(--ink);
+  cursor:pointer;
+  padding:4px 5px;
+  display:flex;align-items:center;justify-content:center;
+  transform:rotate(var(--angle,0deg));
+  transition:transform .1s steps(2),box-shadow .1s steps(1);
+  image-rendering:pixelated;
+  position:relative;
+}
+.dp-food-item:hover,.dp-food-item.dp-food-jiggle{
+  transform:rotate(0deg) translateY(-4px) scale(1.15);
+  box-shadow:3px 5px 0 var(--ink);
+  z-index:10;
+}
+.dp-food-emoji{font-size:22px;line-height:1;display:block}
+
+/* ── Steam animation ─────────────────────────────────── */
+.dp-steam{
+  position:absolute;
+  top:-18px;
+  font-size:9px;
+  color:rgba(255,255,255,.75);
+  font-family:var(--px);
+  letter-spacing:-2px;
+  animation:steam-rise 2.2s ease-in infinite;
+  pointer-events:none;
+  z-index:10;
+}
+@keyframes steam-rise{
+  0%{opacity:0;transform:translateY(0) scaleX(1)}
+  30%{opacity:.85}
+  100%{opacity:0;transform:translateY(-24px) scaleX(1.4)}
+}
+
+/* ── Walking characters ──────────────────────────────── */
+.dp-char{
+  position:absolute;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:1px;
+  cursor:pointer;
+  z-index:8;
+  /* Step-based movement feel */
+  transition:left .06s steps(1),top .06s steps(1);
+}
+.dp-char:hover{z-index:20}
+.dp-char-name{
+  font-size:5px;
+  background:var(--ink);
+  color:var(--sun);
+  padding:1px 3px;
+  white-space:nowrap;
+  pointer-events:none;
+  opacity:.85;
+}
+.dp-char:hover .dp-char-name{opacity:1;background:var(--cherry)}
+.dp-char-bubble{
+  position:absolute;
+  bottom:100%;left:50%;
+  transform:translateX(-50%);
+  font-size:16px;
+  animation:bubble-pop .25s steps(3) backwards;
+  pointer-events:none;
+  z-index:30;
+  filter:drop-shadow(1px 1px 0 var(--ink));
+}
+@keyframes bubble-pop{from{transform:translateX(-50%) scale(0)}to{transform:translateX(-50%) scale(1)}}
+.dp-char-vibes svg rect{animation:vibes-shimmer 1.2s steps(2) infinite}
+@keyframes vibes-shimmer{50%{fill:#f8a808}}
+.dp-vibes-crown{
+  position:absolute;top:-10px;left:50%;transform:translateX(-50%);
+  font-size:10px;animation:crown-bob 1s steps(2) infinite;
+  pointer-events:none;
+}
+@keyframes crown-bob{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(-3px)}}
+
+/* ── Vibes Banner ────────────────────────────────────── */
+.dp-vibes-banner{
+  display:flex;align-items:center;gap:14px;
+  margin-top:18px;
+  background:linear-gradient(135deg,#181020,#3888e8);
+  border:3px solid var(--ink);box-shadow:4px 4px 0 var(--ink);
+  padding:14px 18px;
+  border-radius:4px;
+  animation:vibes-glow 2s ease-in-out infinite;
+}
+@keyframes vibes-glow{
+  0%,100%{box-shadow:4px 4px 0 var(--ink),0 0 8px 2px rgba(248,168,8,.2)}
+  50%{box-shadow:4px 4px 0 var(--ink),0 0 20px 6px rgba(248,168,8,.5)}
+}
+.dp-vibes-star{font-size:22px;animation:star-spin 2s steps(4) infinite;flex:none}
+@keyframes star-spin{to{transform:rotate(360deg)}}
+.dp-vibes-banner-text{font-size:26px;color:#fff;margin:0;line-height:1.2}
+
+/* ── Legend / Full Menu ──────────────────────────────── */
+.dp-legend-title{color:var(--cherry)}
+.dp-legend{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(150px,1fr));
+  gap:8px;
+  margin-top:8px;
+}
+.dp-legend-item{
+  display:flex;flex-direction:column;gap:4px;
+  background:var(--paper);
+  border:3px solid var(--ink);
+  box-shadow:3px 3px 0 var(--lc,var(--ink));
+  padding:8px 10px;
+  cursor:pointer;
+  text-align:left;
+  font:inherit;
+  transition:transform .1s steps(2);
+  position:relative;
+}
+.dp-legend-item::before{
+  content:'';
+  position:absolute;top:0;left:0;
+  width:4px;height:100%;
+  background:var(--lc,var(--ink));
+}
+.dp-legend-item:hover{transform:translateY(-3px) rotate(-1deg)}
+.dp-legend-emoji{font-size:20px;line-height:1}
+.dp-legend-name{font:700 13px var(--bold);color:var(--ink)}
+.dp-legend-dish{font-size:7px;color:var(--blue);opacity:.8;line-height:1.4;word-break:break-word}
+
+/* ── Modal ───────────────────────────────────────────── */
+.dp-modal{transform:rotate(-0.5deg)!important}
+.dp-modal-header{
+  display:flex;align-items:center;gap:10px;
+  background:var(--hc,var(--blue));
+  margin:-36px -22px 14px;
+  padding:12px 16px;
+  border-bottom:3px solid var(--ink);
+}
+.dp-modal-emoji{font-size:28px;line-height:1}
+.dp-modal-type{font-size:7px;color:#fff}
+.dp-modal-body{display:flex;align-items:flex-start;gap:12px;margin-bottom:12px}
+.dp-modal-photo{
+  width:70px;height:70px;object-fit:cover;
+  border:3px solid var(--ink);box-shadow:3px 3px 0 var(--ink);
+  flex:none;
+  image-rendering:auto;
+}
+.dp-modal-name{font:36px/1 var(--hand);margin:0;color:var(--ink)}
+.dp-modal-role{font-size:18px;margin:2px 0 0}
+.dp-dish-box{
+  background:color-mix(in srgb,var(--dc) 10%,var(--paper));
+  border:2px solid var(--dc,var(--ink));
+  box-shadow:3px 3px 0 var(--dc,var(--ink));
+  padding:10px 14px;
+  margin:10px 0;
+  border-radius:3px;
+}
+.dp-dish-name{font-size:30px;color:var(--ink);margin:4px 0 0;line-height:1.1}
+.dp-vibes-box{
+  background:linear-gradient(135deg,#181020,#3888e8);
+  border:2px solid var(--ink);
+  padding:12px 14px;
+  margin:10px 0;
+  text-align:center;
+}
+.dp-vibes-text{font-size:28px;color:#fff;margin:4px 0;line-height:1.1}
+.dp-vibes-sub{font-size:6px;color:var(--sun);margin-top:6px;display:block}
+.dp-modal-quote{font-size:20px;color:var(--blue);margin:10px 0 6px}
+.dp-modal-dots{display:flex;gap:5px;margin-top:12px;justify-content:center}
+.dp-modal-dots span{width:8px;height:8px;display:block;border:1px solid var(--ink);image-rendering:pixelated}
+
+@media(max-width:560px){
+  .dp-scene{height:260px}
+  .dp-table-wrap .dp-table{width:calc(100vw - 60px);min-height:100px}
+  .dp-food-emoji{font-size:17px}
+  .dp-legend{grid-template-columns:repeat(2,1fr)}
+  .dp-title{font-size:20px}
+}
