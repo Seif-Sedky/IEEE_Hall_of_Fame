@@ -5,118 +5,533 @@ import dishPartyData from '../data/dish-party.json'
 const B = import.meta.env.BASE_URL
 const byId = Object.fromEntries(members.map(m => [m.id, m]))
 
-// ── Pixel character sprites (9×13 grid of rows) ──────────────────────────────
-// Each character is defined as an array of rows, '#' = pixel on
-// Colors are themed to the site palette
-const SPRITE_COLORS = ['#f81840','#3888e8','#f8a808','#58a0b0','#004898','#f81840','#3888e8','#f8a808']
+// ── 8-bit / 16-bit Hairstyle & Clothing Archetypes (12 wide × 5 tall for head) ────────
+// Tokens: H = Hair, S = Skin, E = Eye (#181020), A = Accessory (hat / hijab / beanie)
+const ARCHETYPES = {
+  short: {
+    hairTop: [
+      '....HHHH....',
+      '..HHHHHHHH..',
+      '.HHSSSSSSHH.',
+      '.HH.E..E.HH.',
+      '....SSSS....',
+    ],
+  },
+  spiky: {
+    hairTop: [
+      '..H.HH.HH.H.',
+      '.HHHHHHHHHH.',
+      '.HHSSSSSSHH.',
+      '.HH.E..E.HH.',
+      '....SSSS....',
+    ],
+  },
+  curly: {
+    hairTop: [
+      '..HHHHHHHH..',
+      '.HHHHHHHHHH.',
+      '.HHSSSSSSHH.',
+      '.HH.E..E.HH.',
+      '.HH.SSSS.HH.',
+    ],
+  },
+  long: {
+    hairTop: [
+      '....HHHH....',
+      '..HHHHHHHH..',
+      '.HHSSSSSSHH.',
+      '.HH.E..E.HH.',
+      '.HH.SSSS.HH.',
+    ],
+  },
+  bob: {
+    hairTop: [
+      '....HHHH....',
+      '..HHHHHHHH..',
+      '.HHSSSSSSHH.',
+      '.HH.E..E.HH.',
+      '.HH.SSSS.HH.',
+    ],
+  },
+  cap: {
+    hairTop: [
+      '....AAAA....',
+      '..AAAAAAAA..',
+      '.AAAAAAAAAA.',
+      '...SE..ES...',
+      '....SSSS....',
+    ],
+  },
+  hijab: {
+    hairTop: [
+      '....AAAA....',
+      '..AAAAAAAA..',
+      '.AAASSSSAAA.',
+      '.AA.E..E.AA.',
+      '..AAAAAAAA..',
+    ],
+  },
+  beanie: {
+    hairTop: [
+      '...AAAAAA...',
+      '..AAAAAAAA..',
+      '.HHHHHHHHHH.',
+      '.HH.E..E.HH.',
+      '....SSSS....',
+    ],
+  },
+}
 
-// A simple walking pixel person: 9 wide × 13 tall
-// Frame A (legs apart) and Frame B (legs together)
-const BODY_A = [
-  '...###...',
-  '..#####..',
-  '...###...',
-  '..#####..',
-  '.#######.',
-  '...###...',
-  '...###...',
-  '..#.#.#..',
-  '.##...##.',
-  '.#.....#.',
-]
-const BODY_B = [
-  '...###...',
-  '..#####..',
-  '...###...',
-  '..#####..',
-  '.#######.',
-  '...###...',
-  '...###...',
-  '..#####..',
-  '..##.##..',
-  '..#...#..',
-]
+// ── Unique Styling for Each Attendee ──────────────────────────────────────────
+const CHARACTER_STYLES = {
+  'omar-abouelnaga': {
+    archetype: 'curly',
+    hairColor: '#3d2314',
+    skinColor: '#f5c396',
+    shirtColor: '#f81840',
+    pantsColor: '#8d775f',
+    shoesColor: '#ffffff',
+    accessoryColor: '#f8a808',
+  },
+  'malak-abdelgawad': {
+    archetype: 'long',
+    hairColor: '#1a110b',
+    skinColor: '#ffdfc4',
+    shirtColor: '#58a0b0',
+    pantsColor: '#2b2d42',
+    shoesColor: '#ffffff',
+    accessoryColor: '#58a0b0',
+  },
+  'judy-yasser': {
+    archetype: 'hijab',
+    hairColor: '#1a110b',
+    skinColor: '#f5c396',
+    shirtColor: '#004898',
+    pantsColor: '#2b2d42',
+    shoesColor: '#f8f8f8',
+    accessoryColor: '#f8a808',
+  },
+  'sama-fayez': {
+    archetype: 'bob',
+    hairColor: '#6a462f',
+    skinColor: '#ffdfc4',
+    shirtColor: '#f81840',
+    pantsColor: '#1c3144',
+    shoesColor: '#ffffff',
+    accessoryColor: '#f81840',
+  },
+  'hala-aboraya': {
+    archetype: 'long',
+    hairColor: '#2a1a10',
+    skinColor: '#f5c396',
+    shirtColor: '#6b3410',
+    pantsColor: '#1c3144',
+    shoesColor: '#ffffff',
+    accessoryColor: '#f8a808',
+  },
+  'shahd-hisham': {
+    archetype: 'long',
+    hairColor: '#111115',
+    skinColor: '#ffdfc4',
+    shirtColor: '#3888e8',
+    pantsColor: '#181020',
+    shoesColor: '#ffffff',
+    accessoryColor: '#3888e8',
+  },
+  'sama-sherif': {
+    archetype: 'hijab',
+    hairColor: '#1a110b',
+    skinColor: '#ffdfc4',
+    shirtColor: '#f8f8f8',
+    pantsColor: '#58a0b0',
+    shoesColor: '#ffffff',
+    accessoryColor: '#58a0b0',
+  },
+  'roaa-wael': {
+    archetype: 'long',
+    hairColor: '#3d2314',
+    skinColor: '#f5c396',
+    shirtColor: '#c41535',
+    pantsColor: '#181020',
+    shoesColor: '#ffffff',
+    accessoryColor: '#c41535',
+  },
+  'youssef-mostafa': {
+    archetype: 'spiky',
+    hairColor: '#1a110b',
+    skinColor: '#f5c396',
+    shirtColor: '#004898',
+    pantsColor: '#181020',
+    shoesColor: '#f8a808',
+    accessoryColor: '#004898',
+  },
+  'albarra-mohamed': {
+    archetype: 'cap',
+    hairColor: '#1a110b',
+    skinColor: '#f5c396',
+    shirtColor: '#f81840',
+    pantsColor: '#181020',
+    shoesColor: '#ffffff',
+    accessoryColor: '#f81840',
+  },
+  'hana-mohamed': {
+    archetype: 'beanie',
+    hairColor: '#5a3d28',
+    skinColor: '#ffdfc4',
+    shirtColor: '#f8a808',
+    pantsColor: '#2b2d42',
+    shoesColor: '#ffffff',
+    accessoryColor: '#3888e8',
+  },
+  'david-bishoy': {
+    archetype: 'short',
+    hairColor: '#111115',
+    skinColor: '#f5c396',
+    shirtColor: '#f8a808',
+    pantsColor: '#1c3144',
+    shoesColor: '#3d2314',
+    accessoryColor: '#f8a808',
+  },
+  'jana-saleh': {
+    archetype: 'long',
+    hairColor: '#1a110b',
+    skinColor: '#ffdfc4',
+    shirtColor: '#8e44ad',
+    pantsColor: '#181020',
+    shoesColor: '#ffffff',
+    accessoryColor: '#8e44ad',
+  },
+  'tasneem-elshafey': {
+    archetype: 'hijab',
+    hairColor: '#1a110b',
+    skinColor: '#f5c396',
+    shirtColor: '#f8f8f8',
+    pantsColor: '#1c3144',
+    shoesColor: '#ffffff',
+    accessoryColor: '#3888e8',
+  },
+  'shams-raafat': {
+    archetype: 'long',
+    hairColor: '#111115',
+    skinColor: '#ffdfc4',
+    shirtColor: '#f81840',
+    pantsColor: '#181020',
+    shoesColor: '#f8a808',
+    accessoryColor: '#f81840',
+  },
+  'omar-elsamalouty': {
+    archetype: 'short',
+    hairColor: '#1a110b',
+    skinColor: '#f5c396',
+    shirtColor: '#004898',
+    pantsColor: '#4a5568',
+    shoesColor: '#ffffff',
+    accessoryColor: '#004898',
+  },
+  'ismaeel-awad': {
+    archetype: 'spiky',
+    hairColor: '#3d2314',
+    skinColor: '#f5c396',
+    shirtColor: '#58a0b0',
+    pantsColor: '#181020',
+    shoesColor: '#ffffff',
+    accessoryColor: '#58a0b0',
+  },
+  'abdelrahman-mohamed': {
+    archetype: 'beanie',
+    hairColor: '#111115',
+    skinColor: '#f5c396',
+    shirtColor: '#181020',
+    pantsColor: '#2b2d42',
+    shoesColor: '#f8a808',
+    accessoryColor: '#3888e8',
+  },
+  'ahmed-tamer': {
+    archetype: 'cap',
+    hairColor: '#111115',
+    skinColor: '#f5c396',
+    shirtColor: '#2b2d42',
+    pantsColor: '#181020',
+    shoesColor: '#ffffff',
+    accessoryColor: '#181020',
+  },
+  'mohamed-magedd': {
+    archetype: 'short',
+    hairColor: '#111115',
+    skinColor: '#f5c396',
+    shirtColor: '#3888e8',
+    pantsColor: '#181020',
+    shoesColor: '#ffffff',
+    accessoryColor: '#3888e8',
+  },
+  'abdelrahman-tebry': {
+    archetype: 'spiky',
+    hairColor: '#5a3d28',
+    skinColor: '#f5c396',
+    shirtColor: '#27ae60',
+    pantsColor: '#1c3144',
+    shoesColor: '#3d2314',
+    accessoryColor: '#27ae60',
+  },
+  'seif-alaa': {
+    archetype: 'short',
+    hairColor: '#1a110b',
+    skinColor: '#f5c396',
+    shirtColor: '#d35400',
+    pantsColor: '#1c3144',
+    shoesColor: '#f8a808',
+    accessoryColor: '#f8a808',
+  },
+  'eyad-sameh': {
+    archetype: 'curly',
+    hairColor: '#1a110b',
+    skinColor: '#f5c396',
+    shirtColor: '#3888e8',
+    pantsColor: '#181020',
+    shoesColor: '#f8a808',
+    accessoryColor: '#f8a808',
+  },
+  'rodina-wael': {
+    archetype: 'long',
+    hairColor: '#3d2314',
+    skinColor: '#ffdfc4',
+    shirtColor: '#f06292',
+    pantsColor: '#181020',
+    shoesColor: '#ffffff',
+    accessoryColor: '#f8a808',
+  },
+}
 
-function PixelSprite({ color, frame = 0, flipped = false, size = 1 }) {
-  const rows = frame % 2 === 0 ? BODY_A : BODY_B
-  const W = 9, H = rows.length
-  const px = size * 2
+// ── Multi-tone 16-bit Pixel Sprite Component ──────────────────────────────────
+function PixelSprite({ styleConfig, frame = 0, flipped = false }) {
+  const {
+    archetype = 'short',
+    hairColor = '#3d2314',
+    skinColor = '#f5c396',
+    shirtColor = '#004898',
+    pantsColor = '#1c3144',
+    shoesColor = '#ffffff',
+    accessoryColor = '#f8a808',
+  } = styleConfig || {}
+
+  const arch = ARCHETYPES[archetype] || ARCHETYPES.short
+  const hairRows = arch.hairTop
+
+  // Construct full 12×15 sprite
+  const rows = [
+    hairRows[0],
+    hairRows[1],
+    hairRows[2],
+    hairRows[3],
+    hairRows[4],
+    // Row 5: neck
+    archetype === 'hijab' ? '..AAAAAAAA..' : '....SSSS....',
+    // Row 6: shoulders / upper shirt
+    archetype === 'long'
+      ? '.HHTTTTTTHH.'
+      : archetype === 'hijab'
+      ? '.AATTTTTTAA.'
+      : '.TTTTTTTTTT.',
+    // Row 7: chest
+    archetype === 'long'
+      ? '.HHTTTTTTHH.'
+      : '.TTTTTTTTTT.',
+    // Row 8: torso
+    '..TTTTTTTT..',
+    // Row 9: waist
+    '..PPPPPPPP..',
+    // Rows 10-14: walk frame animation
+    ...(frame % 2 === 0
+      ? [
+          '..PP....PP..',
+          '.PP......PP.',
+          '.PP......PP.',
+          'BB........BB',
+          'BB........BB',
+        ]
+      : [
+          '..PPPPPPPP..',
+          '...PPPPPP...',
+          '....PPPP....',
+          '...BB..BB...',
+          '...BB..BB...',
+        ]),
+  ]
+
+  const colorMap = {
+    H: hairColor,
+    S: skinColor,
+    E: '#181020',
+    T: shirtColor,
+    P: pantsColor,
+    B: shoesColor,
+    A: accessoryColor,
+  }
+
+  const W = 12, H = 15
   return (
     <svg
-      width={W * px} height={H * px}
+      width="36"
+      height="45"
       viewBox={`0 0 ${W} ${H}`}
       shapeRendering="crispEdges"
-      style={{ transform: flipped ? 'scaleX(-1)' : 'none', display: 'block', imageRendering: 'pixelated' }}
+      style={{
+        transform: flipped ? 'scaleX(-1)' : 'none',
+        display: 'block',
+        imageRendering: 'pixelated',
+      }}
       aria-hidden="true"
     >
       {rows.flatMap((row, y) =>
-        [...row].map((c, x) =>
-          c === '#' && <rect key={`${x}-${y}`} x={x} y={y} width={1} height={1} fill={color} />
-        )
+        [...row].map((char, x) => {
+          const fill = colorMap[char]
+          if (!fill) return null
+          return (
+            <rect
+              key={`${x}-${y}`}
+              x={x}
+              y={y}
+              width={1}
+              height={1}
+              fill={fill}
+            />
+          )
+        })
       )}
     </svg>
   )
 }
 
-// ── Walking character on the scene ───────────────────────────────────────────
-function WalkingCharacter({ person, colorIdx, startX, startY, speed, onClick, tableRect }) {
-  const [pos, setPos] = useState({ x: startX, y: startY })
+// ── Perimeter Path Around the Table ──────────────────────────────────────────
+// Ensures characters circulate exclusively in the corridor around the table,
+// NEVER stepping onto the tabletop and NEVER wandering far off to scene bounds.
+function getPerimeterPos(t, track, speed) {
+  const { xMin, xMax, yTop, yBottom } = track
+  const tNorm = ((t % 1) + 1) % 1
+
+  let x, y, baseDir, zIndex
+
+  // Segments (Clockwise):
+  // 0.00 -> 0.35: Top edge (behind table)
+  // 0.35 -> 0.50: Right edge
+  // 0.50 -> 0.85: Bottom edge (in front of table)
+  // 0.85 -> 1.00: Left edge
+  if (tNorm < 0.35) {
+    const u = tNorm / 0.35
+    x = xMin + u * (xMax - xMin)
+    y = yTop
+    baseDir = 1 // moving right
+    zIndex = 4 // behind the table
+  } else if (tNorm < 0.50) {
+    const u = (tNorm - 0.35) / 0.15
+    x = xMax
+    y = yTop + u * (yBottom - yTop)
+    baseDir = 1
+    zIndex = u > 0.5 ? 8 : 4
+  } else if (tNorm < 0.85) {
+    const u = (tNorm - 0.50) / 0.35
+    x = xMax - u * (xMax - xMin)
+    y = yBottom
+    baseDir = -1 // moving left
+    zIndex = 8 // in front of the table
+  } else {
+    const u = (tNorm - 0.85) / 0.15
+    x = xMin
+    y = yBottom - u * (yBottom - yTop)
+    baseDir = -1
+    zIndex = u > 0.5 ? 4 : 8
+  }
+
+  // Face movement direction
+  const dir = speed >= 0 ? baseDir : -baseDir
+
+  return { x, y, dir, zIndex }
+}
+
+// ── Concentric Orbit Tracks Around the Table ──────────────────────────────────
+const TRACKS = [
+  // Inner track
+  { xMin: 14, xMax: 86, yTop: 19, yBottom: 76 },
+  // Mid track
+  { xMin: 11, xMax: 89, yTop: 15, yBottom: 80 },
+  // Outer track
+  { xMin: 8,  xMax: 92, yTop: 12, yBottom: 84 },
+]
+
+// ── Walking Character Component ───────────────────────────────────────────────
+function WalkingCharacter({ person, track, startProgress, speed, styleConfig, onClick }) {
+  const [progress, setProgress] = useState(startProgress)
   const [frame, setFrame] = useState(0)
-  const [dir, setDir] = useState(speed > 0 ? 1 : -1)
   const [hover, setHover] = useState(false)
-  const posRef = useRef({ x: startX, y: startY, dir: speed > 0 ? 1 : -1 })
   const animRef = useRef(null)
-  const frameRef = useRef(null)
-  const color = SPRITE_COLORS[colorIdx % SPRITE_COLORS.length]
+  const progressRef = useRef(startProgress)
+  const hoverRef = useRef(false)
+  hoverRef.current = hover
 
   useEffect(() => {
-    // Animate position
-    let lastTime = 0
-    function step(ts) {
-      if (ts - lastTime > 60) {
-        lastTime = ts
-        posRef.current.x += posRef.current.dir * Math.abs(speed)
-        // Bounce at edges (0–100 range, percentage)
-        if (posRef.current.x > 92) { posRef.current.x = 92; posRef.current.dir = -1 }
-        if (posRef.current.x < 1) { posRef.current.x = 1; posRef.current.dir = 1 }
-        setPos({ x: posRef.current.x, y: posRef.current.y })
-        setDir(posRef.current.dir)
+    let lastTs = performance.now()
+    function loop(ts) {
+      const dt = Math.min(ts - lastTs, 100)
+      lastTs = ts
+      if (!hoverRef.current) {
+        progressRef.current = (progressRef.current + speed * (dt / 16.6)) % 1
+        if (progressRef.current < 0) progressRef.current += 1
+        setProgress(progressRef.current)
       }
-      animRef.current = requestAnimationFrame(step)
+      animRef.current = requestAnimationFrame(loop)
     }
-    animRef.current = requestAnimationFrame(step)
+    animRef.current = requestAnimationFrame(loop)
     return () => cancelAnimationFrame(animRef.current)
   }, [speed])
 
   useEffect(() => {
-    // Animate walk frame
-    frameRef.current = setInterval(() => setFrame(f => f + 1), 200)
-    return () => clearInterval(frameRef.current)
-  }, [])
+    if (hover) return
+    const id = setInterval(() => setFrame(f => f + 1), 180)
+    return () => clearInterval(id)
+  }, [hover])
 
+  const pos = getPerimeterPos(progress, track, speed)
   const label = person.name.split(' ')[0]
   const isVibes = person.dishType === 'vibes'
 
   return (
     <div
-      className={`dp-char${isVibes ? ' dp-char-vibes' : ''}`}
-      style={{ left: pos.x + '%', top: pos.y + '%', '--char-color': color }}
+      className={`dp-char${isVibes ? ' dp-char-vibes' : ''}${hover ? ' dp-char-hover' : ''}`}
+      style={{
+        left: `${pos.x}%`,
+        top: `${pos.y}%`,
+        zIndex: hover ? 35 : pos.zIndex,
+      }}
       onClick={() => onClick(person)}
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
-      title={label}
+      title={`${person.name} (${person.dish || 'Good Vibes'})`}
     >
-      <PixelSprite color={isVibes ? '#f8a808' : color} frame={frame} flipped={dir < 0} size={1} />
+      {/* Golden crown badge for Eyad & Rodina */}
+      {isVibes && <span className="dp-vibes-crown" aria-hidden="true">★</span>}
+
+      {/* Speech bubble on hover */}
+      {hover && (
+        <div className="dp-char-bubble">
+          <span className="dp-bubble-emoji">{person.emoji}</span>
+          <span className="dp-bubble-dish">{person.dish || 'Good Vibes!'}</span>
+        </div>
+      )}
+
+      {/* Unique Pixel Sprite */}
+      <PixelSprite
+        styleConfig={styleConfig}
+        frame={frame}
+        flipped={pos.dir < 0}
+      />
+
+      {/* Arcade Name Tag */}
       <span className="dp-char-name px">{label}</span>
-      {hover && <span className="dp-char-bubble">{person.emoji}</span>}
-      {isVibes && <span className="dp-vibes-crown">★</span>}
     </div>
   )
 }
 
 // ── Food items on the table ──────────────────────────────────────────────────
-const FOOD_EMOJIS_TABLE = ['🍗','🍰','🌯','🥗','🍫','🫓','🍹','🍸','🥧','🎂','🍪','🥮','🧁','🍝','🍃','🥞','🌮','🍚','🫖','🍽️']
-
 function FoodItem({ item, idx, onClick }) {
   const [jiggle, setJiggle] = useState(false)
   const angle = (idx % 2 === 0 ? 1 : -1) * (8 + (idx % 3) * 4)
@@ -127,16 +542,28 @@ function FoodItem({ item, idx, onClick }) {
       onClick={() => onClick(item)}
       onMouseEnter={() => setJiggle(true)}
       onMouseLeave={() => setJiggle(false)}
-      title={item.dish}
+      title={`${item.dish} (brought by ${item.name.split(' ')[0]})`}
     >
       <span className="dp-food-emoji">{item.emoji}</span>
     </button>
   )
 }
 
-// ── Modal / Info card ────────────────────────────────────────────────────────
-const DISH_TYPE_LABELS = { food: 'SAVOURY DISH', sweet: 'SWEET TREAT', drink: 'DRINK', supplies: 'PARTY SUPPLIES', vibes: 'VIBE MERCHANT' }
-const DISH_TYPE_COLORS = { food: '#3888e8', sweet: '#f81840', drink: '#58a0b0', supplies: '#f8a808', vibes: '#f8a808' }
+// ── Modal / Profile card ─────────────────────────────────────────────────────
+const DISH_TYPE_LABELS = {
+  food: 'SAVOURY DISH',
+  sweet: 'SWEET TREAT',
+  drink: 'DRINK',
+  supplies: 'PARTY SUPPLIES',
+  vibes: 'VIBE MERCHANT',
+}
+const DISH_TYPE_COLORS = {
+  food: '#3888e8',
+  sweet: '#f81840',
+  drink: '#58a0b0',
+  supplies: '#f8a808',
+  vibes: '#f8a808',
+}
 
 function DishCard({ person, close }) {
   const member = byId[person.memberId]
@@ -164,9 +591,10 @@ function DishCard({ person, close }) {
           </div>
         </div>
 
+        {/* Special tribute note only when Eyad or Rodina is pressed */}
         {isVibes ? (
           <div className="dp-vibes-box">
-            <p className="px" style={{ fontSize: 8, color: typeColor, marginBottom: 10 }}>SPECIAL CONTRIBUTION</p>
+            <p className="px" style={{ fontSize: 8, color: typeColor, marginBottom: 8 }}>SPECIAL CONTRIBUTION</p>
             <p className="dp-vibes-text hand">
               Showed up with the best dish of all — their presence. 🌟
             </p>
@@ -185,7 +613,9 @@ function DishCard({ person, close }) {
 
         {/* Pixel decoration dots */}
         <div className="dp-modal-dots" aria-hidden="true">
-          {[...Array(8)].map((_, i) => <span key={i} style={{ background: SPRITE_COLORS[i] }} />)}
+          {['#f81840','#3888e8','#f8a808','#58a0b0','#004898','#f81840','#3888e8','#f8a808'].map((c, i) => (
+            <span key={i} style={{ background: c }} />
+          ))}
         </div>
       </div>
     </div>
@@ -201,62 +631,71 @@ function Steam({ x, delay }) {
   )
 }
 
-// ── Main DishParty component ─────────────────────────────────────────────────
+// ── Main DishParty Component ─────────────────────────────────────────────────
 export default function DishParty() {
   const [selected, setSelected] = useState(null)
 
-  // Build enriched attendee list
+  // Enrich attendees with member details
   const attendees = useMemo(() => {
     return dishPartyData.attendees.map((a, i) => {
       const m = byId[a.memberId] || {}
-      return { ...a, ...m, colorIdx: i }
+      return { ...a, ...m, idx: i }
     })
   }, [])
 
-  // Split: food on table vs characters walking
+  // Food on table (excluding vibes merchants)
   const tableFood = attendees.filter(a => a.dish !== null)
-  const allChars = attendees
 
-  // Assign deterministic positions & speeds for walking characters
-  const charConfigs = useMemo(() => {
-    return allChars.map((a, i) => {
-      // distribute around 3 "lanes" around the table
-      const lane = i % 3
-      const yBase = lane === 0 ? 8 : lane === 1 ? 78 : 44
-      const startX = (i * 17 + 3) % 90
-      const speed = (i % 2 === 0 ? 0.4 : -0.4) * (1 + (i % 3) * 0.15)
-      return { startX, startY: yBase, speed }
+  // Configure movement parameters for each attendee around the table
+  const characterConfigs = useMemo(() => {
+    const total = attendees.length
+    return attendees.map((a, i) => {
+      const track = TRACKS[i % TRACKS.length]
+      // Stagger starting progress smoothly around the table
+      const startProgress = (i * (1 / total) + (i % 3) * 0.02) % 1
+      // Alternating speeds and directions (clockwise & counter-clockwise)
+      const dirSign = i % 2 === 0 ? 1 : -1
+      const speed = dirSign * (0.00038 + (i % 4) * 0.00007)
+      const styleConfig = CHARACTER_STYLES[a.memberId] || {
+        archetype: 'short',
+        hairColor: '#3d2314',
+        skinColor: '#f5c396',
+        shirtColor: '#3888e8',
+        pantsColor: '#1c3144',
+        shoesColor: '#ffffff',
+        accessoryColor: '#f8a808',
+      }
+      return { track, startProgress, speed, styleConfig }
     })
-  }, [allChars])
+  }, [attendees])
 
-  const vibes = attendees.filter(a => a.dishType === 'vibes')
   const contributors = attendees.filter(a => a.dishType !== 'vibes')
 
   return (
     <div className="dp-root">
-      {/* ── Title ── */}
+      {/* ── Title Row ── */}
       <div className="bar-title dp-title-row">
         <h2 className="dp-title">🍽️ DISH PARTY</h2>
         <span className="px dp-subtitle">CLICK A CHARACTER TO SEE THEIR DISH</span>
       </div>
 
-      {/* ── Scene: table + walking chars ── */}
+      {/* ── Scene: Big Table with Characters Orbiting Around It ── */}
       <div className="dp-scene" role="region" aria-label="Dish Party Scene">
 
-        {/* Walking characters */}
-        {allChars.map((person, i) => (
+        {/* Characters circulating around the table */}
+        {attendees.map((person, i) => (
           <WalkingCharacter
             key={person.memberId}
             person={person}
-            colorIdx={person.colorIdx}
-            startX={charConfigs[i].startX}
-            startY={charConfigs[i].startY}
-            speed={charConfigs[i].speed}
+            track={characterConfigs[i].track}
+            startProgress={characterConfigs[i].startProgress}
+            speed={characterConfigs[i].speed}
+            styleConfig={characterConfigs[i].styleConfig}
             onClick={setSelected}
           />
         ))}
 
-        {/* ── The Big Table ── */}
+        {/* ── The Big Banquet Table ── */}
         <div className="dp-table-wrap">
           <div className="dp-table">
             <div className="dp-table-label px">THE FEAST TABLE</div>
@@ -266,7 +705,7 @@ export default function DishParty() {
               <Steam key={i} x={x} delay={i * 400} />
             ))}
 
-            {/* Food grid on table */}
+            {/* Food items on the table */}
             <div className="dp-food-grid">
               {tableFood.map((item, idx) => (
                 <FoodItem key={item.memberId} item={item} idx={idx} onClick={setSelected} />
@@ -280,27 +719,15 @@ export default function DishParty() {
           </div>
         </div>
 
-        {/* ── Pixel floor decoration ── */}
+        {/* Pixel floor decoration */}
         <div className="dp-floor" aria-hidden="true">
-          {[...Array(32)].map((_, i) => <span key={i} className="dp-tile" style={{ '--ti': i }} />)}
+          {[...Array(32)].map((_, i) => (
+            <span key={i} className="dp-tile" style={{ '--ti': i }} />
+          ))}
         </div>
       </div>
 
-      {/* ── Vibes section callout ── */}
-      {vibes.length > 0 && (
-        <div className="dp-vibes-banner">
-          <span className="dp-vibes-star">★</span>
-          <div>
-            <p className="px" style={{ fontSize: 8, color: '#f8a808', margin: '0 0 4px' }}>SPECIAL AWARD</p>
-            <p className="hand dp-vibes-banner-text">
-              {vibes.map(v => v.name.split(' ')[0]).join(' & ')} brought something money can't buy — good vibes only. 🌟
-            </p>
-          </div>
-          <span className="dp-vibes-star">★</span>
-        </div>
-      )}
-
-      {/* ── Dish legend ── */}
+      {/* ── The Full Menu ── */}
       <h2 className="sec dp-legend-title">THE FULL MENU</h2>
       <div className="dp-legend">
         {contributors.map(a => (
@@ -317,9 +744,8 @@ export default function DishParty() {
         ))}
       </div>
 
-      {/* ── Modal ── */}
+      {/* ── Modal (Shows dish profile, or special tribute when Eyad or Rodina is pressed) ── */}
       {selected && <DishCard person={selected} close={() => setSelected(null)} />}
     </div>
   )
 }
-

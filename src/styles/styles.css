@@ -131,7 +131,7 @@ h2{font:22px var(--bold);margin:0 0 14px;color:var(--blue)}.sec{margin-top:34px}
 .dp-scene{
   position:relative;
   width:100%;
-  height:340px;
+  height:390px;
   overflow:hidden;
   background:linear-gradient(180deg,#e8f4f8 0%,#c5dfe8 60%,#b0cdd8 100%);
   border:3px solid var(--ink);
@@ -169,7 +169,7 @@ h2{font:22px var(--bold);margin:0 0 14px;color:var(--blue)}.sec{margin-top:34px}
 }
 .dp-table{
   position:relative;
-  width:clamp(300px,70vw,620px);
+  width:clamp(300px,66vw,580px);
   min-height:130px;
   background:linear-gradient(180deg,#8B4513 0%,#6B3410 50%,#5a2d0c 100%);
   border:4px solid var(--ink);
@@ -258,60 +258,83 @@ h2{font:22px var(--bold);margin:0 0 14px;color:var(--blue)}.sec{margin-top:34px}
   display:flex;
   flex-direction:column;
   align-items:center;
-  gap:1px;
+  gap:2px;
   cursor:pointer;
-  z-index:8;
-  /* Step-based movement feel */
-  transition:left .06s steps(1),top .06s steps(1);
+  transform:translate(-50%,-50%);
+  user-select:none;
+  transition:transform .12s cubic-bezier(.3,1.7,.5,1);
 }
-.dp-char:hover{z-index:20}
+.dp-char:hover, .dp-char-hover{
+  transform:translate(-50%,-58%) scale(1.12);
+}
+.dp-char svg{
+  width:36px;
+  height:45px;
+  display:block;
+  image-rendering:pixelated;
+  filter:drop-shadow(1px 2px 0 rgba(0,0,0,.35));
+}
 .dp-char-name{
-  font-size:5px;
+  font-size:6px;
   background:var(--ink);
   color:var(--sun);
-  padding:1px 3px;
+  padding:2px 4px;
+  border:1px solid #000;
+  box-shadow:1px 1px 0 var(--ink);
   white-space:nowrap;
   pointer-events:none;
-  opacity:.85;
+  line-height:1.2;
 }
-.dp-char:hover .dp-char-name{opacity:1;background:var(--cherry)}
+.dp-char:hover .dp-char-name{
+  background:var(--cherry);
+  color:#fff;
+}
 .dp-char-bubble{
   position:absolute;
-  bottom:100%;left:50%;
+  bottom:calc(100% + 4px);
+  left:50%;
   transform:translateX(-50%);
-  font-size:16px;
-  animation:bubble-pop .25s steps(3) backwards;
+  background:var(--paper);
+  border:2px solid var(--ink);
+  box-shadow:2px 2px 0 var(--ink);
+  padding:2px 6px;
+  display:flex;
+  align-items:center;
+  gap:4px;
+  white-space:nowrap;
+  z-index:40;
   pointer-events:none;
-  z-index:30;
-  filter:drop-shadow(1px 1px 0 var(--ink));
+  animation:bubble-pop .18s steps(3) backwards;
+}
+.dp-char-bubble::after{
+  content:'';
+  position:absolute;
+  top:100%;
+  left:50%;
+  transform:translateX(-50%);
+  border:4px solid transparent;
+  border-top-color:var(--ink);
 }
 @keyframes bubble-pop{from{transform:translateX(-50%) scale(0)}to{transform:translateX(-50%) scale(1)}}
-.dp-char-vibes svg rect{animation:vibes-shimmer 1.2s steps(2) infinite}
-@keyframes vibes-shimmer{50%{fill:#f8a808}}
+.dp-bubble-emoji{font-size:16px;line-height:1}
+.dp-bubble-dish{font:700 9px 'DM Sans',sans-serif;color:var(--ink)}
+
+/* Golden crown badge for Eyad & Rodina */
 .dp-vibes-crown{
-  position:absolute;top:-10px;left:50%;transform:translateX(-50%);
-  font-size:10px;animation:crown-bob 1s steps(2) infinite;
+  position:absolute;
+  top:-14px;
+  left:50%;
+  transform:translateX(-50%);
+  font-size:13px;
+  color:#f8a808;
+  filter:drop-shadow(1px 1px 0 var(--ink));
+  animation:crown-bob .9s steps(2) infinite alternate;
   pointer-events:none;
 }
-@keyframes crown-bob{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(-3px)}}
-
-/* ── Vibes Banner ────────────────────────────────────── */
-.dp-vibes-banner{
-  display:flex;align-items:center;gap:14px;
-  margin-top:18px;
-  background:linear-gradient(135deg,#181020,#3888e8);
-  border:3px solid var(--ink);box-shadow:4px 4px 0 var(--ink);
-  padding:14px 18px;
-  border-radius:4px;
-  animation:vibes-glow 2s ease-in-out infinite;
+@keyframes crown-bob{
+  from{transform:translateX(-50%) translateY(0)}
+  to{transform:translateX(-50%) translateY(-3px)}
 }
-@keyframes vibes-glow{
-  0%,100%{box-shadow:4px 4px 0 var(--ink),0 0 8px 2px rgba(248,168,8,.2)}
-  50%{box-shadow:4px 4px 0 var(--ink),0 0 20px 6px rgba(248,168,8,.5)}
-}
-.dp-vibes-star{font-size:22px;animation:star-spin 2s steps(4) infinite;flex:none}
-@keyframes star-spin{to{transform:rotate(360deg)}}
-.dp-vibes-banner-text{font-size:26px;color:#fff;margin:0;line-height:1.2}
 
 /* ── Legend / Full Menu ──────────────────────────────── */
 .dp-legend-title{color:var(--cherry)}
@@ -387,9 +410,10 @@ h2{font:22px var(--bold);margin:0 0 14px;color:var(--blue)}.sec{margin-top:34px}
 .dp-modal-dots span{width:8px;height:8px;display:block;border:1px solid var(--ink);image-rendering:pixelated}
 
 @media(max-width:560px){
-  .dp-scene{height:260px}
-  .dp-table-wrap .dp-table{width:calc(100vw - 60px);min-height:100px}
-  .dp-food-emoji{font-size:17px}
+  .dp-scene{height:320px}
+  .dp-table-wrap .dp-table{width:calc(100vw - 48px);min-height:105px}
+  .dp-food-emoji{font-size:16px}
   .dp-legend{grid-template-columns:repeat(2,1fr)}
-  .dp-title{font-size:20px}
+  .dp-title{font-size:22px}
+  .dp-char svg{width:28px;height:35px}
 }
