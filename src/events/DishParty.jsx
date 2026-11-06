@@ -94,7 +94,7 @@ const CHARACTER_STYLES = {
     accessoryColor: '#f8a808',
   },
   'malak-abdelgawad': {
-    archetype: 'long',
+    archetype: 'hijab',
     hairColor: '#1a110b',
     skinColor: '#ffdfc4',
     shirtColor: '#58a0b0',
@@ -103,7 +103,7 @@ const CHARACTER_STYLES = {
     accessoryColor: '#58a0b0',
   },
   'judy-yasser': {
-    archetype: 'hijab',
+    archetype: 'long',
     hairColor: '#1a110b',
     skinColor: '#f5c396',
     shirtColor: '#004898',
@@ -112,7 +112,7 @@ const CHARACTER_STYLES = {
     accessoryColor: '#f8a808',
   },
   'sama-fayez': {
-    archetype: 'bob',
+    archetype: 'long',
     hairColor: '#6a462f',
     skinColor: '#ffdfc4',
     shirtColor: '#f81840',
@@ -121,7 +121,7 @@ const CHARACTER_STYLES = {
     accessoryColor: '#f8a808',
   },
   'hala-aboraya': {
-    archetype: 'long',
+    archetype: 'hijab',
     hairColor: '#2a1a10',
     skinColor: '#f5c396',
     shirtColor: '#6b3410',
@@ -148,7 +148,7 @@ const CHARACTER_STYLES = {
     accessoryColor: '#58a0b0',
   },
   'roaa-wael': {
-    archetype: 'long',
+    archetype: 'hijab',
     hairColor: '#3d2314',
     skinColor: '#f5c396',
     shirtColor: '#c41535',
@@ -211,7 +211,7 @@ const CHARACTER_STYLES = {
     accessoryColor: '#3888e8',
   },
   'shams-raafat': {
-    archetype: 'long',
+    archetype: 'hijab',
     hairColor: '#111115',
     skinColor: '#ffdfc4',
     shirtColor: '#f81840',
@@ -292,7 +292,7 @@ const CHARACTER_STYLES = {
     accessoryColor: '#f8a808',
   },
   'rodina-wael': {
-    archetype: 'long',
+    archetype: 'hijab',
     hairColor: '#3d2314',
     skinColor: '#ffdfc4',
     shirtColor: '#f06292',
@@ -327,8 +327,8 @@ function PixelSprite({ styleConfig, frame = 0, flipped = false }) {
     archetype === 'long'
       ? '.HHTTTTTTHH.'
       : archetype === 'hijab'
-      ? '.AATTTTTTAA.'
-      : '.TTTTTTTTTT.',
+        ? '.AATTTTTTAA.'
+        : '.TTTTTTTTTT.',
     archetype === 'long'
       ? '.HHTTTTTTHH.'
       : '.TTTTTTTTTT.',
@@ -336,19 +336,19 @@ function PixelSprite({ styleConfig, frame = 0, flipped = false }) {
     '..PPPPPPPP..',
     ...(frame % 2 === 0
       ? [
-          '..PP....PP..',
-          '.PP......PP.',
-          '.PP......PP.',
-          'BB........BB',
-          'BB........BB',
-        ]
+        '..PP....PP..',
+        '.PP......PP.',
+        '.PP......PP.',
+        'BB........BB',
+        'BB........BB',
+      ]
       : [
-          '..PPPPPPPP..',
-          '...PPPPPP...',
-          '....PPPP....',
-          '...BB..BB...',
-          '...BB..BB...',
-        ]),
+        '..PPPPPPPP..',
+        '...PPPPPP...',
+        '....PPPP....',
+        '...BB..BB...',
+        '...BB..BB...',
+      ]),
   ]
 
   const colorMap = {
@@ -435,7 +435,7 @@ function getPerimeterPos(t, track, speed) {
 const TRACKS = [
   { xMin: 14, xMax: 86, yTop: 19, yBottom: 76 },
   { xMin: 11, xMax: 89, yTop: 15, yBottom: 80 },
-  { xMin: 8,  xMax: 92, yTop: 12, yBottom: 84 },
+  { xMin: 8, xMax: 92, yTop: 12, yBottom: 84 },
 ]
 
 // ── Walking Character Component ───────────────────────────────────────────────
@@ -604,7 +604,7 @@ function DishCard({ person, close, onOpenCake }) {
         )}
 
         <div className="dp-modal-dots" aria-hidden="true">
-          {['#f81840','#3888e8','#f8a808','#58a0b0','#004898','#f81840','#3888e8','#f8a808'].map((c, i) => (
+          {['#f81840', '#3888e8', '#f8a808', '#58a0b0', '#004898', '#f81840', '#3888e8', '#f8a808'].map((c, i) => (
             <span key={i} style={{ background: c }} />
           ))}
         </div>
