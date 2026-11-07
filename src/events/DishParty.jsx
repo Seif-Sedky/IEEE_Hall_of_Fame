@@ -157,7 +157,7 @@ const CHARACTER_STYLES = {
     accessoryColor: '#c41535',
   },
   'youssef-mostafa': {
-    archetype: 'spiky',
+    archetype: 'curly',
     hairColor: '#1a110b',
     skinColor: '#f5c396',
     shirtColor: '#004898',
@@ -168,14 +168,14 @@ const CHARACTER_STYLES = {
   'albarra-mohamed': {
     archetype: 'cap',
     hairColor: '#1a110b',
-    skinColor: '#f5c396',
+    skinColor: '#523d2cff',
     shirtColor: '#f81840',
     pantsColor: '#181020',
     shoesColor: '#ffffff',
     accessoryColor: '#f81840',
   },
   'hana-mohamed': {
-    archetype: 'beanie',
+    archetype: 'long',
     hairColor: '#5a3d28',
     skinColor: '#ffdfc4',
     shirtColor: '#f8a808',
@@ -193,7 +193,7 @@ const CHARACTER_STYLES = {
     accessoryColor: '#f8a808',
   },
   'jana-saleh': {
-    archetype: 'long',
+    archetype: 'hijab',
     hairColor: '#1a110b',
     skinColor: '#ffdfc4',
     shirtColor: '#8e44ad',
@@ -238,7 +238,7 @@ const CHARACTER_STYLES = {
     accessoryColor: '#58a0b0',
   },
   'abdelrahman-mohamed': {
-    archetype: 'beanie',
+    archetype: 'short',
     hairColor: '#111115',
     skinColor: '#f5c396',
     shirtColor: '#181020',
@@ -265,7 +265,7 @@ const CHARACTER_STYLES = {
     accessoryColor: '#3888e8',
   },
   'abdelrahman-tebry': {
-    archetype: 'spiky',
+    archetype: 'curly',
     hairColor: '#5a3d28',
     skinColor: '#f5c396',
     shirtColor: '#27ae60',
@@ -283,7 +283,7 @@ const CHARACTER_STYLES = {
     accessoryColor: '#f8a808',
   },
   'eyad-sameh': {
-    archetype: 'curly',
+    archetype: 'short',
     hairColor: '#1a110b',
     skinColor: '#f5c396',
     shirtColor: '#3888e8',

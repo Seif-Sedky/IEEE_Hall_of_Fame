@@ -64,9 +64,9 @@
         {
             "memberId": "muhammed-walid",
             "slots": 7,
-            "tiktoks": 0,
+            "tiktoks": 1,
             "special": "",
-            "score": 7
+            "score": 9
         },
         {
             "memberId": "ahmed-tamer",
@@ -122,18 +122,18 @@
         {
             "memberId": "shahd-hisham",
             "slots": 1,
-            "tiktoks": 1,
+            "tiktoks": 2,
             "special": "",
-            "score": 5,
+            "score": 7,
             "bonus": 2,
             "bonusName": "Booth Closing Organization"
         },
         {
             "memberId": "abdelrahman-mohamed",
             "slots": 9,
-            "tiktoks": 0,
+            "tiktoks": 1,
             "special": "",
-            "score": 9
+            "score": 11
         },
         {
             "memberId": "omar-elsamalouty",
@@ -152,16 +152,16 @@
         {
             "memberId": "ziad-ahmed",
             "slots": 2,
-            "tiktoks": 0,
+            "tiktoks": 1,
             "special": "",
-            "score": 2
+            "score": 4
         },
         {
             "memberId": "shams-raafat",
             "slots": 15,
-            "tiktoks": 0,
+            "tiktoks": 1,
             "special": "",
-            "score": 15
+            "score": 17
         },
         {
             "memberId": "fady-salah",
@@ -222,9 +222,9 @@
         {
             "memberId": "sama-sherif",
             "slots": 13,
-            "tiktoks": 0,
+            "tiktoks": 1,
             "special": "",
-            "score": 13
+            "score": 15
         },
         {
             "memberId": "abdelrahman-tebry",
