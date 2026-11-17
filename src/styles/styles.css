@@ -676,8 +676,34 @@ h2{font:22px var(--bold);margin:0 0 14px;color:var(--blue)}.sec{margin-top:34px}
    OPENING — MASQUERADE BALL
 ═══════════════════════════════════════════════════════ */
 
+/* ── Dynamic Whole-Body Masquerade Theme ───────────────── */
+body.masquerade-theme {
+  background: #03050e !important;
+  background-image: 
+    radial-gradient(ellipse 90% 60% at 50% -15%, rgba(26, 58, 140, 0.45) 0%, transparent 70%),
+    radial-gradient(ellipse 70% 50% at 85% 90%, rgba(139, 43, 226, 0.22) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 40% at 15% 75%, rgba(0, 162, 255, 0.18) 0%, transparent 60%),
+    radial-gradient(circle at 20% 30%, rgba(201, 168, 76, 0.25) 0 2px, transparent 3px),
+    radial-gradient(circle at 75% 20%, rgba(255, 255, 255, 0.35) 0 1.5px, transparent 2px),
+    radial-gradient(circle at 45% 85%, rgba(201, 168, 76, 0.2) 0 2px, transparent 3px),
+    radial-gradient(circle at 90% 65%, rgba(255, 255, 255, 0.25) 0 1.5px, transparent 2px),
+    repeating-linear-gradient(45deg, rgba(201, 168, 76, 0.02) 0px, rgba(201, 168, 76, 0.02) 20px, transparent 20px, transparent 40px) !important;
+  background-size: 100% 100%, 100% 100%, 100% 100%, 80px 80px, 90px 90px, 110px 110px, 70px 70px, 50px 50px !important;
+  background-attachment: fixed !important;
+  transition: background 0.6s ease;
+}
+
+body.masquerade-theme .panel {
+  background: #06091b !important;
+  background-image: 
+    radial-gradient(circle at 50% 0%, rgba(26, 58, 140, 0.25) 0%, transparent 70%),
+    repeating-linear-gradient(0deg, transparent, transparent 31px, rgba(201, 168, 76, 0.04) 31px, rgba(201, 168, 76, 0.04) 32px) !important;
+  border-color: #c9a84c !important;
+  box-shadow: 6px 6px 0 #000, 0 0 35px rgba(26, 58, 140, 0.4) !important;
+}
+
 /* ── Root ──────────────────────────────────────────────── */
-.op-root{display:flex;flex-direction:column;gap:0;--gold:#c9a84c;--navy:#0a0d1f;--royal:#1a3a8c;--mdeep:#06091a;color:var(--paper)}
+.op-root{display:flex;flex-direction:column;gap:0;--gold:#c9a84c;--navy:#0a0d1f;--royal:#1a3a8c;--mdeep:#06091a;--silver:#e0e6ed;color:var(--paper)}
 
 /* ── Ticket Title ──────────────────────────────────────── */
 .op-title-row{margin-bottom:20px}
@@ -699,18 +725,79 @@ h2{font:22px var(--bold);margin:0 0 14px;color:var(--blue)}.sec{margin-top:34px}
 /* ── The Map ───────────────────────────────────────────── */
 .op-map{
   position:relative;
-  background:linear-gradient(180deg,#06091a 0%,#0a0d22 40%,#080b1e 70%,#06091a 100%);
-  border:3px solid var(--gold);box-shadow:6px 6px 0 #000,0 0 40px 8px rgba(201,168,76,.08);
-  border-radius:8px;overflow:hidden;padding:16px 10px 20px;
-  display:flex;flex-direction:column;gap:14px;
+  background:linear-gradient(180deg,#050817 0%,#090d24 35%,#070a1c 70%,#040614 100%);
+  border:3px solid var(--gold);box-shadow:6px 6px 0 #000,0 0 45px 10px rgba(26,58,140,.35),0 0 20px rgba(201,168,76,.15);
+  border-radius:8px;overflow:hidden;padding:18px 12px 22px;
+  display:flex;flex-direction:column;gap:16px;
 }
 .op-map-bg{position:absolute;inset:0;pointer-events:none;z-index:0}
-.op-map-pattern{position:absolute;inset:0;background-image:radial-gradient(circle at 20% 25%,rgba(26,58,140,.12) 0 60px,transparent 61px),radial-gradient(circle at 80% 75%,rgba(201,168,76,.06) 0 80px,transparent 81px),repeating-linear-gradient(45deg,transparent,transparent 28px,rgba(201,168,76,.03) 28px,rgba(201,168,76,.03) 29px)}
+.op-map-pattern{position:absolute;inset:0;background-image:radial-gradient(circle at 20% 25%,rgba(26,58,140,.18) 0 70px,transparent 71px),radial-gradient(circle at 80% 75%,rgba(201,168,76,.08) 0 90px,transparent 91px),repeating-linear-gradient(45deg,transparent,transparent 28px,rgba(201,168,76,.03) 28px,rgba(201,168,76,.03) 29px)}
 .op-corner{position:absolute;width:36px;height:36px;pointer-events:none}
 .op-corner::before,.op-corner::after{content:'';position:absolute;background:var(--gold)}
 .op-corner::before{width:100%;height:2px}.op-corner::after{width:2px;height:100%}
 .op-corner-tl{top:8px;left:8px}.op-corner-tr{top:8px;right:8px;transform:scaleX(-1)}
 .op-corner-bl{bottom:8px;left:8px;transform:scaleY(-1)}.op-corner-br{bottom:8px;right:8px;transform:scale(-1)}
+
+/* ── Disco Ball & Arena Lights ─────────────────────────── */
+.op-disco-ball-wrap{
+  position:absolute;top:0;left:50%;transform:translateX(-50%);
+  display:flex;flex-direction:column;align-items:center;
+  pointer-events:none;z-index:12;
+}
+.op-disco-wire{width:2px;height:22px;background:rgba(201,168,76,.6)}
+.op-disco-ball{
+  font-size:26px;line-height:1;
+  animation:op-disco-spin 4s linear infinite;
+  filter:drop-shadow(0 0 12px rgba(255,255,255,.9)) drop-shadow(0 0 24px rgba(0,255,255,.6));
+}
+@keyframes op-disco-spin{0%{transform:rotate(0deg) scale(1)}50%{transform:rotate(180deg) scale(1.08)}100%{transform:rotate(360deg) scale(1)}}
+
+/* Disco light spots on floor */
+.op-disco-lights{position:absolute;inset:0;pointer-events:none;z-index:1;overflow:hidden}
+.op-disco-spot{
+  position:absolute;width:90px;height:90px;border-radius:50%;
+  opacity:0;filter:blur(14px);mix-blend-mode:screen;
+  animation:op-disco-pulse 3s ease-in-out infinite alternate;
+}
+.ds-pink{background:radial-gradient(circle,#ff1493 0%,transparent 70%);animation-delay:0s}
+.ds-cyan{background:radial-gradient(circle,#00ffff 0%,transparent 70%);animation-delay:.6s}
+.ds-gold{background:radial-gradient(circle,#ffd700 0%,transparent 70%);animation-delay:1.2s}
+.ds-purple{background:radial-gradient(circle,#bf00ff 0%,transparent 70%);animation-delay:1.8s}
+.ds-blue{background:radial-gradient(circle,#0080ff 0%,transparent 70%);animation-delay:2.4s}
+.ds-magenta{background:radial-gradient(circle,#ff007f 0%,transparent 70%);animation-delay:.9s}
+
+@keyframes op-disco-pulse{
+  0%{opacity:0;transform:scale(.4)}
+  40%{opacity:.55;transform:scale(1.2)}
+  70%{opacity:.2;transform:scale(.9)}
+  100%{opacity:.65;transform:scale(1.35)}
+}
+
+/* Sweeping disco beams */
+.op-disco-beam{
+  position:absolute;top:-40px;width:140px;height:380px;
+  pointer-events:none;opacity:.09;filter:blur(8px);
+}
+.beam-l{left:10%;background:conic-gradient(from 30deg at 50% 0%,#ff007f,transparent 40%);animation:op-beam-sweep-l 6s ease-in-out infinite alternate}
+.beam-r{right:10%;background:conic-gradient(from 150deg at 50% 0%,#00ffff,transparent 40%);animation:op-beam-sweep-r 6.5s ease-in-out infinite alternate}
+.beam-c{left:40%;background:conic-gradient(from 80deg at 50% 0%,#ffd700,transparent 30%);animation:op-beam-sweep-c 5s ease-in-out infinite alternate}
+
+@keyframes op-beam-sweep-l{from{transform:rotate(-15deg)}to{transform:rotate(20deg)}}
+@keyframes op-beam-sweep-r{from{transform:rotate(15deg)}to{transform:rotate(-20deg)}}
+@keyframes op-beam-sweep-c{from{transform:rotate(-10deg) scaleX(.8)}to{transform:rotate(10deg) scaleX(1.2)}}
+
+/* ── Clickable Character Buttons ────────────────────────── */
+.op-char-btn{
+  background:none;border:none;padding:0;cursor:pointer;
+  display:flex;flex-direction:column;align-items:center;
+  transition:transform .12s cubic-bezier(.3,1.7,.5,1),filter .15s ease;
+  position:relative;z-index:4;
+}
+.op-char-btn:hover{
+  transform:translateY(-3px) scale(1.08);
+  filter:drop-shadow(0 0 8px rgba(201,168,76,.8)) drop-shadow(0 0 2px #fff);
+}
+.op-char-btn:active{transform:translateY(1px) scale(.98)}
 
 /* ── Map layout ────────────────────────────────────────── */
 .op-map-row{position:relative;z-index:2}
@@ -740,12 +827,13 @@ h2{font:22px var(--bold);margin:0 0 14px;color:var(--blue)}.sec{margin-top:34px}
 .op-stage-banner{display:flex;align-items:center;gap:8px;justify-content:center;margin-bottom:10px}
 .op-stage-deco{flex:1;height:2px;background:linear-gradient(90deg,transparent,var(--gold),transparent)}
 .op-stage-title{font-size:7px;color:var(--gold);white-space:nowrap;letter-spacing:2px}
-.op-spotlight{position:absolute;top:0;width:100px;height:100%;pointer-events:none;z-index:0;opacity:.12}
+.op-spotlight{position:absolute;top:0;width:100px;height:100%;pointer-events:none;z-index:0;opacity:.15}
 .op-spot-l{left:-20px;background:conic-gradient(from 20deg at 10% 0%,#c9a84c,transparent 40%)}
 .op-spot-r{right:-20px;background:conic-gradient(from 160deg at 90% 0%,#c9a84c,transparent 40%)}
 .op-hosts{display:flex;align-items:flex-end;justify-content:center;gap:32px;position:relative;z-index:2}
-.op-host{display:flex;flex-direction:column;align-items:center;gap:3px;position:relative}
-.op-host-tag{font-size:6px;color:var(--gold);background:#06091a;border:1px solid var(--gold);padding:2px 6px;box-shadow:1px 1px 0 #000;letter-spacing:1px}
+.op-host-btn{position:relative}
+.op-host-tag{font-size:6px;color:var(--gold);background:#06091a;border:1px solid var(--gold);padding:2px 6px;box-shadow:1px 1px 0 #000;letter-spacing:1px;margin-bottom:2px}
+.op-host-btn:hover .op-host-tag{background:var(--gold);color:#06091a}
 .op-host-mic{font-size:12px;animation:op-mic .6s steps(2) infinite alternate}
 @keyframes op-mic{from{transform:translateY(0)}to{transform:translateY(-3px)}}
 .op-mic-stand{font-size:18px;padding-bottom:6px}
@@ -754,7 +842,7 @@ h2{font:22px var(--bold);margin:0 0 14px;color:var(--blue)}.sec{margin-top:34px}
 @keyframes op-lpulse{from{opacity:.5;box-shadow:0 0 4px 2px rgba(201,168,76,.4)}to{opacity:1;box-shadow:0 0 10px 4px rgba(201,168,76,.8)}}
 
 /* ── PC Desk (Shahd & Roaa) ────────────────────────────── */
-.op-pc-desk{background:rgba(10,13,31,.7);border:2px solid rgba(201,168,76,.25);border-radius:4px;padding:8px 6px 6px}
+.op-pc-desk{background:rgba(10,13,31,.75);border:2px solid rgba(201,168,76,.25);border-radius:4px;padding:8px 6px 6px}
 .op-pc-label{font-size:5px;color:var(--gold);text-align:center;letter-spacing:1px;margin-bottom:6px}
 .op-pc-setup{display:flex;flex-direction:column;align-items:center;gap:4px}
 .op-pc-monitor{display:flex;flex-direction:column;align-items:center}
@@ -770,12 +858,12 @@ h2{font:22px var(--bold);margin:0 0 14px;color:var(--blue)}.sec{margin-top:34px}
 @keyframes op-scr-blink{0%,80%{opacity:1}85%,95%{opacity:.3}100%{opacity:1}}
 .op-pc-stand{width:14px;height:6px;background:#444;border:1px solid #222;margin-top:-1px}
 .op-pc-keyboard{width:40px;height:6px;background:#333;border:1px solid #555;border-radius:1px}
-.op-pc-operators{display:flex;justify-content:center;gap:6px;margin-top:6px}
-.op-pc-op{display:flex;flex-direction:column;align-items:center;gap:2px;image-rendering:pixelated}
-.op-pc-op-label{font-size:5px;color:var(--gold);letter-spacing:.5px}
+.op-pc-operators{display:flex;justify-content:center;gap:8px;margin-top:6px}
+.op-pc-op-label{font-size:5px;color:var(--gold);letter-spacing:.5px;margin-bottom:2px}
+.op-char-btn:hover .op-pc-op-label{color:#fff;text-shadow:0 0 6px var(--gold)}
 
-/* ── Celebration (next to stage) ────────────────────────── */
-.op-celeb{background:rgba(10,13,31,.7);border:2px solid rgba(201,168,76,.25);border-radius:4px;padding:8px 4px 6px;position:relative;overflow:hidden}
+/* ── Celebration (Youssef toss) ────────────────────────── */
+.op-celeb{background:rgba(10,13,31,.75);border:2px solid rgba(201,168,76,.25);border-radius:4px;padding:8px 4px 6px;position:relative;overflow:hidden}
 .op-celeb-badge{display:inline-flex;align-items:center;gap:4px;background:linear-gradient(135deg,#c41535,#1a3a8c);color:#fff;font-size:5px;padding:3px 8px;border:1px solid var(--gold);box-shadow:1px 1px 0 #000;margin-bottom:8px;letter-spacing:1px}
 .op-celeb-row{display:flex;align-items:flex-end;justify-content:center;gap:4px;flex-wrap:wrap}
 .op-cam-person{display:flex;flex-direction:column;align-items:center;gap:2px}
@@ -785,10 +873,11 @@ h2{font:22px var(--bold);margin:0 0 14px;color:var(--blue)}.sec{margin-top:34px}
 .op-rider{position:relative;z-index:2;image-rendering:pixelated;margin-bottom:-4px}
 .op-carrier{position:relative;z-index:1;image-rendering:pixelated}
 .op-thrown-group{display:flex;flex-direction:column;align-items:center}
-.op-thrown-person{position:relative;z-index:3;display:flex;flex-direction:column;align-items:center;gap:1px;image-rendering:pixelated;transition:transform .05s linear}
+.op-thrown-btn{position:relative;z-index:3;display:flex;flex-direction:column;align-items:center;gap:1px;image-rendering:pixelated;transition:transform .05s linear}
 .op-thrown-crown{font-size:14px;line-height:1;filter:drop-shadow(0 0 6px rgba(201,168,76,.7));animation:op-cspin 2s linear infinite}
 @keyframes op-cspin{from{transform:rotate(-10deg)}to{transform:rotate(10deg)}}
-.op-thrown-name{font-size:5px;color:var(--gold);letter-spacing:1px}
+.op-thrown-name{font-size:5px;color:var(--gold);letter-spacing:1px;background:#06091a;padding:1px 4px;border:1px solid var(--gold);border-radius:2px}
+.op-thrown-btn:hover .op-thrown-name{background:var(--gold);color:#06091a}
 .op-throwers{display:flex;align-items:flex-end;gap:2px;image-rendering:pixelated;margin-top:1px}
 .op-thrown-hands{font-size:6px;color:var(--gold);letter-spacing:3px;animation:op-hflash .6s steps(2) infinite alternate}
 @keyframes op-hflash{from{opacity:.4}to{opacity:1}}
@@ -796,7 +885,7 @@ h2{font:22px var(--bold);margin:0 0 14px;color:var(--blue)}.sec{margin-top:34px}
 @keyframes op-vpop{from{transform:scale(.85)}to{transform:scale(1.1)}}
 
 /* ── Seating (100 seats, compact) ──────────────────────── */
-.op-seating-wrap{background:rgba(10,13,31,.8);border:2px solid rgba(201,168,76,.3);border-radius:4px;padding:8px 6px 4px;position:relative}
+.op-seating-wrap{background:rgba(10,13,31,.85);border:2px solid rgba(201,168,76,.3);border-radius:4px;padding:8px 6px 4px;position:relative}
 .op-seating-label{font-size:5px;color:var(--gold);text-align:center;margin-bottom:6px;letter-spacing:1px}
 .op-seating{display:flex;flex-direction:column;gap:2px;align-items:center}
 .op-seat-row{display:flex;gap:1px;justify-content:center}
@@ -858,11 +947,11 @@ h2{font:22px var(--bold);margin:0 0 14px;color:var(--blue)}.sec{margin-top:34px}
 }
 .op-printer-lens{width:16px;height:16px;border-radius:50%;background:radial-gradient(circle,#1a3a8c,#06091a);border:2px solid #888;box-shadow:0 0 6px rgba(26,58,140,.5)}
 .op-printer-label{font-size:3px;color:#aaa;text-align:center;line-height:1.2;letter-spacing:.3px}
-.op-printer-flash .op-printer-lens{box-shadow:0 0 16px 6px rgba(255,255,220,.9),0 0 30px 10px rgba(201,168,76,.5)!important}
+.op-printer-flash .op-printer-lens{box-shadow:0 0 18px 8px rgba(255,255,220,.95),0 0 32px 12px rgba(201,168,76,.6)!important}
 .op-flash-burst{
   position:absolute;top:-10px;left:50%;transform:translateX(-50%);
   width:80px;height:80px;border-radius:50%;
-  background:radial-gradient(circle,rgba(255,255,220,.8),rgba(201,168,76,.2) 40%,transparent 70%);
+  background:radial-gradient(circle,rgba(255,255,220,.85),rgba(201,168,76,.25) 40%,transparent 70%);
   pointer-events:none;z-index:10;animation:op-flash .18s ease-out forwards;
 }
 @keyframes op-flash{from{opacity:1;transform:translateX(-50%) scale(.3)}to{opacity:0;transform:translateX(-50%) scale(1.5)}}
@@ -871,7 +960,7 @@ h2{font:22px var(--bold);margin:0 0 14px;color:var(--blue)}.sec{margin-top:34px}
 .op-booth-posers{display:flex;justify-content:center;gap:2px;image-rendering:pixelated}
 .op-booth-poser{image-rendering:pixelated}
 
-/* ── Photo Stack (small round table with card previews) ── */
+/* ── Photo Stack on Round Table ────────────────────────── */
 .op-pstack-wrap{display:flex;flex-direction:column;align-items:center;gap:3px}
 .op-pstack-label{font-size:5px;color:var(--gold);letter-spacing:1px}
 .op-pstack-table{
@@ -903,34 +992,116 @@ h2{font:22px var(--bold);margin:0 0 14px;color:var(--blue)}.sec{margin-top:34px}
 .op-pstack-table:hover .op-pstack-surface{box-shadow:2px 2px 0 #000,0 0 10px 3px rgba(201,168,76,.3)}
 .op-pstack-table:hover .op-pstack-hint{color:#fff}
 
-/* ── Registration Booth (Hana & Seif + queue) ──────────── */
-.op-reg{background:rgba(10,13,31,.7);border:2px solid rgba(201,168,76,.3);border-radius:6px;padding:12px 14px;width:100%;max-width:500px}
-.op-reg-label{font-size:6px;color:var(--gold);letter-spacing:1px;text-align:center;margin-bottom:10px}
-.op-reg-area{display:flex;flex-direction:column;align-items:center;gap:10px}
-/* Desk */
-.op-reg-desk{display:flex;flex-direction:column;align-items:center}
-.op-reg-desk-top{
-  display:flex;gap:8px;align-items:center;justify-content:center;
-  width:120px;height:22px;
-  background:linear-gradient(180deg,#8B4513,#6B3410);
-  border:2px solid #000;border-bottom:0;border-radius:4px 4px 0 0;
-  padding:0 8px;
+/* ── WHITE SILVERY REGISTRATION BOOTH (Hana & Seif BEHIND) */
+.op-reg{
+  background:rgba(8,12,28,.8);
+  border:2px solid rgba(220,230,245,.4);
+  box-shadow:0 0 20px rgba(220,230,245,.15),3px 3px 0 #000;
+  border-radius:8px;padding:12px 14px;width:100%;max-width:520px;
 }
-.op-reg-clipboard{font-size:12px}
-.op-reg-desk-front{
-  width:120px;height:16px;
-  background:#5a2d0c;border:2px solid #000;border-top:0;
-  display:flex;align-items:center;justify-content:center;
-  font-size:5px;color:var(--gold);letter-spacing:1px;
+.op-reg-label{font-size:6px;color:#e0e6ed;letter-spacing:1px;text-align:center;margin-bottom:8px;text-shadow:0 0 6px rgba(255,255,255,.5)}
+.op-reg-area{display:flex;flex-direction:column;align-items:center;gap:0;position:relative}
+
+/* 1. Behind the desk: Hana & Seif standing */
+.op-reg-staff-behind{
+  display:flex;justify-content:center;gap:24px;
+  position:relative;z-index:2;margin-bottom:-10px;
 }
-/* Staff */
-.op-reg-staff{display:flex;justify-content:center;gap:14px;margin-top:-4px;position:relative;z-index:2}
-.op-reg-person{display:flex;flex-direction:column;align-items:center;gap:2px;image-rendering:pixelated}
-.op-reg-name{font-size:5px;color:var(--gold);letter-spacing:.5px}
-/* Queue */
-.op-reg-queue{display:flex;justify-content:center;gap:4px;margin-top:6px;flex-wrap:wrap}
+.op-staff-btn{display:flex;flex-direction:column;align-items:center}
+.op-staff-name-tag{
+  font-size:5px;color:#0a0d1f;background:linear-gradient(135deg,#ffffff,#c8d1dc);
+  border:1px solid #fff;border-radius:2px;padding:1px 5px;box-shadow:1px 1px 0 #000;
+  letter-spacing:.5px;margin-bottom:2px;font-weight:bold;
+}
+.op-staff-btn:hover .op-staff-name-tag{background:var(--gold);color:#000}
+
+/* 2. White Silvery Metallic Desk */
+.op-reg-silver-desk{
+  position:relative;z-index:3;width:min(100%,320px);
+  box-shadow:0 0 18px rgba(220,235,255,.35),4px 4px 0 #000;
+  border-radius:4px;overflow:hidden;
+}
+.op-silver-desk-top{
+  background:linear-gradient(180deg,#ffffff 0%,#f0f4f8 40%,#dbe2ea 100%);
+  border:2px solid #ffffff;border-bottom:1px solid #b8c4d2;
+  padding:4px 8px;display:flex;align-items:center;justify-content:space-between;
+}
+.op-desk-prop{font-size:12px}
+.op-silver-desk-title{font-size:6px;color:#182030;letter-spacing:1px;font-weight:bold}
+.op-silver-desk-body{
+  background:linear-gradient(180deg,#c8d3e0 0%,#a8b7c7 50%,#8d9dae 100%);
+  border:2px solid #5a6b7d;border-top:0;
+  padding:6px 10px;text-align:center;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.7);
+}
+.op-silver-crest{font-size:5px;color:#ffffff;letter-spacing:1px;text-shadow:1px 1px 0 #2a3545}
+
+/* 3. Front Queue */
+.op-reg-front-queue{
+  position:relative;z-index:4;
+  display:flex;flex-direction:column;align-items:center;gap:4px;
+  margin-top:10px;
+}
+.op-queue-tag{font-size:5px;color:rgba(201,168,76,.65);letter-spacing:1px}
+.op-reg-queue-line{display:flex;justify-content:center;gap:4px;flex-wrap:wrap}
 .op-reg-qperson{image-rendering:pixelated;animation:op-qdrop .5s cubic-bezier(.3,1.7,.5,1) backwards}
-@keyframes op-qdrop{from{transform:translateY(-20px);opacity:0}to{transform:translateY(0);opacity:1}}
+@keyframes op-qdrop{from{transform:translateY(-14px);opacity:0}to{transform:translateY(0);opacity:1}}
+
+/* ── VIP Member Profile Modal ──────────────────────────── */
+.op-profile-modal{
+  width:min(100%,480px);
+  background:linear-gradient(180deg,#070a1a 0%,#0c122e 60%,#080c1e 100%);
+  border:3px solid var(--gold);
+  box-shadow:0 0 45px 10px rgba(201,168,76,.3),6px 6px 0 #000;
+  border-radius:6px;padding:34px 22px 20px;
+  position:relative;max-height:92vh;overflow:auto;
+  animation:pop .3s cubic-bezier(.3,1.7,.5,1);
+}
+.op-pm-header{display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:16px}
+.op-pm-header-deco{flex:1;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent)}
+.op-pm-header-tag{font-size:7px;color:var(--gold);letter-spacing:2px;white-space:nowrap}
+
+.op-pm-body{display:flex;align-items:center;gap:16px;margin-bottom:14px}
+.op-pm-photo-wrap{
+  position:relative;flex:none;width:85px;height:85px;
+  border:3px solid var(--gold);box-shadow:3px 3px 0 #000,0 0 14px rgba(201,168,76,.3);
+  background:#030510;overflow:hidden;border-radius:4px;
+}
+.op-pm-photo{width:100%;height:100%;object-fit:cover;display:block}
+.op-pm-mask-badge{position:absolute;bottom:2px;right:2px;font-size:16px;filter:drop-shadow(1px 1px 0 #000)}
+
+.op-pm-info{flex:1;display:flex;flex-direction:column;gap:4px}
+.op-pm-name{font-size:32px;line-height:1;color:#fff;margin:0;text-shadow:2px 2px 0 #000}
+.op-pm-role{font-size:8px;color:var(--silver);opacity:.85;margin:0;letter-spacing:.5px}
+
+.op-pm-event-badge{
+  background:linear-gradient(135deg,rgba(10,15,40,.9),rgba(20,30,70,.8));
+  border:1px solid var(--bc,var(--gold));
+  box-shadow:2px 2px 0 #000;border-radius:3px;
+  padding:4px 8px;margin-top:4px;display:inline-flex;flex-direction:column;gap:2px;
+}
+.op-pm-event-label{font-size:5px;color:var(--bc,var(--gold));letter-spacing:1px}
+.op-pm-event-title{font-size:7px;color:#fff;letter-spacing:.5px}
+
+.op-pm-story{
+  background:rgba(26,58,140,.15);border:1px solid rgba(201,168,76,.3);
+  border-radius:4px;padding:10px 12px;margin-bottom:12px;
+}
+.op-pm-story-text{font-size:22px;color:#f0f4f8;line-height:1.2;margin:0}
+
+.op-pm-quote-box{
+  position:relative;border-left:3px solid var(--gold);
+  background:rgba(0,0,0,.35);padding:8px 12px 8px 14px;margin-bottom:14px;
+  border-radius:0 4px 4px 0;
+}
+.op-pm-quote-mark{position:absolute;top:-4px;left:4px;font-size:24px;color:var(--gold);opacity:.4;font-family:serif}
+.op-pm-quote{font-size:20px;color:var(--gold);margin:0;line-height:1.2}
+
+.op-pm-footer{
+  display:flex;justify-content:space-between;align-items:center;
+  border-top:1px dashed rgba(201,168,76,.4);padding-top:10px;
+  font-size:6px;color:rgba(201,168,76,.7);letter-spacing:1px;
+}
 
 /* ── Photo Browser Modal (card shuffle on round table) ─── */
 .op-pb{
@@ -943,7 +1114,6 @@ h2{font:22px var(--bold);margin:0 0 14px;color:var(--blue)}.sec{margin-top:34px}
 .op-pb-title{font-size:9px;color:var(--gold);letter-spacing:2px}
 .op-pb-deco-line{width:70%;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent)}
 
-/* Round table with fanned cards */
 .op-pb-table{display:flex;justify-content:center;margin-bottom:14px}
 .op-pb-table-surface{
   position:relative;
@@ -952,12 +1122,10 @@ h2{font:22px var(--bold);margin:0 0 14px;color:var(--blue)}.sec{margin-top:34px}
   border-radius:50%;
   display:flex;align-items:center;justify-content:center;
 }
-/* Scattered bg cards */
 .op-pb-scatter{position:absolute;border:1px solid rgba(201,168,76,.2);background:rgba(26,58,140,.15);border-radius:2px}
 .op-pb-scatter.s1{width:60px;height:44px;top:16px;left:12%;transform:rotate(-18deg);opacity:.5}
 .op-pb-scatter.s2{width:55px;height:40px;bottom:20px;right:10%;transform:rotate(12deg);opacity:.4}
 .op-pb-scatter.s3{width:50px;height:36px;top:30px;right:20%;transform:rotate(-6deg);opacity:.3}
-/* Cards */
 .op-pb-card{
   border:2px solid rgba(201,168,76,.5);background:#0a0d22;overflow:hidden;
   box-shadow:2px 2px 0 rgba(0,0,0,.5);border-radius:3px;
@@ -975,7 +1143,7 @@ h2{font:22px var(--bold);margin:0 0 14px;color:var(--blue)}.sec{margin-top:34px}
   position:relative;z-index:3;width:min(220px,55vw);aspect-ratio:4/3;
   border-color:var(--gold);box-shadow:3px 3px 0 #000,0 0 16px 2px rgba(201,168,76,.2);
 }
-/* Shuffle animations */
+
 @keyframes op-shuf-r{
   0%{transform:translateX(60px) rotate(12deg);opacity:.3}
   60%{transform:translateX(-8px) rotate(-2deg);opacity:1}
@@ -989,7 +1157,6 @@ h2{font:22px var(--bold);margin:0 0 14px;color:var(--blue)}.sec{margin-top:34px}
 .op-pb-shuffle-r{animation:op-shuf-r .25s ease-out forwards}
 .op-pb-shuffle-l{animation:op-shuf-l .25s ease-out forwards}
 
-/* Nav */
 .op-pb-nav{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px}
 .op-pb-btn{font:8px var(--px);padding:7px 10px;background:#06091a;color:var(--gold);border:2px solid var(--gold);box-shadow:2px 2px 0 #000;cursor:pointer;letter-spacing:1px;transition:transform .08s steps(2)}
 .op-pb-btn:hover{transform:translateY(-2px);background:#0d1230}.op-pb-btn:active{transform:translate(2px,2px);box-shadow:none}
@@ -1010,4 +1177,6 @@ h2{font:22px var(--bold);margin:0 0 14px;color:var(--blue)}.sec{margin-top:34px}
   .op-pstack-surface{width:60px;height:60px}
   .op-pstack-card{width:22px;height:16px}
   .op-reg{max-width:100%}
+  .op-pm-body{flex-direction:column;text-align:center}
+  .op-pm-info{align-items:center}
 }

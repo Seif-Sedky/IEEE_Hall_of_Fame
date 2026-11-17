@@ -7,6 +7,45 @@ const byId = Object.fromEntries(members.map(m => [m.id, m]))
 // All opening photos (1–27)
 const OPENING_PHOTOS = Array.from({ length: 27 }, (_, i) => `opening/${i + 1}.jpg`)
 
+// ─── Named Character Role Profiles ──────────────────────────────────────────
+const ROLE_PROFILES = {
+  'hala-aboraya': {
+    openingRole: 'NIGHT HOST / MC 🎤',
+    openingDesc: 'Co-hosted the Masquerade Ball alongside Tebry, electrifying the ballroom with charisma and keeping the entire crowd hyped all night long from the stage!',
+    badgeColor: '#c9a84c',
+  },
+  'abdelrahman-tebry': {
+    openingRole: 'NIGHT HOST / MC 🎙️',
+    openingDesc: 'Co-hosted the night with Hala, commanding the mic with jokes and stage presence, leading all the ceremonies and crowd games!',
+    badgeColor: '#3888e8',
+  },
+  'youssef-mostafa': {
+    openingRole: 'PRESIDENT · THE TOSS 👑',
+    openingDesc: 'Our President who was hoisted up into the air and tossed repeatedly by cheering members in an iconic moment of pure chapter joy and energy!',
+    badgeColor: '#f8a808',
+  },
+  'shahd-hisham': {
+    openingRole: 'PROJECTOR & VISUALS LEAD 🖥️',
+    openingDesc: 'Stationed at the control laptop desk with Roaa, directing visuals, cueing presentation slides, and keeping the big screen perfectly synced!',
+    badgeColor: '#3888e8',
+  },
+  'roaa-wael': {
+    openingRole: 'PROJECTOR & VISUALS LEAD 💻',
+    openingDesc: 'Managed the technical projector station alongside Shahd, operating slides and videos that lit up the stage backdrop all evening!',
+    badgeColor: '#c41535',
+  },
+  'hana-mohamed': {
+    openingRole: 'REGISTRATION & WELCOME LEAD 📋',
+    openingDesc: 'Welcomed arriving guests at the silver registration booth with Seif, checking tickets, managing the guest list, and handing out masquerade masks!',
+    badgeColor: '#c9a84c',
+  },
+  'seif-alaa': {
+    openingRole: 'REGISTRATION & WELCOME LEAD 🖊️',
+    openingDesc: 'Manned the silvery check-in counter with Hana, coordinating the ~100 attendee arrivals and kicking off everyone’s masquerade night with high spirits!',
+    badgeColor: '#58a0b0',
+  },
+}
+
 // ─── Floating Particle ───────────────────────────────────────────────────────
 function FloatingParticle({ type, style }) {
   const icons = { bat: '🦇', mask: '🎭', sparkle: '✦', star: '★', note: '♪' }
@@ -92,7 +131,7 @@ function MasquCharSprite({ archetype = 'short', skinColor = '#f5c396', hairColor
   )
 }
 
-// ─── Character config pool ────────────────────────────────────────────────────
+// ─── Character config pool for attendees ──────────────────────────────────────
 const ATTENDEE_POOL = [
   { archetype: 'short', skinColor: '#f5c396', hairColor: '#1a110b', maskColor: '#1a3a8c', shirtColor: '#1a1a2e', shoesColor: '#c9a84c' },
   { archetype: 'long', skinColor: '#ffdfc4', hairColor: '#3d2314', maskColor: '#6b2fa0', shirtColor: '#0a0a1a', shoesColor: '#c9a84c' },
@@ -123,14 +162,74 @@ const HOST_STYLES = {
   'seif-alaa': { archetype: 'short', skinColor: '#f5c396', hairColor: '#1a110b', maskColor: '#d35400', shirtColor: '#1a1a2e', shoesColor: '#c9a84c' },
 }
 
-// ─── Useanimframe helper ─────────────────────────────────────────────────────
+// ─── useFrame helper ─────────────────────────────────────────────────────────
 function useFrame(ms = 350) {
   const [f, setF] = useState(0)
   useEffect(() => { const id = setInterval(() => setF(v => v + 1), ms); return () => clearInterval(id) }, [ms])
   return f
 }
 
-// ─── Seating Section (10 rows × 10 cols = 100 tiny seats) ────────────────────
+// ─── VIP Member Profile Popup Modal ──────────────────────────────────────────
+function MemberProfileModal({ memberId, onClose }) {
+  const member = byId[memberId]
+  const profile = ROLE_PROFILES[memberId]
+  if (!member || !profile) return null
+
+  return (
+    <div className="overlay" onClick={onClose}>
+      <div className="op-profile-modal" onClick={e => e.stopPropagation()}>
+        <button className="x" onClick={onClose}>X</button>
+
+        {/* Masquerade Gold Header */}
+        <div className="op-pm-header">
+          <div className="op-pm-header-deco" />
+          <span className="px op-pm-header-tag">MASQUERADE VIP · PROFILE</span>
+          <div className="op-pm-header-deco" />
+        </div>
+
+        <div className="op-pm-body">
+          {/* Photo with golden frame */}
+          <div className="op-pm-photo-wrap">
+            <img src={B + member.photo} alt={member.name} className="op-pm-photo" />
+            <span className="op-pm-mask-badge" aria-hidden="true">🎭</span>
+          </div>
+
+          <div className="op-pm-info">
+            <h3 className="op-pm-name hand">{member.name}</h3>
+            <p className="op-pm-role px">{member.role}</p>
+
+            {/* Special Opening Night Badge */}
+            <div className="op-pm-event-badge" style={{ '--bc': profile.badgeColor }}>
+              <span className="px op-pm-event-label">OPENING NIGHT ROLE</span>
+              <strong className="px op-pm-event-title">{profile.openingRole}</strong>
+            </div>
+          </div>
+        </div>
+
+        {/* Opening Role Story */}
+        <div className="op-pm-story">
+          <p className="op-pm-story-text hand">{profile.openingDesc}</p>
+        </div>
+
+        {/* Quote if available */}
+        {member.statement && (
+          <div className="op-pm-quote-box">
+            <span className="op-pm-quote-mark">“</span>
+            <p className="op-pm-quote hand">{member.statement}</p>
+          </div>
+        )}
+
+        {/* Ticket Footer */}
+        <div className="op-pm-footer px">
+          <span>🎟️ IEEE 27' OPENING PARTY</span>
+          <span>MASQUERADE BALL</span>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+// ─── Seating Section (10 rows × 10 cols = 100 seats) ─────────────────────────
 function SeatingSection() {
   const frame = useFrame(500)
   const ROWS = 10, COLS = 10
@@ -178,7 +277,6 @@ function PhotoBrowser({ photos, onClose }) {
     return () => window.removeEventListener('keydown', handler)
   }, [go, onClose])
 
-  // Show prev, current, next as fanned-out cards on a round table surface
   const prevIdx = (idx - 1 + photos.length) % photos.length
   const nextIdx = (idx + 1) % photos.length
 
@@ -243,9 +341,7 @@ function PhotoStack({ onOpen }) {
     <div className="op-pstack-wrap">
       <div className="op-pstack-label px">📸 PHOTO TABLE</div>
       <button className="op-pstack-table" onClick={onOpen} title="Browse the printed photos!">
-        {/* Round table */}
         <div className="op-pstack-surface">
-          {/* Scattered little card previews with real colors */}
           <div className="op-pstack-card c1"><img src={B + OPENING_PHOTOS[0]} alt="" /></div>
           <div className="op-pstack-card c2"><img src={B + OPENING_PHOTOS[4]} alt="" /></div>
           <div className="op-pstack-card c3"><img src={B + OPENING_PHOTOS[9]} alt="" /></div>
@@ -267,7 +363,7 @@ function PhotoBooth() {
     const id = setInterval(() => {
       setFlash(true)
       setTimeout(() => setFlash(false), 180)
-    }, 3500)
+    }, 3200)
     return () => clearInterval(id)
   }, [])
 
@@ -280,14 +376,11 @@ function PhotoBooth() {
             <div className="op-printer-lens" />
             <div className="op-printer-label px">INSTANT<br/>PRINT</div>
           </div>
-          {/* Flash effect */}
           {flash && <div className="op-flash-burst" aria-hidden="true" />}
-          {/* Printed photo coming out */}
           <div className="op-printer-output">
             <div className="op-printer-photo-out" />
           </div>
         </div>
-        {/* People posing in front */}
         <div className="op-booth-posers">
           <div className="op-booth-poser"><MasquCharSprite {...cfgAt(2)} frame={frame} size={0.72} /></div>
           <div className="op-booth-poser"><MasquCharSprite {...cfgAt(6)} frame={frame} size={0.72} /></div>
@@ -318,7 +411,6 @@ function PhotoBooth() {
               <span className="op-balloon b3">🎈</span>
             </div>
           </div>
-          {/* People inside booth posing */}
           <div className="op-booth-inside">
             <MasquCharSprite {...cfgAt(9)} frame={frame} size={0.65} />
             <MasquCharSprite {...cfgAt(5)} frame={frame} size={0.65} />
@@ -363,8 +455,8 @@ function ManqoushaTables() {
   )
 }
 
-// ─── Stage ────────────────────────────────────────────────────────────────────
-function Stage() {
+// ─── Stage (Hala & Tebry - Clickable) ─────────────────────────────────────────
+function Stage({ onSelectProfile }) {
   const frame = useFrame(350)
   return (
     <div className="op-stage">
@@ -380,20 +472,20 @@ function Stage() {
 
         <div className="op-hosts">
           {/* Hala */}
-          <div className="op-host">
-            <div className="op-host-tag px">HALA</div>
+          <button className="op-char-btn op-host-btn" onClick={() => onSelectProfile('hala-aboraya')} title="Click to view Hala's profile!">
+            <div className="op-host-tag px">HALA 🔍</div>
             <MasquCharSprite {...HOST_STYLES['hala-aboraya']} frame={frame} size={0.9} />
             <span className="op-host-mic">🎤</span>
-          </div>
+          </button>
 
           <div className="op-mic-stand" aria-hidden="true">🎙️</div>
 
           {/* Tebry */}
-          <div className="op-host" style={{ transform: 'scaleX(-1)' }}>
-            <div className="op-host-tag px" style={{ transform: 'scaleX(-1)' }}>TEBRY</div>
+          <button className="op-char-btn op-host-btn" style={{ transform: 'scaleX(-1)' }} onClick={() => onSelectProfile('abdelrahman-tebry')} title="Click to view Tebry's profile!">
+            <div className="op-host-tag px" style={{ transform: 'scaleX(-1)' }}>TEBRY 🔍</div>
             <MasquCharSprite {...HOST_STYLES['abdelrahman-tebry']} frame={frame} size={0.9} />
             <span className="op-host-mic">🎤</span>
-          </div>
+          </button>
         </div>
 
         <div className="op-footlights" aria-hidden="true">
@@ -404,40 +496,37 @@ function Stage() {
   )
 }
 
-// ─── PC Desk (Shahd & Roaa managing projector) ───────────────────────────────
-function ProjectorDesk() {
+// ─── PC Desk (Shahd & Roaa - Clickable) ───────────────────────────────────────
+function ProjectorDesk({ onSelectProfile }) {
   const frame = useFrame(400)
   return (
     <div className="op-pc-desk">
       <div className="op-pc-label px">🖥️ PROJECTOR CONTROL</div>
       <div className="op-pc-setup">
-        {/* Monitor */}
         <div className="op-pc-monitor">
           <div className="op-pc-screen">
             <div className="op-pc-screen-content px">▶ SLIDES</div>
           </div>
           <div className="op-pc-stand" />
         </div>
-        {/* Keyboard area */}
         <div className="op-pc-keyboard" />
       </div>
-      {/* Shahd & Roaa sitting at the desk */}
       <div className="op-pc-operators">
-        <div className="op-pc-op">
-          <div className="op-pc-op-label px">SHAHD</div>
-          <MasquCharSprite {...HOST_STYLES['shahd-hisham']} frame={frame} seated size={0.6} />
-        </div>
-        <div className="op-pc-op">
-          <div className="op-pc-op-label px">ROAA</div>
-          <MasquCharSprite {...HOST_STYLES['roaa-wael']} frame={frame} seated size={0.6} />
-        </div>
+        <button className="op-char-btn" onClick={() => onSelectProfile('shahd-hisham')} title="Click to view Shahd's profile!">
+          <div className="op-pc-op-label px">SHAHD 🔍</div>
+          <MasquCharSprite {...HOST_STYLES['shahd-hisham']} frame={frame} seated size={0.62} />
+        </button>
+        <button className="op-char-btn" onClick={() => onSelectProfile('roaa-wael')} title="Click to view Roaa's profile!">
+          <div className="op-pc-op-label px">ROAA 🔍</div>
+          <MasquCharSprite {...HOST_STYLES['roaa-wael']} frame={frame} seated size={0.62} />
+        </button>
       </div>
     </div>
   )
 }
 
-// ─── Celebration (Youssef thrown + shoulder riders + cameras) ─────────────────
-function CelebrationScene() {
+// ─── Celebration (Youssef thrown - Clickable) ─────────────────────────────────
+function CelebrationScene({ onSelectProfile }) {
   const frame = useFrame(300)
   const [youssefY, setYoussefY] = useState(0)
   const rafRef = useRef(null)
@@ -469,13 +558,14 @@ function CelebrationScene() {
           <div className="op-carrier"><MasquCharSprite {...cfgAt(5)} frame={frame} size={0.65} /></div>
         </div>
 
-        {/* Youssef thrown */}
+        {/* Youssef thrown (Clickable) */}
         <div className="op-thrown-group">
-          <div className="op-thrown-person" style={{ transform: `translateY(${youssefY}px)` }}>
+          <button className="op-char-btn op-thrown-btn" onClick={() => onSelectProfile('youssef-mostafa')}
+            title="Click to view Youssef's profile!" style={{ transform: `translateY(${youssefY}px)` }}>
             <div className="op-thrown-crown">👑</div>
             <MasquCharSprite {...HOST_STYLES['youssef-mostafa']} frame={frame} size={0.72} />
-            <div className="op-thrown-name px">YOUSSEF</div>
-          </div>
+            <div className="op-thrown-name px">YOUSSEF 🔍</div>
+          </button>
           <div className="op-throwers">
             <MasquCharSprite {...cfgAt(0)} frame={frame} size={0.58} />
             <MasquCharSprite {...cfgAt(11)} frame={frame} size={0.58} />
@@ -501,48 +591,57 @@ function CelebrationScene() {
   )
 }
 
-// ─── Registration Booth (Hana & Seif + queue) ────────────────────────────────
-function RegistrationBooth() {
+// ─── Registration Booth (Hana & Seif BEHIND white silvery booth) ─────────────
+function RegistrationBooth({ onSelectProfile }) {
   const frame = useFrame(500)
   return (
     <div className="op-reg">
-      <div className="op-reg-label px">📋 REGISTRATION BOOTH</div>
+      <div className="op-reg-label px">📋 REGISTRATION & CHECK-IN BOOTH</div>
       <div className="op-reg-area">
-        {/* The booth desk */}
-        <div className="op-reg-desk">
-          <div className="op-reg-desk-top">
-            <span className="op-reg-clipboard">📋</span>
-            <span className="op-reg-clipboard">🖊️</span>
-          </div>
-          <div className="op-reg-desk-front px">CHECK-IN</div>
+
+        {/* 1. Hana & Seif standing BEHIND the desk */}
+        <div className="op-reg-staff-behind">
+          <button className="op-char-btn op-staff-btn" onClick={() => onSelectProfile('hana-mohamed')} title="Click to view Hana's profile!">
+            <div className="op-staff-name-tag px">HANA 🔍</div>
+            <MasquCharSprite {...HOST_STYLES['hana-mohamed']} frame={frame} size={0.72} />
+          </button>
+          <button className="op-char-btn op-staff-btn" onClick={() => onSelectProfile('seif-alaa')} title="Click to view Seif's profile!">
+            <div className="op-staff-name-tag px">SEIF 🔍</div>
+            <MasquCharSprite {...HOST_STYLES['seif-alaa']} frame={frame} size={0.72} />
+          </button>
         </div>
 
-        {/* Hana & Seif behind */}
-        <div className="op-reg-staff">
-          <div className="op-reg-person">
-            <div className="op-reg-name px">HANA</div>
-            <MasquCharSprite {...HOST_STYLES['hana-mohamed']} frame={frame} size={0.7} />
+        {/* 2. White Silvery Metallic Registration Desk in FRONT of them */}
+        <div className="op-reg-silver-desk">
+          <div className="op-silver-desk-top">
+            <span className="op-desk-prop">🎭</span>
+            <span className="op-desk-prop">📋</span>
+            <span className="op-silver-desk-title px">WELCOME · CHECK-IN</span>
+            <span className="op-desk-prop">🖊️</span>
+            <span className="op-desk-prop">✨</span>
           </div>
-          <div className="op-reg-person">
-            <div className="op-reg-name px">SEIF</div>
-            <MasquCharSprite {...HOST_STYLES['seif-alaa']} frame={frame} size={0.7} />
+          <div className="op-silver-desk-body">
+            <div className="op-silver-crest px">✦ IEEE 27' MASQUERADE BALL ✦</div>
           </div>
         </div>
 
-        {/* Queue of people registering */}
-        <div className="op-reg-queue">
-          {[1, 3, 7, 12, 15, 9].map((ci, qi) => (
-            <div key={qi} className="op-reg-qperson" style={{ animationDelay: qi * 120 + 'ms' }}>
-              <MasquCharSprite {...cfgAt(ci)} frame={frame} size={0.52} />
-            </div>
-          ))}
+        {/* 3. Queue of attendees waiting IN FRONT of the desk */}
+        <div className="op-reg-front-queue">
+          <span className="op-queue-tag px">GUESTS ARRIVING ▼</span>
+          <div className="op-reg-queue-line">
+            {[1, 3, 7, 12, 15, 9, 4, 10].map((ci, qi) => (
+              <div key={qi} className="op-reg-qperson" style={{ animationDelay: qi * 120 + 'ms' }}>
+                <MasquCharSprite {...cfgAt(ci)} frame={frame} size={0.52} />
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </div>
   )
 }
 
-// ─── Floating Particles Setup ─────────────────────────────────────────────────
+// ─── Floating Particles ───────────────────────────────────────────────────────
 const PARTICLES = [
   { type: 'bat', style: { top: '6%', left: '8%', animationDelay: '0s', animationDuration: '7s' } },
   { type: 'mask', style: { top: '4%', left: '52%', animationDelay: '1.2s', animationDuration: '9s' } },
@@ -559,6 +658,15 @@ const PARTICLES = [
 // ─── Main Opening Component ──────────────────────────────────────────────────
 export default function Opening() {
   const [photoBrowserOpen, setPhotoBrowserOpen] = useState(false)
+  const [selectedProfile, setSelectedProfile] = useState(null)
+
+  // Turn on masquerade theme on the entire body background while in Opening section
+  useEffect(() => {
+    document.body.classList.add('masquerade-theme')
+    return () => {
+      document.body.classList.remove('masquerade-theme')
+    }
+  }, [])
 
   return (
     <div className="op-root">
@@ -582,6 +690,26 @@ export default function Opening() {
       {/* ═══ THE MAP ═══ */}
       <div className="op-map" role="region" aria-label="Opening Night Map">
 
+        {/* Disco Ball in Ceiling */}
+        <div className="op-disco-ball-wrap" aria-hidden="true">
+          <div className="op-disco-wire" />
+          <div className="op-disco-ball">🪩</div>
+          <div className="op-disco-shimmer" />
+        </div>
+
+        {/* Arena Disco Lights popping and sweeping */}
+        <div className="op-disco-lights" aria-hidden="true">
+          <span className="op-disco-spot ds-pink" style={{ top: '22%', left: '12%' }} />
+          <span className="op-disco-spot ds-cyan" style={{ top: '32%', right: '16%' }} />
+          <span className="op-disco-spot ds-gold" style={{ top: '52%', left: '48%' }} />
+          <span className="op-disco-spot ds-purple" style={{ top: '18%', left: '55%' }} />
+          <span className="op-disco-spot ds-blue" style={{ top: '68%', right: '10%' }} />
+          <span className="op-disco-spot ds-magenta" style={{ top: '64%', left: '20%' }} />
+          <div className="op-disco-beam beam-l" />
+          <div className="op-disco-beam beam-r" />
+          <div className="op-disco-beam beam-c" />
+        </div>
+
         {/* Particles */}
         {PARTICLES.map((p, i) => <FloatingParticle key={i} type={p.type} style={p.style} />)}
 
@@ -595,13 +723,13 @@ export default function Opening() {
         {/* ROW 1: PC Desk | Stage | Celebration */}
         <div className="op-map-row op-row-top">
           <div className="op-map-col">
-            <ProjectorDesk />
+            <ProjectorDesk onSelectProfile={setSelectedProfile} />
           </div>
           <div className="op-map-col op-col-stage">
-            <Stage />
+            <Stage onSelectProfile={setSelectedProfile} />
           </div>
           <div className="op-map-col">
-            <CelebrationScene />
+            <CelebrationScene onSelectProfile={setSelectedProfile} />
           </div>
         </div>
 
@@ -628,14 +756,22 @@ export default function Opening() {
         {/* Aisle */}
         <div className="op-aisle"><span className="op-aisle-arr px" aria-hidden="true">▼  ▼  ▼</span></div>
 
-        {/* ROW 3: Registration */}
+        {/* ROW 3: Registration Booth (Hana & Seif) */}
         <div className="op-map-row op-row-bot">
-          <RegistrationBooth />
+          <RegistrationBooth onSelectProfile={setSelectedProfile} />
         </div>
       </div>
 
-      {/* Photo Browser */}
+      {/* Photo Browser Modal */}
       {photoBrowserOpen && <PhotoBrowser photos={OPENING_PHOTOS} onClose={() => setPhotoBrowserOpen(false)} />}
+
+      {/* Member Profile Popup Modal */}
+      {selectedProfile && (
+        <MemberProfileModal
+          memberId={selectedProfile}
+          onClose={() => setSelectedProfile(null)}
+        />
+      )}
     </div>
   )
 }
