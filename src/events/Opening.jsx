@@ -11,7 +11,7 @@ const OPENING_PHOTOS = Array.from({ length: 27 }, (_, i) => `opening/${i + 1}.jp
 const ROLE_PROFILES = {
   'hala-aboraya': {
     openingRole: 'NIGHT HOST / MC 🎤',
-    openingDesc: 'Co-hosted the opening night alongside Tebry, electrifying the ballroom with charisma and keeping the entire crowd hyped all night long! (She lost her voice in the process)',
+    openingDesc: 'Co-hosted the Masquerade Ball alongside Tebry, electrifying the ballroom with charisma and keeping the entire crowd hyped all night long! (She lost her voice in the process)',
     badgeColor: '#c9a84c',
   },
   'abdelrahman-tebry': {
@@ -269,11 +269,6 @@ function SeatingSection() {
   )
 }
 
-// Photo browser sizes — tweak these to make the photos bigger / smaller
-const PB_STAGE_H = 'min(68vh, 740px)'   // height of the table area
-const PB_MAIN_H = 'min(62vh, 680px)'    // the photo in the middle
-const PB_SIDE_H = 'min(42vh, 440px)'    // the peeking photos on the sides
-
 // ─── Photo Browser Modal (card-shuffle on round table) ────────────────────────
 function PhotoBrowser({ photos, onClose }) {
   const [idx, setIdx] = useState(0)
@@ -301,11 +296,7 @@ function PhotoBrowser({ photos, onClose }) {
 
   return (
     <div className="overlay" onClick={onClose}>
-      <div
-        className="op-pb"
-        onClick={e => e.stopPropagation()}
-        style={{ width: 'min(96vw, 1280px)', maxWidth: 'none', maxHeight: '96vh', overflowY: 'auto' }}
-      >
+      <div className="op-pb" onClick={e => e.stopPropagation()}>
         <button className="x" onClick={onClose}>X</button>
 
         {/* Ticket header */}
@@ -315,53 +306,23 @@ function PhotoBrowser({ photos, onClose }) {
           <div className="op-pb-deco-line" />
         </div>
 
-        {/* Table surface with fanned cards (sizes set inline so the photos can be big) */}
-        <div className="op-pb-table" style={{ width: '100%' }}>
-          <div
-            className="op-pb-table-surface"
-            style={{
-              position: 'relative', width: '100%', height: PB_STAGE_H,
-              display: 'flex', alignItems: 'center', justifyContent: 'center',
-              borderRadius: 28,            // rounded rectangle so big photos fit; delete this line for the old round table
-            }}
-          >
+        {/* Table surface with fanned cards (sizes live in styles.css) */}
+        <div className="op-pb-table">
+          <div className="op-pb-table-surface">
             {/* Prev card (peeking left) */}
-            <button
-              className="op-pb-card op-pb-card-prev"
-              onClick={() => go('left')}
-              style={{
-                position: 'absolute', left: '1.5%', right: 'auto', top: '50%', bottom: 'auto',
-                width: 'auto', height: 'auto', padding: 4, zIndex: 1, opacity: 0.8,
-                transform: 'translateY(-50%) rotate(-6deg)',
-              }}
-            >
-              <img src={B + photos[prevIdx]} alt="" className="op-pb-card-img" loading="lazy"
-                style={{ display: 'block', width: 'auto', height: PB_SIDE_H, maxWidth: '22vw', objectFit: 'contain' }} />
+            <button className="op-pb-card op-pb-card-prev" onClick={() => go('left')}>
+              <img src={B + photos[prevIdx]} alt="" className="op-pb-card-img" loading="lazy" />
             </button>
 
             {/* Current card (center, big) */}
             <div key={animKey}
-              className={`op-pb-card op-pb-card-current${shuffleDir === 'right' ? ' op-pb-shuffle-r' : shuffleDir === 'left' ? ' op-pb-shuffle-l' : ''}`}
-              style={{
-                position: 'relative', left: 'auto', right: 'auto', top: 'auto', bottom: 'auto',
-                width: 'auto', height: 'auto', padding: 6, zIndex: 3,
-              }}>
-              <img src={B + photos[idx]} alt={`Photo ${idx + 1}`} className="op-pb-card-img"
-                style={{ display: 'block', width: 'auto', height: PB_MAIN_H, maxWidth: '64vw', objectFit: 'contain' }} />
+              className={`op-pb-card op-pb-card-current${shuffleDir === 'right' ? ' op-pb-shuffle-r' : shuffleDir === 'left' ? ' op-pb-shuffle-l' : ''}`}>
+              <img src={B + photos[idx]} alt={`Photo ${idx + 1}`} className="op-pb-card-img" />
             </div>
 
             {/* Next card (peeking right) */}
-            <button
-              className="op-pb-card op-pb-card-next"
-              onClick={() => go('right')}
-              style={{
-                position: 'absolute', right: '1.5%', left: 'auto', top: '50%', bottom: 'auto',
-                width: 'auto', height: 'auto', padding: 4, zIndex: 1, opacity: 0.8,
-                transform: 'translateY(-50%) rotate(6deg)',
-              }}
-            >
-              <img src={B + photos[nextIdx]} alt="" className="op-pb-card-img" loading="lazy"
-                style={{ display: 'block', width: 'auto', height: PB_SIDE_H, maxWidth: '22vw', objectFit: 'contain' }} />
+            <button className="op-pb-card op-pb-card-next" onClick={() => go('right')}>
+              <img src={B + photos[nextIdx]} alt="" className="op-pb-card-img" loading="lazy" />
             </button>
 
             {/* Scattered background cards for depth */}
@@ -1068,7 +1029,7 @@ function TicketFlip() {
 
   const face = {
     position: 'absolute', inset: 0, width: '100%', height: '100%',
-    objectFit: 'cover', borderRadius: 12,
+    objectFit: 'cover', borderRadius: 12, boxShadow: '0 8px 18px rgba(0,0,0,0.45)',
     backfaceVisibility: 'hidden', WebkitBackfaceVisibility: 'hidden',
   }
 
@@ -1094,7 +1055,6 @@ function TicketFlip() {
           transformStyle: 'preserve-3d',
           transition: 'transform 0.7s cubic-bezier(0.4, 0.2, 0.2, 1)',
           transform: flipped ? 'rotateY(180deg)' : 'rotateY(0deg)',
-          filter: 'drop-shadow(0 8px 18px rgba(0,0,0,0.45))',
         }}
       >
         {/* Front — sits in normal flow so it sets the card's size */}
@@ -1103,7 +1063,7 @@ function TicketFlip() {
           alt="Masquerade Ball ticket, front"
           draggable={false}
           style={{
-            display: 'block', width: '100%', height: 'auto', borderRadius: 12,
+            display: 'block', width: '100%', height: 'auto', borderRadius: 12, boxShadow: '0 8px 18px rgba(0,0,0,0.45)',
             backfaceVisibility: 'hidden', WebkitBackfaceVisibility: 'hidden'
           }}
         />
