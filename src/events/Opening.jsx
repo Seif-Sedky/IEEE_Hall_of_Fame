@@ -112,9 +112,7 @@ function MasquCharSprite({ archetype = 'short', skinColor = '#f5c396', hairColor
     isLong ? '.HHTTTTTTHH.' : isHijab ? '.AATTTTTTAA.' : '.TTTTTTTTTT.',
     isLong ? '.HHTTTTTTHH.' : '.TTTTTTTTTT.',
     '..TTTTTTTT..', '..PPPPPPPP..',
-    ...(frame % 2 === 0
-      ? ['..PP....PP..', '.PP......PP.', '.PP......PP.', 'BB........BB', 'BB........BB']
-      : ['..PPPPPPPP..', '...PPPPPP...', '....PPPP....', '...BB..BB...', '...BB..BB...']),
+    '..PP....PP..', '.PP......PP.', '.PP......PP.', 'BB........BB', 'BB........BB',
   ]
 
   const colorMap = { H: hairColor, S: skinColor, E: '#c9a84c', M: maskColor, T: shirtColor, P: pantsColor, B: shoesColor, A: accessoryColor, C: '#1a110b' }
@@ -335,16 +333,24 @@ function PhotoBrowser({ photos, onClose }) {
   )
 }
 
-// ─── Photo Stack on Round Table (small card preview) ──────────────────────────
+// ─── Photo Stack on Round Table (Surrounded by 6 Characters) ──────────────────
 function PhotoStack({ onOpen }) {
   const frame = useFrame(500)
   return (
     <div className="op-pstack-wrap">
       <div className="op-pstack-label px">📸 PHOTO TABLE</div>
       <div className="op-pstack-surround">
-        {/* Left attendee looking at photos */}
+        {/* Top-left attendee */}
+        <div className="op-pstack-char char-tl" title="Browsing photos">
+          <MasquCharSprite {...cfgAt(9)} frame={frame} size={0.55} />
+        </div>
+        {/* Top-right attendee */}
+        <div className="op-pstack-char char-tr" title="Browsing photos">
+          <MasquCharSprite {...cfgAt(5)} frame={frame} size={0.55} />
+        </div>
+        {/* Middle-left attendee */}
         <div className="op-pstack-char char-left" title="Browsing photos">
-          <MasquCharSprite {...cfgAt(9)} frame={frame} size={0.58} />
+          <MasquCharSprite {...cfgAt(2)} frame={frame} size={0.55} />
         </div>
 
         {/* Round table with printed photos */}
@@ -359,14 +365,17 @@ function PhotoStack({ onOpen }) {
           <span className="op-pstack-hint px">TAP TO BROWSE</span>
         </button>
 
-        {/* Right attendee looking at photos */}
+        {/* Middle-right attendee */}
         <div className="op-pstack-char char-right" title="Browsing photos">
-          <MasquCharSprite {...cfgAt(11)} frame={frame} size={0.58} />
+          <MasquCharSprite {...cfgAt(11)} frame={frame} size={0.55} />
         </div>
-
-        {/* Front/bottom attendee leaning in */}
-        <div className="op-pstack-char char-bottom" title="Browsing photos">
-          <MasquCharSprite {...cfgAt(5)} frame={frame} seated size={0.52} />
+        {/* Bottom-left attendee leaning in */}
+        <div className="op-pstack-char char-bl" title="Browsing photos">
+          <MasquCharSprite {...cfgAt(7)} frame={frame} seated size={0.5} />
+        </div>
+        {/* Bottom-right attendee leaning in */}
+        <div className="op-pstack-char char-br" title="Browsing photos">
+          <MasquCharSprite {...cfgAt(13)} frame={frame} seated size={0.5} />
         </div>
       </div>
     </div>
@@ -430,41 +439,78 @@ function PhotoBooth() {
               <span className="op-balloon b3">🎈</span>
             </div>
           </div>
-          <div className="op-booth-inside">
-            <MasquCharSprite {...cfgAt(9)} frame={frame} size={0.65} />
-            <MasquCharSprite {...cfgAt(5)} frame={frame} size={0.65} />
-            <MasquCharSprite {...cfgAt(11)} frame={frame} size={0.65} />
-          </div>
         </div>
       </div>
     </div>
   )
 }
 
-// ─── Man2osha Tables (3 round tables) ────────────────────────────────────────
+// ─── Man2osha Tables (3 round tables - surrounded by attendees) ──────────────
 function ManqoushaTables() {
   const frame = useFrame(450)
   const tables = [
-    { items: ['🫓','🫓','☕'], eaters: [0, 3, 6, 14] },
-    { items: ['🫓','🫓','🫓'], eaters: [7, 13, 2, 10] },
-    { items: ['☕','🫓','🫓'], eaters: [4, 8, 1, 12] },
+    {
+      items: ['🫓','🫓','☕','🫓'],
+      topEaters: [0, 6],
+      sideLeft: 3,
+      sideRight: 14,
+      bottomEaters: [1, 8],
+    },
+    {
+      items: ['🫓','☕','🫓','🫓'],
+      topEaters: [7, 2],
+      sideLeft: 13,
+      sideRight: 10,
+      bottomEaters: [4, 12],
+    },
+    {
+      items: ['☕','🫓','🫓','☕'],
+      topEaters: [5, 11],
+      sideLeft: 9,
+      sideRight: 15,
+      bottomEaters: [3, 7],
+    },
   ]
   return (
     <div className="op-mq-area">
       <div className="op-mq-area-label px">🫓 MAN2OSHA TABLES</div>
       <div className="op-mq-grid">
         {tables.map((t, ti) => (
-          <div key={ti} className="op-mq-unit">
-            <div className="op-mq-table-round">
-              <div className="op-mq-items-round">
-                {t.items.map((item, ii) => (
-                  <span key={ii} className="op-mq-item" style={{ animationDelay: (ti * 300 + ii * 200) + 'ms' }}>{item}</span>
-                ))}
+          <div key={ti} className="op-mq-unit-surround">
+            {/* Top eaters standing behind table */}
+            <div className="op-mq-top-eaters">
+              {t.topEaters.map((ei, j) => (
+                <div key={j} className="op-mq-eater" title="Eating man2osha">
+                  <MasquCharSprite {...cfgAt(ei)} frame={frame} size={0.5} />
+                </div>
+              ))}
+            </div>
+
+            {/* Middle row: Left eater - Table - Right eater */}
+            <div className="op-mq-middle-row">
+              <div className="op-mq-eater side" title="Eating man2osha">
+                <MasquCharSprite {...cfgAt(t.sideLeft)} frame={frame} size={0.5} />
+              </div>
+
+              <div className="op-mq-table-round">
+                <div className="op-mq-items-round">
+                  {t.items.map((item, ii) => (
+                    <span key={ii} className="op-mq-item" style={{ animationDelay: (ti * 250 + ii * 180) + 'ms' }}>{item}</span>
+                  ))}
+                </div>
+              </div>
+
+              <div className="op-mq-eater side" title="Drinking tea" style={{ transform: 'scaleX(-1)' }}>
+                <MasquCharSprite {...cfgAt(t.sideRight)} frame={frame} size={0.5} />
               </div>
             </div>
-            <div className="op-mq-eaters">
-              {t.eaters.map((ei, j) => (
-                <div key={j} className="op-mq-eater"><MasquCharSprite {...cfgAt(ei)} frame={frame} seated size={0.5} /></div>
+
+            {/* Bottom eaters in front of table */}
+            <div className="op-mq-bottom-eaters">
+              {t.bottomEaters.map((ei, j) => (
+                <div key={j} className="op-mq-eater" title="Eating man2osha">
+                  <MasquCharSprite {...cfgAt(ei)} frame={frame} seated size={0.48} />
+                </div>
               ))}
             </div>
           </div>
@@ -472,9 +518,10 @@ function ManqoushaTables() {
       </div>
       {/* Mingling crowd with food and drinks */}
       <div className="op-mq-crowd">
-        <div className="op-mq-mingler"><MasquCharSprite {...cfgAt(5)} frame={frame} size={0.52} /><span className="op-mq-mingler-food">🫓</span></div>
-        <div className="op-mq-mingler"><MasquCharSprite {...cfgAt(15)} frame={frame} size={0.52} /><span className="op-mq-mingler-food">☕</span></div>
-        <div className="op-mq-mingler"><MasquCharSprite {...cfgAt(9)} frame={frame} size={0.52} /><span className="op-mq-mingler-food">🫓</span></div>
+        <div className="op-mq-mingler"><MasquCharSprite {...cfgAt(4)} frame={frame} size={0.52} /><span className="op-mq-mingler-food">🫓</span></div>
+        <div className="op-mq-mingler"><MasquCharSprite {...cfgAt(8)} frame={frame} size={0.52} /><span className="op-mq-mingler-food">☕</span></div>
+        <div className="op-mq-mingler"><MasquCharSprite {...cfgAt(10)} frame={frame} size={0.52} /><span className="op-mq-mingler-food">🫓</span></div>
+        <div className="op-mq-mingler"><MasquCharSprite {...cfgAt(14)} frame={frame} size={0.52} /><span className="op-mq-mingler-food">☕</span></div>
       </div>
     </div>
   )

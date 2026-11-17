@@ -896,28 +896,35 @@ body.masquerade-theme .panel {
 .op-floor-tile{flex:1;height:100%;background:color-mix(in srgb,#1a3a8c calc(var(--oti,0)*3%+15%),#06091a);border-right:1px solid rgba(201,168,76,.08);animation:op-fblink 5s steps(1) calc(var(--oti,0)*200ms) infinite}
 @keyframes op-fblink{0%,88%,100%{opacity:1}89%,97%{opacity:.4}}
 
-/* ── Man2osha Tables (3 round) ─────────────────────────── */
+/* ── Man2osha Tables (3 round - surrounded by eaters) ───── */
 .op-mq-area{display:flex;flex-direction:column;gap:6px}
 .op-mq-area-label{font-size:5px;color:var(--gold);letter-spacing:1px;text-align:center}
-.op-mq-grid{display:flex;flex-direction:column;gap:10px}
-.op-mq-unit{display:flex;flex-direction:column;align-items:center;gap:4px}
+.op-mq-grid{display:flex;flex-direction:column;gap:12px}
+.op-mq-unit-surround{
+  display:flex;flex-direction:column;align-items:center;gap:0;
+  background:rgba(10,13,31,.55);border:1px solid rgba(201,168,76,.18);
+  border-radius:6px;padding:6px 4px 4px;position:relative;
+}
+.op-mq-top-eaters{display:flex;justify-content:center;gap:8px;margin-bottom:-6px;position:relative;z-index:1}
+.op-mq-middle-row{display:flex;align-items:center;justify-content:center;gap:3px;position:relative;z-index:2}
 .op-mq-table-round{
-  width:60px;height:60px;border-radius:50%;
+  width:58px;height:58px;border-radius:50%;
   background:radial-gradient(circle,#8B4513 0%,#6B3410 60%,#5a2d0c 100%);
   border:2px solid #000;box-shadow:2px 2px 0 #000,inset 0 2px 0 rgba(255,255,255,.12);
   display:flex;align-items:center;justify-content:center;
   image-rendering:pixelated;
 }
-.op-mq-items-round{display:flex;flex-wrap:wrap;gap:1px;justify-content:center;align-items:center;width:46px}
-.op-mq-item{font-size:14px;animation:op-mqw 3s ease-in-out infinite alternate;cursor:default}
+.op-mq-items-round{display:flex;flex-wrap:wrap;gap:1px;justify-content:center;align-items:center;width:44px}
+.op-mq-item{font-size:13px;animation:op-mqw 3s ease-in-out infinite alternate;cursor:default}
 @keyframes op-mqw{from{transform:rotate(-3deg)}to{transform:rotate(3deg)}}
-.op-mq-eaters{display:flex;justify-content:center;gap:2px;flex-wrap:wrap;max-width:85px}
+.op-mq-bottom-eaters{display:flex;justify-content:center;gap:8px;margin-top:-6px;position:relative;z-index:3}
 .op-mq-eater{image-rendering:pixelated}
-.op-mq-crowd{display:flex;justify-content:center;gap:6px;margin-top:4px}
+.op-mq-eater.side{filter:drop-shadow(1px 1px 0 rgba(0,0,0,.5))}
+.op-mq-crowd{display:flex;justify-content:center;gap:5px;margin-top:6px;flex-wrap:wrap}
 .op-mq-mingler{display:flex;align-items:center;gap:1px;image-rendering:pixelated;position:relative}
 .op-mq-mingler-food{font-size:11px;margin-left:-4px;margin-top:-6px;z-index:2}
 
-/* ── Photo Booth Area (booth + printer + table) ────────── */
+/* ── Photo Booth Area (booth + printer) ────────────────── */
 .op-booth-area{display:flex;flex-direction:column;gap:8px}
 .op-booth-wrap{display:flex;flex-direction:column;gap:4px}
 .op-booth-label{font-size:5px;color:var(--gold);letter-spacing:1px;text-align:center}
@@ -925,18 +932,17 @@ body.masquerade-theme .panel {
 .op-booth-backdrop{
   position:relative;
   background:linear-gradient(180deg,#1a3a8c 0%,#0d1535 100%);
-  padding:10px 6px 6px;min-height:60px;
+  padding:12px 6px 14px;min-height:72px;
   display:flex;align-items:center;justify-content:center;
   border-bottom:2px solid rgba(201,168,76,.3);overflow:hidden;
 }
 .op-booth-curtain-l,.op-booth-curtain-r{position:absolute;top:0;width:14px;height:100%;background:repeating-linear-gradient(180deg,#1a0a30,#1a0a30 6px,#120820 6px,#120820 12px);opacity:.7}
 .op-booth-curtain-l{left:0}.op-booth-curtain-r{right:0}
-.op-booth-mask{position:relative;z-index:2;filter:drop-shadow(0 0 8px rgba(201,168,76,.4))}
+.op-booth-mask{position:relative;z-index:2;filter:drop-shadow(0 0 10px rgba(201,168,76,.5))}
 .op-booth-balloons{position:absolute;top:4px;right:4px;display:flex;gap:1px;z-index:3}
 .op-balloon{font-size:12px;animation:op-bsway 3s ease-in-out infinite alternate}
 .b1{animation-delay:0s}.b2{animation-delay:.8s}.b3{animation-delay:1.5s}
 @keyframes op-bsway{from{transform:rotate(-6deg)}to{transform:rotate(6deg)}}
-.op-booth-inside{display:flex;justify-content:center;gap:2px;padding:4px 2px;background:#06091a;image-rendering:pixelated}
 
 /* ── Instant Print Machine ─────────────────────────────── */
 .op-printer-wrap{display:flex;flex-direction:column;align-items:center;gap:4px}
@@ -963,14 +969,23 @@ body.masquerade-theme .panel {
 .op-booth-posers{display:flex;justify-content:center;gap:2px;image-rendering:pixelated}
 .op-booth-poser{image-rendering:pixelated}
 
-/* ── Photo Stack on Round Table (Surrounded by Characters) ── */
-.op-pstack-wrap{display:flex;flex-direction:column;align-items:center;gap:3px;margin-top:6px}
+/* ── Photo Stack on Round Table (Surrounded by 6 Characters) ── */
+.op-pstack-wrap{display:flex;flex-direction:column;align-items:center;gap:3px;margin-top:8px}
 .op-pstack-label{font-size:5px;color:var(--gold);letter-spacing:1px}
-.op-pstack-surround{position:relative;display:flex;align-items:center;justify-content:center;padding:10px 16px 14px}
-.op-pstack-char{position:absolute;z-index:4;image-rendering:pixelated;filter:drop-shadow(1px 2px 0 rgba(0,0,0,.6))}
-.op-pstack-char.char-left{left:-2px;top:45%;transform:translateY(-50%)}
-.op-pstack-char.char-right{right:-2px;top:45%;transform:translateY(-50%) scaleX(-1)}
-.op-pstack-char.char-bottom{bottom:-4px;left:50%;transform:translateX(-50%)}
+.op-pstack-surround{
+  position:relative;display:flex;align-items:center;justify-content:center;
+  padding:14px 18px 16px;min-height:120px;
+}
+.op-pstack-char{
+  position:absolute;z-index:4;image-rendering:pixelated;
+  filter:drop-shadow(1px 2px 0 rgba(0,0,0,.6));
+}
+.op-pstack-char.char-tl{top:-4px;left:4px}
+.op-pstack-char.char-tr{top:-4px;right:4px;transform:scaleX(-1)}
+.op-pstack-char.char-left{left:-10px;top:48%;transform:translateY(-50%)}
+.op-pstack-char.char-right{right:-10px;top:48%;transform:translateY(-50%) scaleX(-1)}
+.op-pstack-char.char-bl{bottom:-8px;left:10px}
+.op-pstack-char.char-br{bottom:-8px;right:10px;transform:scaleX(-1)}
 
 .op-pstack-table{
   position:relative;cursor:pointer;background:transparent;border:none;padding:0;
