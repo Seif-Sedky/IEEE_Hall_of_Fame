@@ -390,19 +390,19 @@ function PhotoCorner({ onOpen }) {
   }, [])
 
   // 8 Slot Coordinates within the PhotoCorner container:
-  // Slots 0 & 1: Photo Booth posers (in front of backdrop)
-  // Slots 2 & 3: Table Top
-  // Slots 4 & 5: Table Middle (Sides)
-  // Slots 6 & 7: Table Bottom
+  // Slots 0 & 1: Photo Booth posers (centered directly in front of camera machine at 42% & 58%)
+  // Slots 2 & 3: Table Top (close to round table)
+  // Slots 4 & 5: Table Sides (close to round table)
+  // Slots 6 & 7: Table Bottom (close to round table)
   const SLOTS = useMemo(() => [
-    { top: 28, left: 34, zIndex: 3, flip: false, isBooth: true },
-    { top: 28, left: 54, zIndex: 3, flip: true, isBooth: true },
-    { top: 168, left: 16, zIndex: 4, flip: false, isBooth: false },
-    { top: 168, left: 72, zIndex: 4, flip: true, isBooth: false },
-    { top: 215, left: 8, zIndex: 5, flip: false, isBooth: false },
-    { top: 215, left: 80, zIndex: 5, flip: true, isBooth: false },
-    { top: 268, left: 20, zIndex: 6, flip: false, isBooth: false },
-    { top: 268, left: 68, zIndex: 6, flip: true, isBooth: false },
+    { top: 26, left: 42, zIndex: 3, flip: false, isBooth: true },
+    { top: 26, left: 58, zIndex: 3, flip: true, isBooth: true },
+    { top: 196, left: 36, zIndex: 4, flip: false, isBooth: false },
+    { top: 196, left: 64, zIndex: 4, flip: true, isBooth: false },
+    { top: 236, left: 26, zIndex: 5, flip: false, isBooth: false },
+    { top: 236, left: 74, zIndex: 5, flip: true, isBooth: false },
+    { top: 278, left: 37, zIndex: 6, flip: false, isBooth: false },
+    { top: 278, left: 63, zIndex: 6, flip: true, isBooth: false },
   ], [])
 
   const CORNER_ATTENDEES = useMemo(() => [
@@ -442,17 +442,23 @@ function PhotoCorner({ onOpen }) {
         </div>
       </div>
 
-      {/* ── 2. The Instant Camera / Printer facing posers ── */}
+      {/* ── 2. The Instant Camera / Printer facing posers (Bigger retro photo machine) ── */}
       <div className="op-printer-center">
         <div className={`op-printer${flash ? ' op-printer-flash' : ''}`}>
+          <div className="op-printer-top">
+            <span className="op-printer-flashbulb">⚡</span>
+            <span className="op-printer-viewfinder" />
+          </div>
           <div className="op-printer-body">
             <div className="op-printer-lens" />
-            <div className="op-printer-label px">INSTANT<br />PRINT</div>
+            <div className="op-printer-label px">INSTANT<br />PHOTO BOOTH</div>
           </div>
           {flash && <div className="op-flash-burst" aria-hidden="true" />}
           <div className="op-printer-output">
             <div className="op-printer-photo-out" />
           </div>
+          <div className="op-printer-stand" />
+          <div className="op-printer-legs" />
         </div>
       </div>
 
@@ -492,7 +498,7 @@ function PhotoCorner({ onOpen }) {
               {...att.cfg}
               frame={frame}
               moving={isMoving}
-              size={slot.isBooth ? 0.65 : 0.54}
+              size={slot.isBooth ? 0.68 : 0.52}
             />
           </div>
         )
