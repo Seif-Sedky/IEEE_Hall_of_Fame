@@ -26,7 +26,7 @@ const ROLE_PROFILES = {
   },
   'shahd-hisham': {
     openingRole: 'PROJECTOR & VISUALS LEAD 🖥️',
-    openingDesc: 'Stationed at the control laptop desk with Roaa, directing visuals, cueing presentation slides, and keeping the big screen perfectly synced!',
+    openingDesc: 'Stationed at the control laptop desk with Roaa, directing visuals, cueing presentation slides, and getting the IT to work',
     badgeColor: '#3888e8',
   },
   'roaa-wael': {
