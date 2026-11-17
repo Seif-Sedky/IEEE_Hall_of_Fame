@@ -1060,8 +1060,8 @@ function RoamingCrowd() {
 
 // ─── Ticket image (flips on hover / tap) ─────────────────────────────────────
 // Put your images in public/opening/ (or change these paths)
-const TICKET_FRONT = 'opening/ticket-front.png'
-const TICKET_BACK = 'opening/ticket-back.png'
+const TICKET_FRONT = 'public/opening/ticket-front.png'
+const TICKET_BACK = 'public/opening/ticket-back.png'
 
 function TicketFlip() {
   const [flipped, setFlipped] = useState(false)
