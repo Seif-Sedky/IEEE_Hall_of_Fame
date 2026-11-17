@@ -81,7 +81,7 @@ const ROLE_PROFILES = {
   },
   'lojaine': {
     openingRole: 'MASQUERADE ATTENDEE 🎭',
-    openingDesc: 'El me2akelana.',
+    openingDesc: 'El me2akelana benafsaha honoured us with her presence 💵💶💷',
     badgeColor: '#c9a84c',
   },
   'albarra-mohamed': {
@@ -134,7 +134,22 @@ const ROLE_PROFILES = {
     openingRole: 'MASQUERADE ATTENDEE 🎭',
     openingDesc: 'Ebnena el charisma, also came without a mask',
     badgeColor: '#58a0b0',
-  }
+  },
+  'fady-salah': {
+    openingRole: 'MASQUERADE ATTENDEE 🎭',
+    openingDesc: 'End of day vibes got him GOOD',
+    badgeColor: '#c9a84c',
+  },
+  'sama-sherif': {
+    openingRole: 'MASQUERADE ATTENDEE 🎭',
+    openingDesc: 'Rumors say she also came in without a mask 👀👀',
+    badgeColor: '#58a0b0',
+  },
+  'aya-mohamed': {
+    openingRole: 'MASQUERADE ATTENDEE 🎭',
+    openingDesc: 'One of our photobooth stars',
+    badgeColor: '#c9a84c',
+  },
 
 
 
