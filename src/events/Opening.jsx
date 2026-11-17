@@ -36,12 +36,12 @@ const ROLE_PROFILES = {
   },
   'hana-mohamed': {
     openingRole: 'REGISTRATION & WELCOME LEAD 📋',
-    openingDesc: 'Welcomed arriving guests at the silver registration booth with Seif, checking tickets, managing the guest list, and handing out masquerade masks!',
+    openingDesc: 'Welcomed arriving guests at the silver registration booth with Saif, checking tickets, managing the guest list, and handing out masquerade masks!',
     badgeColor: '#c9a84c',
   },
-  'seif-alaa': {
+  'saif-abdelaziz': {
     openingRole: 'REGISTRATION & WELCOME LEAD 🖊️',
-    openingDesc: 'Manned the silvery check-in counter with Hana, coordinating the ~100 attendee arrivals and kicking off everyone’s masquerade night with high spirits!',
+    openingDesc: 'Manned the silvery check-in counter with Hana, coordinating the ~100 attendee arrivals and checking in guests as they arrived!',
     badgeColor: '#58a0b0',
   },
 }
@@ -71,9 +71,9 @@ const MASKED_ARCHETYPES = {
   hijab: [
     '....AAAA....',
     '..AAAAAAAA..',
-    '.AAAMMMSAAA.',
+    '.AAMMMMMSAA.',
     '.AA.M..M.AA.',
-    '..AAAAAAAA..',
+    '..AASSSSAA..',
   ],
   cap: [
     '....CCCC....',
@@ -102,13 +102,13 @@ function MasquCharSprite({ archetype = 'short', skinColor = '#f5c396', hairColor
 
   const rows = seated ? [
     hairRows[0], hairRows[1], hairRows[2], hairRows[3], hairRows[4],
-    isHijab ? '..AAAAAAAA..' : '....SSSS....',
+    isHijab ? '..AASSSSAA..' : '....SSSS....',
     isLong ? '.HHTTTTTTHH.' : isHijab ? '.AATTTTTTAA.' : '.TTTTTTTTTT.',
     isLong ? '.HHTTTTTTHH.' : '.TTTTTTTTTT.',
     '..TTTTTTTT..', '..PPPPPPPP..', '..PP....PP..', '..PP....PP..',
   ] : [
     hairRows[0], hairRows[1], hairRows[2], hairRows[3], hairRows[4],
-    isHijab ? '..AAAAAAAA..' : '....SSSS....',
+    isHijab ? '..AASSSSAA..' : '....SSSS....',
     isLong ? '.HHTTTTTTHH.' : isHijab ? '.AATTTTTTAA.' : '.TTTTTTTTTT.',
     isLong ? '.HHTTTTTTHH.' : '.TTTTTTTTTT.',
     '..TTTTTTTT..', '..PPPPPPPP..',
@@ -159,7 +159,7 @@ const HOST_STYLES = {
   'shahd-hisham': { archetype: 'long', skinColor: '#ffdfc4', hairColor: '#111115', maskColor: '#3888e8', shirtColor: '#181020', shoesColor: '#fff' },
   'roaa-wael': { archetype: 'hijab', skinColor: '#f5c396', hairColor: '#3d2314', maskColor: '#c41535', shirtColor: '#181020', accessoryColor: '#c41535', shoesColor: '#fff' },
   'hana-mohamed': { archetype: 'long', skinColor: '#ffdfc4', hairColor: '#5a3d28', maskColor: '#f8a808', shirtColor: '#0a1020', shoesColor: '#fff' },
-  'seif-alaa': { archetype: 'short', skinColor: '#f5c396', hairColor: '#1a110b', maskColor: '#d35400', shirtColor: '#1a1a2e', shoesColor: '#c9a84c' },
+  'saif-abdelaziz': { archetype: 'short', skinColor: '#f5c396', hairColor: '#1a110b', maskColor: '#d35400', shirtColor: '#1a1a2e', shoesColor: '#c9a84c' },
 }
 
 // ─── useFrame helper ─────────────────────────────────────────────────────────
@@ -337,19 +337,38 @@ function PhotoBrowser({ photos, onClose }) {
 
 // ─── Photo Stack on Round Table (small card preview) ──────────────────────────
 function PhotoStack({ onOpen }) {
+  const frame = useFrame(500)
   return (
     <div className="op-pstack-wrap">
       <div className="op-pstack-label px">📸 PHOTO TABLE</div>
-      <button className="op-pstack-table" onClick={onOpen} title="Browse the printed photos!">
-        <div className="op-pstack-surface">
-          <div className="op-pstack-card c1"><img src={B + OPENING_PHOTOS[0]} alt="" /></div>
-          <div className="op-pstack-card c2"><img src={B + OPENING_PHOTOS[4]} alt="" /></div>
-          <div className="op-pstack-card c3"><img src={B + OPENING_PHOTOS[9]} alt="" /></div>
-          <div className="op-pstack-card c4"><img src={B + OPENING_PHOTOS[15]} alt="" /></div>
-          <div className="op-pstack-card c5"><img src={B + OPENING_PHOTOS[20]} alt="" /></div>
+      <div className="op-pstack-surround">
+        {/* Left attendee looking at photos */}
+        <div className="op-pstack-char char-left" title="Browsing photos">
+          <MasquCharSprite {...cfgAt(9)} frame={frame} size={0.58} />
         </div>
-        <span className="op-pstack-hint px">TAP TO BROWSE</span>
-      </button>
+
+        {/* Round table with printed photos */}
+        <button className="op-pstack-table" onClick={onOpen} title="Browse the printed photos!">
+          <div className="op-pstack-surface">
+            <div className="op-pstack-card c1"><img src={B + OPENING_PHOTOS[0]} alt="" /></div>
+            <div className="op-pstack-card c2"><img src={B + OPENING_PHOTOS[4]} alt="" /></div>
+            <div className="op-pstack-card c3"><img src={B + OPENING_PHOTOS[9]} alt="" /></div>
+            <div className="op-pstack-card c4"><img src={B + OPENING_PHOTOS[15]} alt="" /></div>
+            <div className="op-pstack-card c5"><img src={B + OPENING_PHOTOS[20]} alt="" /></div>
+          </div>
+          <span className="op-pstack-hint px">TAP TO BROWSE</span>
+        </button>
+
+        {/* Right attendee looking at photos */}
+        <div className="op-pstack-char char-right" title="Browsing photos">
+          <MasquCharSprite {...cfgAt(11)} frame={frame} size={0.58} />
+        </div>
+
+        {/* Front/bottom attendee leaning in */}
+        <div className="op-pstack-char char-bottom" title="Browsing photos">
+          <MasquCharSprite {...cfgAt(5)} frame={frame} seated size={0.52} />
+        </div>
+      </div>
     </div>
   )
 }
@@ -424,11 +443,11 @@ function PhotoBooth() {
 
 // ─── Man2osha Tables (3 round tables) ────────────────────────────────────────
 function ManqoushaTables() {
-  const frame = useFrame(500)
+  const frame = useFrame(450)
   const tables = [
-    { items: ['🫓','🫓','☕'], eaters: [0, 3] },
-    { items: ['🫓','🫓','🫓'], eaters: [7, 13] },
-    { items: ['☕','🫓','🫓'], eaters: [4, 8] },
+    { items: ['🫓','🫓','☕'], eaters: [0, 3, 6, 14] },
+    { items: ['🫓','🫓','🫓'], eaters: [7, 13, 2, 10] },
+    { items: ['☕','🫓','🫓'], eaters: [4, 8, 1, 12] },
   ]
   return (
     <div className="op-mq-area">
@@ -445,11 +464,17 @@ function ManqoushaTables() {
             </div>
             <div className="op-mq-eaters">
               {t.eaters.map((ei, j) => (
-                <div key={j} className="op-mq-eater"><MasquCharSprite {...cfgAt(ei)} frame={frame} seated size={0.55} /></div>
+                <div key={j} className="op-mq-eater"><MasquCharSprite {...cfgAt(ei)} frame={frame} seated size={0.5} /></div>
               ))}
             </div>
           </div>
         ))}
+      </div>
+      {/* Mingling crowd with food and drinks */}
+      <div className="op-mq-crowd">
+        <div className="op-mq-mingler"><MasquCharSprite {...cfgAt(5)} frame={frame} size={0.52} /><span className="op-mq-mingler-food">🫓</span></div>
+        <div className="op-mq-mingler"><MasquCharSprite {...cfgAt(15)} frame={frame} size={0.52} /><span className="op-mq-mingler-food">☕</span></div>
+        <div className="op-mq-mingler"><MasquCharSprite {...cfgAt(9)} frame={frame} size={0.52} /><span className="op-mq-mingler-food">🫓</span></div>
       </div>
     </div>
   )
@@ -544,7 +569,6 @@ function CelebrationScene({ onSelectProfile }) {
 
   return (
     <div className="op-celeb">
-      <div className="op-celeb-badge px">🎉 PEAK ENERGY</div>
       <div className="op-celeb-row">
         {/* Camera left */}
         <div className="op-cam-person">
@@ -599,15 +623,15 @@ function RegistrationBooth({ onSelectProfile }) {
       <div className="op-reg-label px">📋 REGISTRATION & CHECK-IN BOOTH</div>
       <div className="op-reg-area">
 
-        {/* 1. Hana & Seif standing BEHIND the desk */}
+        {/* 1. Hana & Saif standing BEHIND the desk */}
         <div className="op-reg-staff-behind">
           <button className="op-char-btn op-staff-btn" onClick={() => onSelectProfile('hana-mohamed')} title="Click to view Hana's profile!">
             <div className="op-staff-name-tag px">HANA 🔍</div>
             <MasquCharSprite {...HOST_STYLES['hana-mohamed']} frame={frame} size={0.72} />
           </button>
-          <button className="op-char-btn op-staff-btn" onClick={() => onSelectProfile('seif-alaa')} title="Click to view Seif's profile!">
-            <div className="op-staff-name-tag px">SEIF 🔍</div>
-            <MasquCharSprite {...HOST_STYLES['seif-alaa']} frame={frame} size={0.72} />
+          <button className="op-char-btn op-staff-btn" onClick={() => onSelectProfile('saif-abdelaziz')} title="Click to view Saif's profile!">
+            <div className="op-staff-name-tag px">SAIF 🔍</div>
+            <MasquCharSprite {...HOST_STYLES['saif-abdelaziz']} frame={frame} size={0.72} />
           </button>
         </div>
 
