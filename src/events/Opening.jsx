@@ -166,6 +166,63 @@ const ATTENDEE_POOL = [
 ]
 const cfgAt = i => ATTENDEE_POOL[i % ATTENDEE_POOL.length]
 
+// ─── 22 Clickable Masquerade Attendees mapped to existing scene spots ────────
+const SEATED_GUESTS = {
+  12: { id: 'muhammed-walid', cfg: ATTENDEE_POOL[0] },
+  17: { id: 'aya-mohamed', cfg: ATTENDEE_POOL[2] },
+  24: { id: 'ismaeel-awad', cfg: ATTENDEE_POOL[12] },
+  31: { id: 'jana-saleh', cfg: ATTENDEE_POOL[1] },
+  38: { id: 'mohamed-magedd', cfg: ATTENDEE_POOL[6] },
+  53: { id: 'ahmed-tamer', cfg: ATTENDEE_POOL[9] },
+  56: { id: 'shams-raafat', cfg: ATTENDEE_POOL[5] },
+  62: { id: 'abdelmoneam-elbaz', cfg: ATTENDEE_POOL[10] },
+  77: { id: 'malak-abdelgawad', cfg: ATTENDEE_POOL[13] },
+  84: { id: 'omar-abouelnaga', cfg: ATTENDEE_POOL[3] },
+}
+
+const MQ_GUESTS = {
+  '0-top-1': { id: 'fady-salah', cfg: ATTENDEE_POOL[6] },
+  '0-right': { id: 'sama-sherif', cfg: ATTENDEE_POOL[4] },
+  '1-left': { id: 'sama-fayez', cfg: ATTENDEE_POOL[8] },
+  '2-top-0': { id: 'omar-elsamalouty', cfg: ATTENDEE_POOL[12] },
+  'mingler-1': { id: 'david-bishoy', cfg: ATTENDEE_POOL[0] },
+}
+
+const ROAM_GUESTS = {
+  1: { id: 'judy-yasser', cfg: ATTENDEE_POOL[7] },
+  4: { id: 'aly-saleh', cfg: ATTENDEE_POOL[10] },
+  6: { id: 'seif-alaa', cfg: ATTENDEE_POOL[14] },
+  8: { id: 'albarra-mohamed', cfg: ATTENDEE_POOL[9] },
+}
+
+const QUEUE_GUESTS = {
+  2: { id: 'lojaine', cfg: ATTENDEE_POOL[15] },
+  5: { id: 'adham-hany', cfg: ATTENDEE_POOL[3] },
+}
+
+function ClickableGuest({ memberId, onSelectProfile, flipLabel = false, children }) {
+  const member = byId[memberId]
+  if (!member) return children
+  const firstName = member.name.split(' ')[0].toUpperCase()
+  return (
+    <button
+      type="button"
+      className="op-char-btn op-guest-btn"
+      onClick={() => onSelectProfile(memberId)}
+      title={`Click to view ${member.name}'s profile!`}
+    >
+      <span
+        className="op-guest-pill px"
+        style={flipLabel ? { transform: 'translateX(-50%) scaleX(-1)' } : undefined}
+      >
+        {firstName}
+      </span>
+      <span className="op-guest-dot" aria-hidden="true">✦</span>
+      {children}
+    </button>
+  )
+}
+
 const HOST_STYLES = {
   'hala-aboraya': { archetype: 'hijab', skinColor: '#f5c396', hairColor: '#2a1a10', maskColor: '#c9a84c', shirtColor: '#0d0d20', accessoryColor: '#c9a84c', shoesColor: '#c9a84c' },
   'abdelrahman-tebry': { archetype: 'curly', skinColor: '#f5c396', hairColor: '#5a3d28', maskColor: '#1a3a8c', shirtColor: '#0a1020', shoesColor: '#c9a84c' },
@@ -183,11 +240,16 @@ function useFrame(ms = 350) {
   return f
 }
 
-// ─── VIP Member Profile Popup Modal ──────────────────────────────────────────
+// ─── Member Profile Popup Modal (VIPs + Masquerade Guests) ───────────────────
 function MemberProfileModal({ memberId, onClose }) {
   const member = byId[memberId]
-  const profile = ROLE_PROFILES[memberId]
-  if (!member || !profile) return null
+  if (!member) return null
+
+  const profile = ROLE_PROFILES[memberId] || {
+    openingRole: 'MASQUERADE ATTENDEE 🎭',
+    openingDesc: `Joined the IEEE 27' Masquerade Ball opening night celebration as ${member.role}!`,
+    badgeColor: '#c9a84c',
+  }
 
   return (
     <div className="overlay" onClick={onClose}>
@@ -197,7 +259,7 @@ function MemberProfileModal({ memberId, onClose }) {
         {/* Masquerade Gold Header */}
         <div className="op-pm-header">
           <div className="op-pm-header-deco" />
-          <span className="px op-pm-header-tag">MASQUERADE VIP · PROFILE</span>
+          <span className="px op-pm-header-tag">MASQUERADE · PROFILE</span>
           <div className="op-pm-header-deco" />
         </div>
 
@@ -214,7 +276,7 @@ function MemberProfileModal({ memberId, onClose }) {
 
             {/* Special Opening Night Badge */}
             <div className="op-pm-event-badge" style={{ '--bc': profile.badgeColor }}>
-              <span className="px op-pm-event-label">OPENING NIGHT ROLE</span>
+              <span className="px op-pm-event-label">OPENING NIGHT</span>
               <strong className="px op-pm-event-title">{profile.openingRole}</strong>
             </div>
           </div>
@@ -244,7 +306,7 @@ function MemberProfileModal({ memberId, onClose }) {
 }
 
 // ─── Seating Section (10 rows × 10 cols = 100 seats) ─────────────────────────
-function SeatingSection() {
+function SeatingSection({ onSelectProfile }) {
   const frame = useFrame(500)
   const ROWS = 10, COLS = 10
   return (
@@ -253,11 +315,17 @@ function SeatingSection() {
         <div key={ri} className="op-seat-row" style={{ zIndex: 10 + ri }}>
           {Array.from({ length: COLS }, (_, ci) => {
             const idx = ri * COLS + ci
-            const cfg = cfgAt(idx)
+            const guest = SEATED_GUESTS[idx]
+            const cfg = guest ? guest.cfg : cfgAt(idx)
+            const sprite = <MasquCharSprite {...cfg} frame={frame} seated size={0.52} />
             return (
               <div key={ci} className="op-seat-unit">
                 <div className="op-seated-char">
-                  <MasquCharSprite {...cfg} frame={frame} seated size={0.52} />
+                  {guest ? (
+                    <ClickableGuest memberId={guest.id} onSelectProfile={onSelectProfile}>
+                      {sprite}
+                    </ClickableGuest>
+                  ) : sprite}
                 </div>
                 <div className="op-chair-mini" aria-hidden="true" />
               </div>
@@ -389,11 +457,6 @@ function PhotoCorner({ onOpen }) {
     }
   }, [])
 
-  // 8 Slot Coordinates within the PhotoCorner container:
-  // Slots 0 & 1: Photo Booth posers (centered directly in front of camera machine at 42% & 58%)
-  // Slots 2 & 3: Table Top (close to round table)
-  // Slots 4 & 5: Table Sides (close to round table)
-  // Slots 6 & 7: Table Bottom (close to round table)
   const SLOTS = useMemo(() => [
     { top: 26, left: 42, zIndex: 3, flip: false, isBooth: true },
     { top: 26, left: 58, zIndex: 3, flip: true, isBooth: true },
@@ -442,7 +505,7 @@ function PhotoCorner({ onOpen }) {
         </div>
       </div>
 
-      {/* ── 2. The Instant Camera / Printer facing posers (Bigger retro photo machine) ── */}
+      {/* ── 2. The Instant Camera / Printer facing posers ── */}
       <div className="op-printer-center">
         <div className={`op-printer${flash ? ' op-printer-flash' : ''}`}>
           <div className="op-printer-top">
@@ -508,7 +571,7 @@ function PhotoCorner({ onOpen }) {
 }
 
 // ─── Man2osha Tables (3 round tables - surrounded by eaters + bounded walkers)
-function ManqoushaTables() {
+function ManqoushaTables({ onSelectProfile }) {
   const frame = useFrame(400)
   const [walkerPhase, setWalkerPhase] = useState(0)
 
@@ -517,19 +580,19 @@ function ManqoushaTables() {
     return () => clearInterval(id)
   }, [])
 
-  // Walker 1 (pacing vertically between Table 1 & 2): 0=stop T1, 1=walk down, 2=stop T2, 3=walk up
+  // Walker 1 (pacing vertically between Table 1 & 2)
   const w1Walking = walkerPhase === 1 || walkerPhase === 3
   const w1Y = (walkerPhase === 1 || walkerPhase === 2) ? 42 : 0
 
-  // Walker 2 (pacing vertically between Table 2 & 3): 0=walk down, 1=stop T3, 2=walk up, 3=stop T2
+  // Walker 2 (pacing vertically between Table 2 & 3)
   const w2Walking = walkerPhase === 0 || walkerPhase === 2
   const w2Y = (walkerPhase === 0 || walkerPhase === 1) ? 42 : 0
 
-  // Walker 3 (pacing horizontally in mingler corridor): -20px <-> +20px
+  // Walker 3 (pacing horizontally in mingler corridor)
   const w3Walking = walkerPhase === 1 || walkerPhase === 3
   const w3X = (walkerPhase === 1 || walkerPhase === 2) ? 20 : -20
 
-  // Walker 4 (pacing horizontally in opposite direction): +16px <-> -16px
+  // Walker 4 (pacing horizontally in opposite direction)
   const w4Walking = walkerPhase === 0 || walkerPhase === 2
   const w4X = (walkerPhase === 0 || walkerPhase === 1) ? -16 : 16
 
@@ -557,17 +620,29 @@ function ManqoushaTables() {
     },
   ]
 
+  const renderEater = (key, defaultCfgIdx, seated = false, flipLabel = false) => {
+    const guest = MQ_GUESTS[key]
+    const cfg = guest ? guest.cfg : cfgAt(defaultCfgIdx)
+    const sprite = <MasquCharSprite {...cfg} frame={frame} seated={seated} moving={false} size={seated ? 0.46 : 0.48} />
+    if (!guest) return sprite
+    return (
+      <ClickableGuest memberId={guest.id} onSelectProfile={onSelectProfile} flipLabel={flipLabel}>
+        {sprite}
+      </ClickableGuest>
+    )
+  }
+
   return (
     <div className="op-mq-area">
       <div className="op-mq-area-label px">🫓 MAN2OSHA TABLES</div>
       <div className="op-mq-grid">
         {tables.map((t, ti) => (
           <div key={ti} className="op-mq-unit-surround">
-            {/* Top eaters standing behind table (planted legs) */}
+            {/* Top eaters standing behind table */}
             <div className="op-mq-top-eaters">
               {t.topEaters.map((ei, j) => (
                 <div key={j} className="op-mq-eater" title="Eating man2osha">
-                  <MasquCharSprite {...cfgAt(ei)} frame={frame} moving={false} size={0.48} />
+                  {renderEater(`${ti}-top-${j}`, ei)}
                 </div>
               ))}
             </div>
@@ -575,7 +650,7 @@ function ManqoushaTables() {
             {/* Middle row: Left eater - Table - Right eater */}
             <div className="op-mq-middle-row">
               <div className="op-mq-eater side" title="Eating man2osha">
-                <MasquCharSprite {...cfgAt(t.sideLeft)} frame={frame} moving={false} size={0.48} />
+                {renderEater(`${ti}-left`, t.sideLeft)}
               </div>
 
               <div className="op-mq-table-round">
@@ -587,15 +662,15 @@ function ManqoushaTables() {
               </div>
 
               <div className="op-mq-eater side" title="Drinking tea" style={{ transform: 'scaleX(-1)' }}>
-                <MasquCharSprite {...cfgAt(t.sideRight)} frame={frame} moving={false} size={0.48} />
+                {renderEater(`${ti}-right`, t.sideRight, false, true)}
               </div>
             </div>
 
-            {/* Bottom eaters in front of table (planted legs) */}
+            {/* Bottom eaters in front of table */}
             <div className="op-mq-bottom-eaters">
               {t.bottomEaters.map((ei, j) => (
                 <div key={j} className="op-mq-eater" title="Eating man2osha">
-                  <MasquCharSprite {...cfgAt(ei)} frame={frame} seated moving={false} size={0.46} />
+                  {renderEater(`${ti}-bot-${j}`, ei, true)}
                 </div>
               ))}
             </div>
@@ -645,8 +720,12 @@ function ManqoushaTables() {
         </div>
 
         <div className="op-mq-mingler">
-          <MasquCharSprite {...cfgAt(10)} frame={frame} moving={false} size={0.5} />
-          <span className="op-mq-mingler-food">☕</span>
+          <ClickableGuest memberId={MQ_GUESTS['mingler-1'].id} onSelectProfile={onSelectProfile}>
+            <div style={{ display: 'flex', alignItems: 'center' }}>
+              <MasquCharSprite {...MQ_GUESTS['mingler-1'].cfg} frame={frame} moving={false} size={0.5} />
+              <span className="op-mq-mingler-food">☕</span>
+            </div>
+          </ClickableGuest>
         </div>
 
         <div
@@ -811,15 +890,12 @@ function CelebrationScene({ onSelectProfile }) {
     return () => clearInterval(id)
   }, [])
 
-  // Camera Left: moves between -14px and +8px
   const camLWalking = camPhase === 1 || camPhase === 3
   const camLX = (camPhase === 1 || camPhase === 2) ? -14 : 8
 
-  // Camera Right: moves between +14px and -8px
   const camRWalking = camPhase === 0 || camPhase === 2
   const camRX = (camPhase === 0 || camPhase === 1) ? 14 : -8
 
-  // Dance sway for shoulder riders
   const danceStep = frame % 4
   const danceX = danceStep === 1 ? -4 : danceStep === 3 ? 4 : 0
 
@@ -838,7 +914,7 @@ function CelebrationScene({ onSelectProfile }) {
           <MasquCharSprite {...cfgAt(4)} frame={frame} moving={camLWalking} size={0.65} />
         </div>
 
-        {/* Shoulder rider left (dancing around) */}
+        {/* Shoulder rider left (Yassin Nashy) */}
         <div
           className="op-shoulder"
           style={{
@@ -846,7 +922,11 @@ function CelebrationScene({ onSelectProfile }) {
             transition: 'transform 0.3s ease',
           }}
         >
-          <div className="op-rider"><MasquCharSprite {...cfgAt(8)} frame={frame} seated moving={false} size={0.52} /></div>
+          <div className="op-rider">
+            <ClickableGuest memberId="yassin-nashy" onSelectProfile={onSelectProfile}>
+              <MasquCharSprite {...ATTENDEE_POOL[12]} frame={frame} seated moving={false} size={0.52} />
+            </ClickableGuest>
+          </div>
           <div className="op-carrier"><MasquCharSprite {...cfgAt(5)} frame={frame} moving={true} size={0.65} /></div>
         </div>
 
@@ -933,11 +1013,20 @@ function RegistrationBooth({ onSelectProfile }) {
         <div className="op-reg-front-queue">
           <span className="op-queue-tag px">GUESTS ARRIVING ▼</span>
           <div className="op-reg-queue-line">
-            {[1, 3, 7, 12, 15, 9, 4, 10].map((ci, qi) => (
-              <div key={qi} className="op-reg-qperson" style={{ animationDelay: qi * 120 + 'ms' }}>
-                <MasquCharSprite {...cfgAt(ci)} frame={frame} size={0.52} />
-              </div>
-            ))}
+            {[1, 3, 7, 12, 15, 9, 4, 10].map((ci, qi) => {
+              const guest = QUEUE_GUESTS[qi]
+              const cfg = guest ? guest.cfg : cfgAt(ci)
+              const sprite = <MasquCharSprite {...cfg} frame={frame} size={0.52} />
+              return (
+                <div key={qi} className="op-reg-qperson" style={{ animationDelay: qi * 120 + 'ms' }}>
+                  {guest ? (
+                    <ClickableGuest memberId={guest.id} onSelectProfile={onSelectProfile}>
+                      {sprite}
+                    </ClickableGuest>
+                  ) : sprite}
+                </div>
+              )
+            })}
           </div>
         </div>
       </div>
@@ -946,7 +1035,7 @@ function RegistrationBooth({ onSelectProfile }) {
 }
 
 // ─── Roaming Crowd (guests wandering the open floor between seating & registration) ──
-const ROAM_H = 120            // strip height in px
+const ROAM_H = 120
 const ROAM_WALKERS = [
   { ci: 0, prop: '🥂', x: 8 }, { ci: 2, prop: null, x: 18 }, { ci: 5, prop: '🫓', x: 28 },
   { ci: 7, prop: null, x: 38 }, { ci: 9, prop: '☕', x: 47 }, { ci: 11, prop: '🥂', x: 56 },
@@ -955,7 +1044,7 @@ const ROAM_WALKERS = [
 ]
 const rand = (a, b) => a + Math.random() * (b - a)
 
-function RoamingCrowd() {
+function RoamingCrowd({ onSelectProfile }) {
   const frame = useFrame(260)
   const [, force] = useState(0)
   const walkers = useRef(
@@ -972,13 +1061,13 @@ function RoamingCrowd() {
       const nx = rand(4, 96)
       const ny = rand(6, ROAM_H - 34)
       const distPx = Math.hypot((nx - cur.x) * 6, ny - cur.y)
-      const dur = Math.max(1.6, distPx / 34)          // gentle stroll
+      const dur = Math.max(1.6, distPx / 34)
       walkers.current[i] = { x: nx, y: ny, dir: nx >= cur.x ? 1 : -1, walking: true, dur }
       force(t => t + 1)
       later(() => {
         walkers.current[i] = { ...walkers.current[i], walking: false }
         force(t => t + 1)
-        later(() => step(i), rand(900, 3200))          // pause, then wander again
+        later(() => step(i), rand(900, 3200))
       }, dur * 1000)
     }
 
@@ -989,11 +1078,20 @@ function RoamingCrowd() {
   return (
     <div
       className="op-roam"
-      aria-hidden="true"
       style={{ position: 'relative', width: '100%', height: ROAM_H, margin: 0, padding: 0 }}
     >
       {ROAM_WALKERS.map((w, i) => {
         const s = walkers.current[i]
+        const guest = ROAM_GUESTS[i]
+        const cfg = guest ? guest.cfg : cfgAt(w.ci)
+        const sprite = (
+          <>
+            <MasquCharSprite {...cfg} frame={frame} moving={s.walking} size={0.58} />
+            {w.prop && (
+              <span style={{ position: 'absolute', top: 12, right: -6, fontSize: 10, lineHeight: 1 }}>{w.prop}</span>
+            )}
+          </>
+        )
         return (
           <div
             key={i}
@@ -1001,17 +1099,21 @@ function RoamingCrowd() {
               position: 'absolute',
               left: `${s.x}%`,
               top: s.y,
-              zIndex: Math.round(s.y),                 // lower on screen = in front
+              zIndex: guest ? 150 + Math.round(s.y) : Math.round(s.y),
               transform: `translateX(-50%) scaleX(${s.dir})`,
               transition: s.walking ? `left ${s.dur}s linear, top ${s.dur}s linear` : 'none',
-              pointerEvents: 'none',
+              pointerEvents: guest ? 'auto' : 'none',
             }}
-            aria-hidden="true"
           >
-            <MasquCharSprite {...cfgAt(w.ci)} frame={frame} moving={s.walking} size={0.58} />
-            {w.prop && (
-              <span style={{ position: 'absolute', top: 12, right: -6, fontSize: 10, lineHeight: 1 }}>{w.prop}</span>
-            )}
+            {guest ? (
+              <ClickableGuest
+                memberId={guest.id}
+                onSelectProfile={onSelectProfile}
+                flipLabel={s.dir === -1}
+              >
+                {sprite}
+              </ClickableGuest>
+            ) : sprite}
           </div>
         )
       })}
@@ -1020,7 +1122,6 @@ function RoamingCrowd() {
 }
 
 // ─── Ticket image (flips on hover / tap) ─────────────────────────────────────
-// Put your images in public/opening/ (or change these paths)
 const TICKET_FRONT = 'opening/ticket-front.png'
 const TICKET_BACK = 'opening/ticket-back.png'
 
@@ -1040,7 +1141,7 @@ function TicketFlip() {
       aria-label="IEEE 27' Masquerade Ball ticket. Hover or tap to flip."
       onMouseEnter={() => setFlipped(true)}
       onMouseLeave={() => setFlipped(false)}
-      onClick={() => setFlipped(f => !f)}   // tap to flip on touch screens
+      onClick={() => setFlipped(f => !f)}
       onFocus={() => setFlipped(true)}
       onBlur={() => setFlipped(false)}
       style={{
@@ -1057,7 +1158,6 @@ function TicketFlip() {
           transform: flipped ? 'rotateY(180deg)' : 'rotateY(0deg)',
         }}
       >
-        {/* Front — sits in normal flow so it sets the card's size */}
         <img
           src={B + TICKET_FRONT}
           alt="Masquerade Ball ticket, front"
@@ -1067,7 +1167,6 @@ function TicketFlip() {
             backfaceVisibility: 'hidden', WebkitBackfaceVisibility: 'hidden'
           }}
         />
-        {/* Back */}
         <img
           src={B + TICKET_BACK}
           alt="Masquerade Ball ticket, back"
@@ -1094,7 +1193,6 @@ const PARTICLES = [
 ]
 
 // ─── Main Opening Component ──────────────────────────────────────────────────
-// ─── Main Opening Component ──────────────────────────────────────────────────
 export default function Opening() {
   const [photoBrowserOpen, setPhotoBrowserOpen] = useState(false)
   const [selectedProfile, setSelectedProfile] = useState(null)
@@ -1103,7 +1201,6 @@ export default function Opening() {
   const mapWrapRef = useRef(null)
   const mapRef = useRef(null)
 
-  // Turn on masquerade theme on the entire body background while in Opening section
   useEffect(() => {
     document.body.classList.add('masquerade-theme')
     return () => {
@@ -1111,7 +1208,6 @@ export default function Opening() {
     }
   }, [])
 
-  // Measure container width so mobile screens can zoom out to fit the full 860px map
   useEffect(() => {
     const wrap = mapWrapRef.current
     const map = mapRef.current
@@ -1223,14 +1319,14 @@ export default function Opening() {
           {/* ROW 2: Man2osha | Seating | Photo Booth + Table */}
           <div className="op-map-row op-row-mid">
             <div className="op-map-col">
-              <ManqoushaTables />
+              <ManqoushaTables onSelectProfile={setSelectedProfile} />
             </div>
             <div className="op-map-col op-col-seats">
               <div className="op-seating-wrap">
                 <div className="op-seating-label px">🪑 ATTENDEES (~100)</div>
-                <SeatingSection />
+                <SeatingSection onSelectProfile={setSelectedProfile} />
                 {/* Guests wandering right below the seats */}
-                <RoamingCrowd />
+                <RoamingCrowd onSelectProfile={setSelectedProfile} />
                 <div className="op-map-floor" aria-hidden="true">
                   {[...Array(16)].map((_, i) => <span key={i} className="op-floor-tile" style={{ '--oti': i }} />)}
                 </div>
