@@ -1118,7 +1118,7 @@ export default function Opening() {
           </div>
           <div className="op-map-col op-col-seats">
             <div className="op-seating-wrap">
-              <div className="op-seating-label px">🪑 ATTENDEES (~100)</div>
+              <div className="op-seating-label px">🪑 ATTENDEES</div>
               <SeatingSection />
               {/* Guests wandering right below the seats */}
               <RoamingCrowd />
