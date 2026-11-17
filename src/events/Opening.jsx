@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback, useMemo, memo } from 'react'
+import { useState, useEffect, useRef, useCallback, useMemo } from 'react'
 import members from '../data/members.json'
 
 const B = import.meta.env.BASE_URL
@@ -11,7 +11,7 @@ const OPENING_PHOTOS = Array.from({ length: 27 }, (_, i) => `opening/${i + 1}.jp
 const ROLE_PROFILES = {
   'hala-aboraya': {
     openingRole: 'NIGHT HOST / MC 🎤',
-    openingDesc: 'Co-hosted the opening alongside Tebry, electrifying the ballroom with charisma and keeping the entire crowd hyped all night long! (She lost her voice in the process)',
+    openingDesc: 'Co-hosted the Masquerade Ball alongside Tebry, electrifying the ballroom with charisma and keeping the entire crowd hyped all night long! (She lost her voice in the process)',
     badgeColor: '#c9a84c',
   },
   'abdelrahman-tebry': {
@@ -91,10 +91,10 @@ const MASKED_ARCHETYPES = {
   ],
 }
 
-const MasquCharSprite = memo(function MasquCharSprite({ archetype = 'short', skinColor = '#f5c396', hairColor = '#1a110b',
+function MasquCharSprite({ archetype = 'short', skinColor = '#f5c396', hairColor = '#1a110b',
   maskColor = '#1a3a8c', shirtColor = '#181020', pantsColor = '#1a1a2e',
   shoesColor = '#c9a84c', accessoryColor = '#c9a84c', frame = 0, seated = false,
-  moving = false, size = 1, fluid = false }) {
+  moving = false, size = 1 }) {
 
   const hairRows = MASKED_ARCHETYPES[archetype] || MASKED_ARCHETYPES.short
   const isHijab = archetype === 'hijab'
@@ -135,19 +135,15 @@ const MasquCharSprite = memo(function MasquCharSprite({ archetype = 'short', ski
   const W = 12, HPx = seated ? 12 : 15
   const w = Math.round(34 * size), h = Math.round((seated ? 36 : 42) * size)
   return (
-    <svg width={fluid ? undefined : w} height={fluid ? undefined : h}
-      viewBox={`0 0 ${W} ${HPx}`} shapeRendering="crispEdges"
-      style={fluid
-        ? { display: 'block', width: '100%', height: 'auto', imageRendering: 'pixelated' }
-        : { display: 'block', imageRendering: 'pixelated' }}
-      aria-hidden="true">
+    <svg width={w} height={h} viewBox={`0 0 ${W} ${HPx}`} shapeRendering="crispEdges"
+      style={{ display: 'block', imageRendering: 'pixelated' }} aria-hidden="true">
       {rows.flatMap((row, y) => [...row].map((char, x) => {
         const fill = colorMap[char]
         return fill ? <rect key={`${x}-${y}`} x={x} y={y} width={1} height={1} fill={fill} /> : null
       }))}
     </svg>
   )
-})
+}
 
 // ─── Character config pool for attendees ──────────────────────────────────────
 const ATTENDEE_POOL = [
@@ -247,96 +243,28 @@ function MemberProfileModal({ memberId, onClose }) {
   )
 }
 
-// ─── Attendees Hall (10 × 10 seats, bigger characters + people roaming) ──────
-const HALL_ROWS = 10, HALL_COLS = 10
-
-// Seats whose owners got up to mingle — their chairs stay empty while they roam
-const ROAMER_SEATS = [3, 12, 17, 24, 38, 42, 55, 61, 76, 83, 88, 95]
-const ROAMER_SET = new Set(ROAMER_SEATS)
-const ROAMER_PROPS = ['☕', null, '🫓', null, '📸', null, '🥤', null, '☕', null, '🫓', null]
-
-// Hall styles (.op-hall-*) live in styles.css. Sprites are fluid, so characters
-// scale with their seat cell.
-
+// ─── Seating Section (10 rows × 10 cols = 100 seats) ─────────────────────────
 function SeatingSection() {
+  const frame = useFrame(500)
+  const ROWS = 10, COLS = 10
   return (
-    <div className="op-hall">
-      <div className="op-hall-grid">
-        {Array.from({ length: HALL_ROWS * HALL_COLS }, (_, idx) => (
-          <div key={idx} className="op-hall-seat">
-            {!ROAMER_SET.has(idx) && (
-              <div className="op-hall-guest">
-                {/* frame is fixed at 0 so seated guests never re-render */}
-                <MasquCharSprite {...cfgAt(idx)} frame={0} seated fluid />
+    <div className="op-seating">
+      {Array.from({ length: ROWS }, (_, ri) => (
+        <div key={ri} className="op-seat-row" style={{ zIndex: 10 + ri }}>
+          {Array.from({ length: COLS }, (_, ci) => {
+            const idx = ri * COLS + ci
+            const cfg = cfgAt(idx)
+            return (
+              <div key={ci} className="op-seat-unit">
+                <div className="op-seated-char">
+                  <MasquCharSprite {...cfg} frame={frame} seated size={0.52} />
+                </div>
+                <div className="op-chair-mini" aria-hidden="true" />
               </div>
-            )}
-            <div className="op-hall-chair" aria-hidden="true" />
-          </div>
-        ))}
-      </div>
-
-      <Roamers />
-    </div>
-  )
-}
-
-// People who left their seats and wander the hall
-function Roamers() {
-  const frame = useFrame(280)
-  return (
-    <div className="op-hall-roam" aria-hidden="true">
-      {ROAMER_SEATS.map((seat, i) => (
-        <Roamer
-          key={seat}
-          cfg={cfgAt(seat)}
-          prop={ROAMER_PROPS[i % ROAMER_PROPS.length]}
-          startX={((seat % HALL_COLS) + 0.5) / HALL_COLS * 100}
-          startY={(Math.floor(seat / HALL_COLS) + 0.9) / HALL_ROWS * 100}
-          frame={frame}
-        />
+            )
+          })}
+        </div>
       ))}
-    </div>
-  )
-}
-
-function Roamer({ cfg, prop, startX, startY, frame }) {
-  const cur = useRef({ x: startX, y: startY })
-  const [st, setSt] = useState({ x: startX, y: startY, flip: false, walking: false, ms: 0 })
-
-  useEffect(() => {
-    let timer
-    const rand = (a, b) => a + Math.random() * (b - a)
-
-    const step = () => {
-      const x = rand(5, 95), y = rand(14, 97)
-      const dist = Math.hypot(x - cur.current.x, y - cur.current.y)
-      const ms = Math.max(1600, dist * 120)          // steady stroll, ~constant speed
-      setSt({ x, y, flip: x < cur.current.x, walking: true, ms })
-      cur.current = { x, y }
-      timer = setTimeout(() => {                       // arrived: stand and chat a bit
-        setSt(s => ({ ...s, walking: false }))
-        timer = setTimeout(step, rand(1200, 4000))
-      }, ms)
-    }
-
-    timer = setTimeout(step, rand(300, 3500))          // staggered start
-    return () => clearTimeout(timer)
-  }, [])
-
-  return (
-    <div
-      className="op-hall-roamer"
-      style={{
-        left: st.x + '%',
-        top: st.y + '%',
-        transform: 'translate(-50%, -100%)',            // feet sit on the target point
-        transitionDuration: st.ms + 'ms',
-      }}
-    >
-      <div style={{ transform: st.flip ? 'scaleX(-1)' : 'none' }}>
-        <MasquCharSprite {...cfg} frame={frame} moving={st.walking} fluid />
-      </div>
-      {prop && <span className="op-hall-prop">{prop}</span>}
     </div>
   )
 }
