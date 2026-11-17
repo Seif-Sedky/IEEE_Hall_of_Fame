@@ -2213,11 +2213,34 @@ body.masquerade-theme .panel {
 }
 
 /* ── The Map ───────────────────────────────────────────── */
-/* ── The Map ───────────────────────────────────────────── */
+.op-zoom-bar {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 8px;
+}
+
+.op-zoom-btn {
+  font-size: 7px;
+  color: var(--gold);
+  background: #06091a;
+  border: 2px solid var(--gold);
+  box-shadow: 2px 2px 0 #000;
+  padding: 6px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  letter-spacing: 0.5px;
+}
+
+.op-zoom-btn:active {
+  transform: translate(2px, 2px);
+  box-shadow: none;
+}
+
 .op-map-scroll {
   width: 100%;
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
+  touch-action: pan-x pan-y pinch-zoom;
   padding: 0 6px 8px 0;
 }
 

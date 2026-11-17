@@ -1094,9 +1094,14 @@ const PARTICLES = [
 ]
 
 // ─── Main Opening Component ──────────────────────────────────────────────────
+// ─── Main Opening Component ──────────────────────────────────────────────────
 export default function Opening() {
   const [photoBrowserOpen, setPhotoBrowserOpen] = useState(false)
   const [selectedProfile, setSelectedProfile] = useState(null)
+  const [fitMode, setFitMode] = useState(true)
+  const [dims, setDims] = useState({ scale: 1, height: 'auto' })
+  const mapWrapRef = useRef(null)
+  const mapRef = useRef(null)
 
   // Turn on masquerade theme on the entire body background while in Opening section
   useEffect(() => {
@@ -1105,6 +1110,26 @@ export default function Opening() {
       document.body.classList.remove('masquerade-theme')
     }
   }, [])
+
+  // Measure container width so mobile screens can zoom out to fit the full 860px map
+  useEffect(() => {
+    const wrap = mapWrapRef.current
+    const map = mapRef.current
+    if (!wrap || !map) return
+
+    const update = () => {
+      const scale = Math.min(1, wrap.clientWidth / 860)
+      setDims({ scale, height: map.offsetHeight })
+    }
+
+    update()
+    const ro = new ResizeObserver(update)
+    ro.observe(wrap)
+    ro.observe(map)
+    return () => ro.disconnect()
+  }, [])
+
+  const isScaled = fitMode && dims.scale < 1
 
   return (
     <div className="op-root">
@@ -1117,9 +1142,40 @@ export default function Opening() {
         <TicketFlip />
       </div>
 
+      {/* Mobile Zoom Toggle (only appears on screens narrower than 860px) */}
+      {dims.scale < 1 && (
+        <div className="op-zoom-bar">
+          <button
+            type="button"
+            className="op-zoom-btn px"
+            onClick={() => setFitMode(m => !m)}
+          >
+            {fitMode ? '🔍 ZOOM IN (100% SCROLL)' : '🗺️ ZOOM OUT (FIT FULL MAP)'}
+          </button>
+        </div>
+      )}
+
       {/* ═══ THE MAP ═══ */}
-      <div className="op-map-scroll">
-        <div className="op-map" role="region" aria-label="Opening Night Map">
+      <div
+        ref={mapWrapRef}
+        className="op-map-scroll"
+        style={
+          isScaled
+            ? { overflowX: 'hidden', height: dims.height !== 'auto' ? Math.ceil(dims.height * dims.scale) + 8 : 'auto' }
+            : undefined
+        }
+      >
+        <div
+          ref={mapRef}
+          className="op-map"
+          role="region"
+          aria-label="Opening Night Map"
+          style={
+            isScaled
+              ? { width: '860px', minWidth: '860px', transform: `scale(${dims.scale})`, transformOrigin: 'top left' }
+              : undefined
+          }
+        >
 
           {/* Disco Ball in Ceiling */}
           <div className="op-disco-ball-wrap" aria-hidden="true">
