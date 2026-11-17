@@ -147,7 +147,7 @@ const ROLE_PROFILES = {
   },
   'aya-mohamed': {
     openingRole: 'MASQUERADE ATTENDEE 🎭',
-    openingDesc: 'One of our photobooth stars',
+    openingDesc: 'One of our photobooth stars⭐⭐',
     badgeColor: '#c9a84c',
   },
 
