@@ -81,7 +81,7 @@ const ROLE_PROFILES = {
   },
   'lojaine': {
     openingRole: 'MASQUERADE ATTENDEE 🎭',
-    openingDesc: 'El me2akelana benafsaha honoured us with her presence 💵💶💷',
+    openingDesc: 'El me2akelana benafsaha enriched us with her presence 💵💶💷',
     badgeColor: '#c9a84c',
   },
   'albarra-mohamed': {
