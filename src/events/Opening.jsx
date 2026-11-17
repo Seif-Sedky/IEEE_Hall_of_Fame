@@ -243,165 +243,28 @@ function MemberProfileModal({ memberId, onClose }) {
   )
 }
 
-// ─── Seating Section (10 rows × (5 left + 5 right) = 100 seats + Aisle Walkers) ─
+// ─── Seating Section (10 rows × 10 cols = 100 seats) ─────────────────────────
 function SeatingSection() {
-  const frame = useFrame(400)
-  const [aislePhase, setAislePhase] = useState(0)
-
-  useEffect(() => {
-    const id = setInterval(() => setAislePhase(p => (p + 1) % 4), 3800)
-    return () => clearInterval(id)
-  }, [])
-
-  // Aisle Walkers moving around the theater space:
-  // Walker 1 (Center aisle - main stroll up & down the red carpet):
-  const w1Walking = aislePhase === 1 || aislePhase === 3
-  const w1Top = (aislePhase === 1 || aislePhase === 2) ? 210 : 16
-
-  // Walker 2 (Center aisle - mid-aisle roamer looking for seats):
-  const w2Walking = aislePhase === 0 || aislePhase === 2
-  const w2Top = (aislePhase === 0 || aislePhase === 1) ? 150 : 65
-
-  // Walker 3 (Left aisle walker - pacing along food tables border):
-  const w3Walking = aislePhase === 1 || aislePhase === 3
-  const w3Top = (aislePhase === 1 || aislePhase === 2) ? 180 : 25
-
-  // Walker 4 (Right aisle walker - pacing along photo booth border):
-  const w4Walking = aislePhase === 0 || aislePhase === 2
-  const w4Top = (aislePhase === 0 || aislePhase === 1) ? 30 : 190
-
-  // Walker 5 (Back aisle mingler - pacing horizontally behind rows):
-  const w5Walking = aislePhase === 1 || aislePhase === 3
-  const w5X = (aislePhase === 1 || aislePhase === 2) ? 24 : -24
-
-  const ROWS = 10
-  const LEFT_COLS = 5
-  const RIGHT_COLS = 5
-
+  const frame = useFrame(500)
+  const ROWS = 10, COLS = 10
   return (
-    <div className="op-seating-theater">
-      {/* Center Carpet Runner in Aisle */}
-      <div className="op-center-carpet" aria-hidden="true" />
-
-      {/* ── 1. The 100 Seated Attendees (10 rows × (5 left + 5 right) = 100 seats) ── */}
-      <div className="op-seating-rows">
-        {Array.from({ length: ROWS }, (_, ri) => (
-          <div key={ri} className="op-seat-row-split" style={{ zIndex: 10 + ri }}>
-            {/* Left seating block (5 seats) */}
-            <div className="op-seat-block op-block-left">
-              {Array.from({ length: LEFT_COLS }, (_, ci) => {
-                const idx = ri * (LEFT_COLS + RIGHT_COLS) + ci
-                const cfg = cfgAt(idx)
-                return (
-                  <div key={ci} className="op-seat-unit" title={`Seated attendee #${idx + 1}`}>
-                    <div className="op-seated-char">
-                      <MasquCharSprite {...cfg} frame={frame} seated moving={false} size={0.72} />
-                    </div>
-                    <div className="op-chair-mini" aria-hidden="true" />
-                  </div>
-                )
-              })}
-            </div>
-
-            {/* Center aisle gap */}
-            <div className="op-aisle-gap" aria-hidden="true" />
-
-            {/* Right seating block (5 seats) */}
-            <div className="op-seat-block op-block-right">
-              {Array.from({ length: RIGHT_COLS }, (_, ci) => {
-                const idx = ri * (LEFT_COLS + RIGHT_COLS) + LEFT_COLS + ci
-                const cfg = cfgAt(idx)
-                return (
-                  <div key={ci} className="op-seat-unit" title={`Seated attendee #${idx + 1}`}>
-                    <div className="op-seated-char">
-                      <MasquCharSprite {...cfg} frame={frame} seated moving={false} size={0.72} />
-                    </div>
-                    <div className="op-chair-mini" aria-hidden="true" />
-                  </div>
-                )
-              })}
-            </div>
-          </div>
-        ))}
-      </div>
-
-      {/* ── 2. People moving around the place (Aisles & Roamers) ── */}
-      {/* Center Aisle Walker 1 (strolling up and down red carpet) */}
-      <div
-        className="op-aisle-roamer roamer-center"
-        style={{
-          top: `${w1Top}px`,
-          left: '50%',
-          transform: `translate(-50%, 0) scaleX(${w1Walking && w1Top > 100 ? 1 : -1})`,
-          transition: 'top 2.5s ease-in-out',
-          zIndex: 25,
-        }}
-        title="Strolling down center aisle"
-      >
-        <MasquCharSprite {...cfgAt(3)} frame={frame} moving={w1Walking} size={0.65} />
-      </div>
-
-      {/* Center Aisle Walker 2 */}
-      <div
-        className="op-aisle-roamer roamer-center-2"
-        style={{
-          top: `${w2Top}px`,
-          left: '50%',
-          transform: `translate(-50%, 0) scaleX(${w2Walking && w2Top > 100 ? -1 : 1})`,
-          transition: 'top 2.5s ease-in-out',
-          zIndex: 24,
-        }}
-        title="Looking for a seat"
-      >
-        <MasquCharSprite {...cfgAt(12)} frame={frame} moving={w2Walking} size={0.65} />
-      </div>
-
-      {/* Left Aisle Walker */}
-      <div
-        className="op-aisle-roamer roamer-left"
-        style={{
-          top: `${w3Top}px`,
-          left: '6px',
-          transform: `scaleX(${w3Walking && w3Top > 100 ? 1 : -1})`,
-          transition: 'top 2.5s ease-in-out',
-          zIndex: 26,
-        }}
-        title="Mingling along the left aisle"
-      >
-        <MasquCharSprite {...cfgAt(7)} frame={frame} moving={w3Walking} size={0.62} />
-      </div>
-
-      {/* Right Aisle Walker */}
-      <div
-        className="op-aisle-roamer roamer-right"
-        style={{
-          top: `${w4Top}px`,
-          right: '6px',
-          transform: `scaleX(${w4Walking && w4Top > 100 ? -1 : 1})`,
-          transition: 'top 2.5s ease-in-out',
-          zIndex: 26,
-        }}
-        title="Walking towards photo booth"
-      >
-        <MasquCharSprite {...cfgAt(15)} frame={frame} moving={w4Walking} size={0.62} />
-      </div>
-
-      {/* Back Area Minglers */}
-      <div className="op-back-roamers" aria-hidden="true">
-        <div
-          className="op-back-walker"
-          style={{
-            transform: `translateX(${w5X}px) scaleX(${w5Walking && w5X > 0 ? 1 : -1})`,
-            transition: 'transform 2s ease-in-out',
-          }}
-          title="Strolling in the back"
-        >
-          <MasquCharSprite {...cfgAt(1)} frame={frame} moving={w5Walking} size={0.62} />
+    <div className="op-seating">
+      {Array.from({ length: ROWS }, (_, ri) => (
+        <div key={ri} className="op-seat-row" style={{ zIndex: 10 + ri }}>
+          {Array.from({ length: COLS }, (_, ci) => {
+            const idx = ri * COLS + ci
+            const cfg = cfgAt(idx)
+            return (
+              <div key={ci} className="op-seat-unit">
+                <div className="op-seated-char">
+                  <MasquCharSprite {...cfg} frame={frame} seated size={0.52} />
+                </div>
+                <div className="op-chair-mini" aria-hidden="true" />
+              </div>
+            )
+          })}
         </div>
-        <div className="op-back-stander" title="Watching from the back">
-          <MasquCharSprite {...cfgAt(8)} frame={frame} moving={false} size={0.62} />
-        </div>
-      </div>
+      ))}
     </div>
   )
 }
@@ -1181,7 +1044,7 @@ export default function Opening() {
           </div>
           <div className="op-map-col op-col-seats">
             <div className="op-seating-wrap">
-              <div className="op-seating-label px">🪑 GRAND BALLROOM · ATTENDEES (~100 SEATED + ROAMERS)</div>
+              <div className="op-seating-label px">🪑 ATTENDEES (~100)</div>
               <SeatingSection />
               <div className="op-map-floor" aria-hidden="true">
                 {[...Array(16)].map((_, i) => <span key={i} className="op-floor-tile" style={{ '--oti': i }} />)}
