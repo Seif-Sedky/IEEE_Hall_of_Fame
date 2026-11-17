@@ -11,7 +11,7 @@ const OPENING_PHOTOS = Array.from({ length: 27 }, (_, i) => `opening/${i + 1}.jp
 const ROLE_PROFILES = {
   'hala-aboraya': {
     openingRole: 'NIGHT HOST / MC 🎤',
-    openingDesc: 'Co-hosted the Masquerade Ball alongside Tebry, electrifying the ballroom with charisma and keeping the entire crowd hyped all night long! (She lost her voice in the process)',
+    openingDesc: 'Co-hosted the opening night alongside Tebry, electrifying the ballroom with charisma and keeping the entire crowd hyped all night long! (She lost her voice in the process)',
     badgeColor: '#c9a84c',
   },
   'abdelrahman-tebry': {
@@ -945,6 +945,93 @@ function RegistrationBooth({ onSelectProfile }) {
   )
 }
 
+// ─── Roaming Crowd (guests wandering the open floor between seating & registration) ──
+const ROAM_H = 120            // strip height in px
+const ROAM_WALKERS = [
+  { ci: 0, prop: '🥂', x: 8 }, { ci: 2, prop: null, x: 18 }, { ci: 5, prop: '🫓', x: 28 },
+  { ci: 7, prop: null, x: 38 }, { ci: 9, prop: '☕', x: 47 }, { ci: 11, prop: '🥂', x: 56 },
+  { ci: 13, prop: null, x: 65 }, { ci: 14, prop: '🎭', x: 74 }, { ci: 3, prop: null, x: 83 },
+  { ci: 6, prop: '🥂', x: 91 }, { ci: 10, prop: '☕', x: 33 }, { ci: 15, prop: null, x: 70 },
+]
+const rand = (a, b) => a + Math.random() * (b - a)
+
+function RoamingCrowd() {
+  const frame = useFrame(260)
+  const [, force] = useState(0)
+  const walkers = useRef(
+    ROAM_WALKERS.map(w => ({ x: w.x, y: rand(8, ROAM_H - 34), dir: Math.random() < 0.5 ? 1 : -1, walking: false, dur: 0 }))
+  )
+
+  useEffect(() => {
+    let alive = true
+    const timers = []
+    const later = (fn, ms) => { const id = setTimeout(() => alive && fn(), ms); timers.push(id) }
+
+    const step = (i) => {
+      const cur = walkers.current[i]
+      const nx = rand(4, 96)
+      const ny = rand(6, ROAM_H - 34)
+      const distPx = Math.hypot((nx - cur.x) * 6, ny - cur.y)
+      const dur = Math.max(1.6, distPx / 34)          // gentle stroll
+      walkers.current[i] = { x: nx, y: ny, dir: nx >= cur.x ? 1 : -1, walking: true, dur }
+      force(t => t + 1)
+      later(() => {
+        walkers.current[i] = { ...walkers.current[i], walking: false }
+        force(t => t + 1)
+        later(() => step(i), rand(900, 3200))          // pause, then wander again
+      }, dur * 1000)
+    }
+
+    ROAM_WALKERS.forEach((_, i) => later(() => step(i), rand(0, 2500)))
+    return () => { alive = false; timers.forEach(clearTimeout) }
+  }, [])
+
+  return (
+    <div
+      className="op-roam"
+      aria-label="Guests mingling on the dance floor"
+      style={{
+        position: 'relative', width: '100%', height: ROAM_H, margin: '14px 0 4px',
+        borderTop: '2px dashed rgba(201,168,76,0.45)', borderBottom: '2px dashed rgba(201,168,76,0.45)',
+        background: 'linear-gradient(180deg, rgba(201,168,76,0.05), rgba(106,47,160,0.10))',
+        overflow: 'hidden',
+      }}
+    >
+      <div
+        className="px"
+        style={{ position: 'absolute', top: 4, left: 10, fontSize: 9, letterSpacing: 1, color: '#c9a84c', opacity: 0.85, zIndex: 999, pointerEvents: 'none' }}
+        aria-hidden="true"
+      >
+        🥂 MINGLING FLOOR
+      </div>
+
+      {ROAM_WALKERS.map((w, i) => {
+        const s = walkers.current[i]
+        return (
+          <div
+            key={i}
+            style={{
+              position: 'absolute',
+              left: `${s.x}%`,
+              top: s.y,
+              zIndex: Math.round(s.y),                 // lower on screen = in front
+              transform: `translateX(-50%) scaleX(${s.dir})`,
+              transition: s.walking ? `left ${s.dur}s linear, top ${s.dur}s linear` : 'none',
+              pointerEvents: 'none',
+            }}
+            aria-hidden="true"
+          >
+            <MasquCharSprite {...cfgAt(w.ci)} frame={frame} moving={s.walking} size={0.58} />
+            {w.prop && (
+              <span style={{ position: 'absolute', top: 12, right: -6, fontSize: 10, lineHeight: 1 }}>{w.prop}</span>
+            )}
+          </div>
+        )
+      })}
+    </div>
+  )
+}
+
 // ─── Floating Particles ───────────────────────────────────────────────────────
 const PARTICLES = [
   { type: 'bat', style: { top: '6%', left: '8%', animationDelay: '0s', animationDuration: '7s' } },
@@ -1055,6 +1142,9 @@ export default function Opening() {
             <PhotoCorner onOpen={() => setPhotoBrowserOpen(true)} />
           </div>
         </div>
+
+        {/* Roaming guests between seating and registration */}
+        <RoamingCrowd />
 
         {/* Aisle */}
         <div className="op-aisle"><span className="op-aisle-arr px" aria-hidden="true">▼  ▼  ▼</span></div>
