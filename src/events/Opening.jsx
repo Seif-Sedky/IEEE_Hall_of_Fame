@@ -217,7 +217,6 @@ function ClickableGuest({ memberId, onSelectProfile, flipLabel = false, children
       >
         {firstName}
       </span>
-      <span className="op-guest-dot" aria-hidden="true">✦</span>
       {children}
     </button>
   )
