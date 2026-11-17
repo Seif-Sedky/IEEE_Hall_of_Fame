@@ -11,7 +11,7 @@ const OPENING_PHOTOS = Array.from({ length: 27 }, (_, i) => `opening/${i + 1}.jp
 const ROLE_PROFILES = {
   'hala-aboraya': {
     openingRole: 'NIGHT HOST / MC 🎤',
-    openingDesc: 'Co-hosted the opening alongside Tebry, electrifying the ballroom with charisma and keeping the entire crowd hyped all night long! (She lost her voice in the process)',
+    openingDesc: 'Co-hosted the opening night alongside Tebry, electrifying the ballroom with charisma and keeping the entire crowd hyped all night long! (She lost her voice in the process)',
     badgeColor: '#c9a84c',
   },
   'abdelrahman-tebry': {
@@ -269,6 +269,11 @@ function SeatingSection() {
   )
 }
 
+// Photo browser sizes — tweak these to make the photos bigger / smaller
+const PB_STAGE_H = 'min(68vh, 740px)'   // height of the table area
+const PB_MAIN_H = 'min(62vh, 680px)'    // the photo in the middle
+const PB_SIDE_H = 'min(42vh, 440px)'    // the peeking photos on the sides
+
 // ─── Photo Browser Modal (card-shuffle on round table) ────────────────────────
 function PhotoBrowser({ photos, onClose }) {
   const [idx, setIdx] = useState(0)
@@ -296,7 +301,11 @@ function PhotoBrowser({ photos, onClose }) {
 
   return (
     <div className="overlay" onClick={onClose}>
-      <div className="op-pb" onClick={e => e.stopPropagation()}>
+      <div
+        className="op-pb"
+        onClick={e => e.stopPropagation()}
+        style={{ width: 'min(96vw, 1280px)', maxWidth: 'none', maxHeight: '96vh', overflowY: 'auto' }}
+      >
         <button className="x" onClick={onClose}>X</button>
 
         {/* Ticket header */}
@@ -306,23 +315,53 @@ function PhotoBrowser({ photos, onClose }) {
           <div className="op-pb-deco-line" />
         </div>
 
-        {/* Round table surface with fanned cards */}
-        <div className="op-pb-table">
-          <div className="op-pb-table-surface">
+        {/* Table surface with fanned cards (sizes set inline so the photos can be big) */}
+        <div className="op-pb-table" style={{ width: '100%' }}>
+          <div
+            className="op-pb-table-surface"
+            style={{
+              position: 'relative', width: '100%', height: PB_STAGE_H,
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              borderRadius: 28,            // rounded rectangle so big photos fit; delete this line for the old round table
+            }}
+          >
             {/* Prev card (peeking left) */}
-            <button className="op-pb-card op-pb-card-prev" onClick={() => go('left')}>
-              <img src={B + photos[prevIdx]} alt="" className="op-pb-card-img" loading="lazy" />
+            <button
+              className="op-pb-card op-pb-card-prev"
+              onClick={() => go('left')}
+              style={{
+                position: 'absolute', left: '1.5%', right: 'auto', top: '50%', bottom: 'auto',
+                width: 'auto', height: 'auto', padding: 4, zIndex: 1, opacity: 0.8,
+                transform: 'translateY(-50%) rotate(-6deg)',
+              }}
+            >
+              <img src={B + photos[prevIdx]} alt="" className="op-pb-card-img" loading="lazy"
+                style={{ display: 'block', width: 'auto', height: PB_SIDE_H, maxWidth: '22vw', objectFit: 'contain' }} />
             </button>
 
-            {/* Current card (center, bigger) */}
+            {/* Current card (center, big) */}
             <div key={animKey}
-              className={`op-pb-card op-pb-card-current${shuffleDir === 'right' ? ' op-pb-shuffle-r' : shuffleDir === 'left' ? ' op-pb-shuffle-l' : ''}`}>
-              <img src={B + photos[idx]} alt={`Photo ${idx + 1}`} className="op-pb-card-img" />
+              className={`op-pb-card op-pb-card-current${shuffleDir === 'right' ? ' op-pb-shuffle-r' : shuffleDir === 'left' ? ' op-pb-shuffle-l' : ''}`}
+              style={{
+                position: 'relative', left: 'auto', right: 'auto', top: 'auto', bottom: 'auto',
+                width: 'auto', height: 'auto', padding: 6, zIndex: 3,
+              }}>
+              <img src={B + photos[idx]} alt={`Photo ${idx + 1}`} className="op-pb-card-img"
+                style={{ display: 'block', width: 'auto', height: PB_MAIN_H, maxWidth: '64vw', objectFit: 'contain' }} />
             </div>
 
             {/* Next card (peeking right) */}
-            <button className="op-pb-card op-pb-card-next" onClick={() => go('right')}>
-              <img src={B + photos[nextIdx]} alt="" className="op-pb-card-img" loading="lazy" />
+            <button
+              className="op-pb-card op-pb-card-next"
+              onClick={() => go('right')}
+              style={{
+                position: 'absolute', right: '1.5%', left: 'auto', top: '50%', bottom: 'auto',
+                width: 'auto', height: 'auto', padding: 4, zIndex: 1, opacity: 0.8,
+                transform: 'translateY(-50%) rotate(6deg)',
+              }}
+            >
+              <img src={B + photos[nextIdx]} alt="" className="op-pb-card-img" loading="lazy"
+                style={{ display: 'block', width: 'auto', height: PB_SIDE_H, maxWidth: '22vw', objectFit: 'contain' }} />
             </button>
 
             {/* Scattered background cards for depth */}
@@ -1019,6 +1058,67 @@ function RoamingCrowd() {
   )
 }
 
+// ─── Ticket image (flips on hover / tap) ─────────────────────────────────────
+// Put your images in public/opening/ (or change these paths)
+const TICKET_FRONT = 'opening/ticket-front.png'
+const TICKET_BACK = 'opening/ticket-back.png'
+
+function TicketFlip() {
+  const [flipped, setFlipped] = useState(false)
+
+  const face = {
+    position: 'absolute', inset: 0, width: '100%', height: '100%',
+    objectFit: 'cover', borderRadius: 12,
+    backfaceVisibility: 'hidden', WebkitBackfaceVisibility: 'hidden',
+  }
+
+  return (
+    <button
+      type="button"
+      className="op-ticket-flip"
+      aria-label="IEEE 27' Masquerade Ball ticket. Hover or tap to flip."
+      onMouseEnter={() => setFlipped(true)}
+      onMouseLeave={() => setFlipped(false)}
+      onClick={() => setFlipped(f => !f)}   // tap to flip on touch screens
+      onFocus={() => setFlipped(true)}
+      onBlur={() => setFlipped(false)}
+      style={{
+        display: 'block', position: 'relative', width: 'min(560px, 92vw)',
+        margin: '0 auto', padding: 0, border: 'none', background: 'none',
+        cursor: 'pointer', perspective: 1200,
+      }}
+    >
+      <div
+        style={{
+          position: 'relative', width: '100%',
+          transformStyle: 'preserve-3d',
+          transition: 'transform 0.7s cubic-bezier(0.4, 0.2, 0.2, 1)',
+          transform: flipped ? 'rotateY(180deg)' : 'rotateY(0deg)',
+          filter: 'drop-shadow(0 8px 18px rgba(0,0,0,0.45))',
+        }}
+      >
+        {/* Front — sits in normal flow so it sets the card's size */}
+        <img
+          src={B + TICKET_FRONT}
+          alt="Masquerade Ball ticket, front"
+          draggable={false}
+          style={{
+            display: 'block', width: '100%', height: 'auto', borderRadius: 12,
+            backfaceVisibility: 'hidden', WebkitBackfaceVisibility: 'hidden'
+          }}
+        />
+        {/* Back */}
+        <img
+          src={B + TICKET_BACK}
+          alt="Masquerade Ball ticket, back"
+          draggable={false}
+          style={{ ...face, transform: 'rotateY(180deg)' }}
+        />
+      </div>
+    </button>
+  )
+}
+
 // ─── Floating Particles ───────────────────────────────────────────────────────
 const PARTICLES = [
   { type: 'bat', style: { top: '6%', left: '8%', animationDelay: '0s', animationDuration: '7s' } },
@@ -1049,20 +1149,12 @@ export default function Opening() {
   return (
     <div className="op-root">
 
-      {/* Title ticket */}
+      {/* Title ticket (photo of the real ticket — flips on hover) */}
       <div className="op-title-row">
-        <div className="op-title-ticket">
-          <div className="op-ticket-deco" aria-hidden="true" />
-          <div className="op-title-inner">
-            <span className="px op-event-label">IEEE 27' OPENING PARTY</span>
-            <h2 className="op-title">MASQUERADE BALL</h2>
-            <span className="px op-event-sub">THE NIGHT OF MASKS</span>
-          </div>
-          <div className="op-ticket-deco" aria-hidden="true" />
-          <div className="op-ticket-stub">
-            <span className="px op-stub-text">ADMIT<br />ONE</span>
-          </div>
-        </div>
+        <h2 className="sr-only" style={{ position: 'absolute', width: 1, height: 1, overflow: 'hidden', clip: 'rect(0 0 0 0)' }}>
+          IEEE 27' Opening Party — Masquerade Ball
+        </h2>
+        <TicketFlip />
       </div>
 
       {/* ═══ THE MAP ═══ */}
@@ -1118,7 +1210,7 @@ export default function Opening() {
           </div>
           <div className="op-map-col op-col-seats">
             <div className="op-seating-wrap">
-              <div className="op-seating-label px">🪑 ATTENDEES</div>
+              <div className="op-seating-label px">🪑 ATTENDEES (~100)</div>
               <SeatingSection />
               {/* Guests wandering right below the seats */}
               <RoamingCrowd />
