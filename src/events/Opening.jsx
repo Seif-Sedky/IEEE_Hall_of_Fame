@@ -47,7 +47,7 @@ const ROLE_PROFILES = {
   },
 
   // ─── Masquerade Guests (fill in your descriptions below) ──────────────────
-  
+
   'omar-elsamalouty': {
     openingRole: 'MASQUERADE ATTENDEE 🎭',
     openingDesc: 'Made his elegant presence as the IEEE Pirate, and Rocked the camera for some top tier shots',
@@ -301,11 +301,12 @@ const ROAM_GUESTS = {
   1: { id: 'judy-yasser', cfg: ATTENDEE_POOL[7] },
   4: { id: 'aly-saleh', cfg: ATTENDEE_POOL[10] },
   6: { id: 'seif-alaa', cfg: ATTENDEE_POOL[14] },
+  2: { id: 'lojaine', cfg: ATTENDEE_POOL[15] },
   8: { id: 'albarra-mohamed', cfg: ATTENDEE_POOL[9] },
 }
 
 const QUEUE_GUESTS = {
-  2: { id: 'lojaine', cfg: ATTENDEE_POOL[15] },
+
   5: { id: 'adham-hany', cfg: ATTENDEE_POOL[3] },
 }
 
@@ -1354,7 +1355,7 @@ export default function Opening() {
             className="op-zoom-btn px"
             onClick={() => setFitMode(m => !m)}
           >
-            {fitMode ? '🔍 ZOOM IN (100% SCROLL)' : '🗺️ ZOOM OUT (FIT FULL MAP)'}
+            {fitMode ? '🔍 ZOOM IN' : '🗺️ ZOOM OUT'}
           </button>
         </div>
       )}
@@ -1431,7 +1432,7 @@ export default function Opening() {
             </div>
             <div className="op-map-col op-col-seats">
               <div className="op-seating-wrap">
-                <div className="op-seating-label px">🪑 ATTENDEES (~100)</div>
+                <div className="op-seating-label px">🪑 ATTENDEES </div>
                 <SeatingSection onSelectProfile={setSelectedProfile} />
                 {/* Guests wandering right below the seats */}
                 <RoamingCrowd onSelectProfile={setSelectedProfile} />
