@@ -1118,78 +1118,80 @@ export default function Opening() {
       </div>
 
       {/* ═══ THE MAP ═══ */}
-      <div className="op-map" role="region" aria-label="Opening Night Map">
+      <div className="op-map-scroll">
+        <div className="op-map" role="region" aria-label="Opening Night Map">
 
-        {/* Disco Ball in Ceiling */}
-        <div className="op-disco-ball-wrap" aria-hidden="true">
-          <div className="op-disco-wire" />
-          <div className="op-disco-ball">🪩</div>
-          <div className="op-disco-shimmer" />
-        </div>
-
-        {/* Arena Disco Lights popping and sweeping */}
-        <div className="op-disco-lights" aria-hidden="true">
-          <span className="op-disco-spot ds-pink" style={{ top: '22%', left: '12%' }} />
-          <span className="op-disco-spot ds-cyan" style={{ top: '32%', right: '16%' }} />
-          <span className="op-disco-spot ds-gold" style={{ top: '52%', left: '48%' }} />
-          <span className="op-disco-spot ds-purple" style={{ top: '18%', left: '55%' }} />
-          <span className="op-disco-spot ds-blue" style={{ top: '68%', right: '10%' }} />
-          <span className="op-disco-spot ds-magenta" style={{ top: '64%', left: '20%' }} />
-          <div className="op-disco-beam beam-l" />
-          <div className="op-disco-beam beam-r" />
-          <div className="op-disco-beam beam-c" />
-        </div>
-
-        {/* Particles */}
-        {PARTICLES.map((p, i) => <FloatingParticle key={i} type={p.type} style={p.style} />)}
-
-        {/* Decorative corners */}
-        <div className="op-map-bg" aria-hidden="true">
-          <div className="op-corner op-corner-tl" /><div className="op-corner op-corner-tr" />
-          <div className="op-corner op-corner-bl" /><div className="op-corner op-corner-br" />
-          <div className="op-map-pattern" />
-        </div>
-
-        {/* ROW 1: PC Desk | Stage | Celebration */}
-        <div className="op-map-row op-row-top">
-          <div className="op-map-col">
-            <ProjectorDesk onSelectProfile={setSelectedProfile} />
+          {/* Disco Ball in Ceiling */}
+          <div className="op-disco-ball-wrap" aria-hidden="true">
+            <div className="op-disco-wire" />
+            <div className="op-disco-ball">🪩</div>
+            <div className="op-disco-shimmer" />
           </div>
-          <div className="op-map-col op-col-stage">
-            <Stage onSelectProfile={setSelectedProfile} />
-          </div>
-          <div className="op-map-col">
-            <CelebrationScene onSelectProfile={setSelectedProfile} />
-          </div>
-        </div>
 
-        {/* ROW 2: Man2osha | Seating | Photo Booth + Table */}
-        <div className="op-map-row op-row-mid">
-          <div className="op-map-col">
-            <ManqoushaTables />
+          {/* Arena Disco Lights popping and sweeping */}
+          <div className="op-disco-lights" aria-hidden="true">
+            <span className="op-disco-spot ds-pink" style={{ top: '22%', left: '12%' }} />
+            <span className="op-disco-spot ds-cyan" style={{ top: '32%', right: '16%' }} />
+            <span className="op-disco-spot ds-gold" style={{ top: '52%', left: '48%' }} />
+            <span className="op-disco-spot ds-purple" style={{ top: '18%', left: '55%' }} />
+            <span className="op-disco-spot ds-blue" style={{ top: '68%', right: '10%' }} />
+            <span className="op-disco-spot ds-magenta" style={{ top: '64%', left: '20%' }} />
+            <div className="op-disco-beam beam-l" />
+            <div className="op-disco-beam beam-r" />
+            <div className="op-disco-beam beam-c" />
           </div>
-          <div className="op-map-col op-col-seats">
-            <div className="op-seating-wrap">
-              <div className="op-seating-label px">🪑 ATTENDEES (~100)</div>
-              <SeatingSection />
-              {/* Guests wandering right below the seats */}
-              <RoamingCrowd />
-              <div className="op-map-floor" aria-hidden="true">
-                {[...Array(16)].map((_, i) => <span key={i} className="op-floor-tile" style={{ '--oti': i }} />)}
-              </div>
+
+          {/* Particles */}
+          {PARTICLES.map((p, i) => <FloatingParticle key={i} type={p.type} style={p.style} />)}
+
+          {/* Decorative corners */}
+          <div className="op-map-bg" aria-hidden="true">
+            <div className="op-corner op-corner-tl" /><div className="op-corner op-corner-tr" />
+            <div className="op-corner op-corner-bl" /><div className="op-corner op-corner-br" />
+            <div className="op-map-pattern" />
+          </div>
+
+          {/* ROW 1: PC Desk | Stage | Celebration */}
+          <div className="op-map-row op-row-top">
+            <div className="op-map-col">
+              <ProjectorDesk onSelectProfile={setSelectedProfile} />
+            </div>
+            <div className="op-map-col op-col-stage">
+              <Stage onSelectProfile={setSelectedProfile} />
+            </div>
+            <div className="op-map-col">
+              <CelebrationScene onSelectProfile={setSelectedProfile} />
             </div>
           </div>
-          <div className="op-map-col">
-            <PhotoCorner onOpen={() => setPhotoBrowserOpen(true)} />
+
+          {/* ROW 2: Man2osha | Seating | Photo Booth + Table */}
+          <div className="op-map-row op-row-mid">
+            <div className="op-map-col">
+              <ManqoushaTables />
+            </div>
+            <div className="op-map-col op-col-seats">
+              <div className="op-seating-wrap">
+                <div className="op-seating-label px">🪑 ATTENDEES (~100)</div>
+                <SeatingSection />
+                {/* Guests wandering right below the seats */}
+                <RoamingCrowd />
+                <div className="op-map-floor" aria-hidden="true">
+                  {[...Array(16)].map((_, i) => <span key={i} className="op-floor-tile" style={{ '--oti': i }} />)}
+                </div>
+              </div>
+            </div>
+            <div className="op-map-col">
+              <PhotoCorner onOpen={() => setPhotoBrowserOpen(true)} />
+            </div>
           </div>
-        </div>
 
-        {/* Aisle */}
-        <div className="op-aisle"><span className="op-aisle-arr px" aria-hidden="true">▼  ▼  ▼</span></div>
+          {/* Aisle */}
+          <div className="op-aisle"><span className="op-aisle-arr px" aria-hidden="true">▼  ▼  ▼</span></div>
 
-        {/* ROW 3: Registration Booth (Hana & Seif) */}
-        <div className="op-map-row op-row-bot">
-          <RegistrationBooth onSelectProfile={setSelectedProfile} />
+          {/* ROW 3: Registration Booth (Hana & Seif) */}
+          <div className="op-map-row op-row-bot">
+            <RegistrationBooth onSelectProfile={setSelectedProfile} />
+          </div>
         </div>
       </div>
 

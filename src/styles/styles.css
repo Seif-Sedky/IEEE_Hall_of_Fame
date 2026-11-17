@@ -2213,8 +2213,17 @@ body.masquerade-theme .panel {
 }
 
 /* ── The Map ───────────────────────────────────────────── */
+/* ── The Map ───────────────────────────────────────────── */
+.op-map-scroll {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  padding: 0 6px 8px 0;
+}
+
 .op-map {
   position: relative;
+  min-width: 860px;
   background: linear-gradient(180deg, #050817 0%, #090d24 35%, #070a1c 70%, #040614 100%);
   border: 3px solid var(--gold);
   box-shadow: 6px 6px 0 #000, 0 0 45px 10px rgba(26, 58, 140, .35), 0 0 20px rgba(201, 168, 76, .15);
@@ -2224,6 +2233,17 @@ body.masquerade-theme .panel {
   display: flex;
   flex-direction: column;
   gap: 16px;
+}
+
+@media(min-width: 920px) {
+  .op-map-scroll {
+    overflow-x: visible;
+    padding: 0;
+  }
+
+  .op-map {
+    min-width: 0;
+  }
 }
 
 .op-map-bg {
@@ -4162,29 +4182,8 @@ body.masquerade-theme .panel {
 /* ── Responsive ─────────────────────────────────────────── */
 @media(max-width:720px) {
 
-  .op-row-top,
-  .op-row-mid {
-    grid-template-columns: 1fr;
-    gap: 12px
-  }
-
-  .op-hosts {
-    gap: 20px
-  }
-
   .op-title {
     font-size: 22px
-  }
-
-  .op-celeb-row {
-    gap: 3px
-  }
-
-  .op-mq-grid {
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 8px
   }
 
   .op-pb-table-surface {
@@ -4200,20 +4199,6 @@ body.masquerade-theme .panel {
   .op-pb-card-next .op-pb-card-img {
     height: 22vh;
     max-width: 16vw
-  }
-
-  .op-pstack-surface {
-    width: 60px;
-    height: 60px
-  }
-
-  .op-pstack-card {
-    width: 22px;
-    height: 16px
-  }
-
-  .op-reg {
-    max-width: 100%
   }
 
   .op-pm-body {
