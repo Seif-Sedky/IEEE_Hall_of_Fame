@@ -11,7 +11,7 @@ const OPENING_PHOTOS = Array.from({ length: 27 }, (_, i) => `opening/${i + 1}.jp
 const ROLE_PROFILES = {
   'hala-aboraya': {
     openingRole: 'NIGHT HOST / MC 🎤',
-    openingDesc: 'Co-hosted the opening night alongside Tebry, electrifying the ballroom with charisma and keeping the entire crowd hyped all night long! (She lost her voice in the process)',
+    openingDesc: 'Co-hosted the opening alongside Tebry, electrifying the ballroom with charisma and keeping the entire crowd hyped all night long! (She lost her voice in the process)',
     badgeColor: '#c9a84c',
   },
   'abdelrahman-tebry': {
@@ -989,22 +989,9 @@ function RoamingCrowd() {
   return (
     <div
       className="op-roam"
-      aria-label="Guests mingling on the dance floor"
-      style={{
-        position: 'relative', width: '100%', height: ROAM_H, margin: '14px 0 4px',
-        borderTop: '2px dashed rgba(201,168,76,0.45)', borderBottom: '2px dashed rgba(201,168,76,0.45)',
-        background: 'linear-gradient(180deg, rgba(201,168,76,0.05), rgba(106,47,160,0.10))',
-        overflow: 'hidden',
-      }}
+      aria-hidden="true"
+      style={{ position: 'relative', width: '100%', height: ROAM_H, margin: 0, padding: 0 }}
     >
-      <div
-        className="px"
-        style={{ position: 'absolute', top: 4, left: 10, fontSize: 9, letterSpacing: 1, color: '#c9a84c', opacity: 0.85, zIndex: 999, pointerEvents: 'none' }}
-        aria-hidden="true"
-      >
-        🥂 MINGLING FLOOR
-      </div>
-
       {ROAM_WALKERS.map((w, i) => {
         const s = walkers.current[i]
         return (
@@ -1133,6 +1120,8 @@ export default function Opening() {
             <div className="op-seating-wrap">
               <div className="op-seating-label px">🪑 ATTENDEES (~100)</div>
               <SeatingSection />
+              {/* Guests wandering right below the seats */}
+              <RoamingCrowd />
               <div className="op-map-floor" aria-hidden="true">
                 {[...Array(16)].map((_, i) => <span key={i} className="op-floor-tile" style={{ '--oti': i }} />)}
               </div>
@@ -1142,9 +1131,6 @@ export default function Opening() {
             <PhotoCorner onOpen={() => setPhotoBrowserOpen(true)} />
           </div>
         </div>
-
-        {/* Roaming guests between seating and registration */}
-        <RoamingCrowd />
 
         {/* Aisle */}
         <div className="op-aisle"><span className="op-aisle-arr px" aria-hidden="true">▼  ▼  ▼</span></div>
