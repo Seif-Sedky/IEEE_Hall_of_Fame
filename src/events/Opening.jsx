@@ -11,7 +11,7 @@ const OPENING_PHOTOS = Array.from({ length: 27 }, (_, i) => `opening/${i + 1}.jp
 const ROLE_PROFILES = {
   'hala-aboraya': {
     openingRole: 'NIGHT HOST / MC 🎤',
-    openingDesc: 'Co-hosted the Masquerade Ball alongside Tebry, electrifying the ballroom with charisma and keeping the entire crowd hyped all night long! (She lost her voice in the process)',
+    openingDesc: 'Co-hosted the opening night alongside Tebry, electrifying the ballroom with charisma and keeping the entire crowd hyped all night long! (She lost her voice in the process)',
     badgeColor: '#c9a84c',
   },
   'abdelrahman-tebry': {
