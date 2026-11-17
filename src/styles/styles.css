@@ -830,7 +830,8 @@ body.masquerade-theme .panel {
 .op-spotlight{position:absolute;top:0;width:100px;height:100%;pointer-events:none;z-index:0;opacity:.15}
 .op-spot-l{left:-20px;background:conic-gradient(from 20deg at 10% 0%,#c9a84c,transparent 40%)}
 .op-spot-r{right:-20px;background:conic-gradient(from 160deg at 90% 0%,#c9a84c,transparent 40%)}
-.op-hosts{display:flex;align-items:flex-end;justify-content:center;gap:32px;position:relative;z-index:2}
+.op-hosts{display:flex;align-items:flex-end;justify-content:center;gap:24px;position:relative;z-index:2;min-height:58px}
+.op-host-pos-wrap{display:inline-flex;align-items:flex-end}
 .op-host-btn{position:relative}
 .op-host-tag{font-size:6px;color:var(--gold);background:#06091a;border:1px solid var(--gold);padding:2px 6px;box-shadow:1px 1px 0 #000;letter-spacing:1px;margin-bottom:2px}
 .op-host-btn:hover .op-host-tag{background:var(--gold);color:#06091a}
@@ -896,16 +897,16 @@ body.masquerade-theme .panel {
 .op-floor-tile{flex:1;height:100%;background:color-mix(in srgb,#1a3a8c calc(var(--oti,0)*3%+15%),#06091a);border-right:1px solid rgba(201,168,76,.08);animation:op-fblink 5s steps(1) calc(var(--oti,0)*200ms) infinite}
 @keyframes op-fblink{0%,88%,100%{opacity:1}89%,97%{opacity:.4}}
 
-/* ── Man2osha Tables (3 round - surrounded by eaters) ───── */
-.op-mq-area{display:flex;flex-direction:column;gap:6px}
+/* ── Man2osha Tables (3 round - surrounded by eaters + bounded walkers) ── */
+.op-mq-area{display:flex;flex-direction:column;gap:6px;position:relative}
 .op-mq-area-label{font-size:5px;color:var(--gold);letter-spacing:1px;text-align:center}
-.op-mq-grid{display:flex;flex-direction:column;gap:12px}
+.op-mq-grid{display:flex;flex-direction:column;gap:10px}
 .op-mq-unit-surround{
   display:flex;flex-direction:column;align-items:center;gap:0;
   background:rgba(10,13,31,.55);border:1px solid rgba(201,168,76,.18);
   border-radius:6px;padding:6px 4px 4px;position:relative;
 }
-.op-mq-top-eaters{display:flex;justify-content:center;gap:8px;margin-bottom:-6px;position:relative;z-index:1}
+.op-mq-top-eaters{display:flex;justify-content:center;gap:6px;margin-bottom:-6px;position:relative;z-index:1}
 .op-mq-middle-row{display:flex;align-items:center;justify-content:center;gap:3px;position:relative;z-index:2}
 .op-mq-table-round{
   width:58px;height:58px;border-radius:50%;
@@ -917,104 +918,115 @@ body.masquerade-theme .panel {
 .op-mq-items-round{display:flex;flex-wrap:wrap;gap:1px;justify-content:center;align-items:center;width:44px}
 .op-mq-item{font-size:13px;animation:op-mqw 3s ease-in-out infinite alternate;cursor:default}
 @keyframes op-mqw{from{transform:rotate(-3deg)}to{transform:rotate(3deg)}}
-.op-mq-bottom-eaters{display:flex;justify-content:center;gap:8px;margin-top:-6px;position:relative;z-index:3}
+.op-mq-bottom-eaters{display:flex;justify-content:center;gap:6px;margin-top:-6px;position:relative;z-index:3}
 .op-mq-eater{image-rendering:pixelated}
 .op-mq-eater.side{filter:drop-shadow(1px 1px 0 rgba(0,0,0,.5))}
-.op-mq-crowd{display:flex;justify-content:center;gap:5px;margin-top:6px;flex-wrap:wrap}
+
+/* Bounded walkers between tables */
+.op-mq-walkers-row{display:flex;justify-content:space-around;margin:2px 0;position:relative;z-index:2;min-height:30px}
+.op-mq-walker{display:flex;align-items:center;gap:1px;image-rendering:pixelated;position:relative}
+.op-mq-walker-prop{font-size:11px;margin-left:-3px;margin-top:-6px;z-index:2}
+
+.op-mq-crowd{display:flex;justify-content:center;gap:6px;margin-top:4px;flex-wrap:wrap;position:relative;min-height:32px}
 .op-mq-mingler{display:flex;align-items:center;gap:1px;image-rendering:pixelated;position:relative}
 .op-mq-mingler-food{font-size:11px;margin-left:-4px;margin-top:-6px;z-index:2}
+.op-mq-corridor-walker{display:flex;align-items:center}
 
-/* ── Photo Booth Area (booth + printer) ────────────────── */
-.op-booth-area{display:flex;flex-direction:column;gap:8px}
-.op-booth-wrap{display:flex;flex-direction:column;gap:4px}
-.op-booth-label{font-size:5px;color:var(--gold);letter-spacing:1px;text-align:center}
-.op-booth{background:linear-gradient(180deg,#0d1230,#060818);border:2px solid rgba(201,168,76,.4);border-radius:4px;overflow:hidden}
+/* ── Unified Photo Corner (Booth + Table with Continuous Swap Loop) ── */
+.op-photo-corner{
+  position:relative;
+  background:linear-gradient(180deg,#0a0e28 0%,#060818 100%);
+  border:2px solid rgba(201,168,76,.3);
+  box-shadow:0 0 16px rgba(26,58,140,.3),3px 3px 0 #000;
+  border-radius:6px;
+  height:330px;
+  overflow:hidden;
+  display:flex;
+  flex-direction:column;
+}
+.op-corner-header{font-size:5px;color:var(--gold);letter-spacing:1px;text-align:center;padding:4px 0 2px;position:relative;z-index:10}
+
+/* Booth backdrop at top of corner */
 .op-booth-backdrop{
   position:relative;
   background:linear-gradient(180deg,#1a3a8c 0%,#0d1535 100%);
-  padding:12px 6px 14px;min-height:72px;
+  padding:8px 6px 10px;height:72px;
   display:flex;align-items:center;justify-content:center;
   border-bottom:2px solid rgba(201,168,76,.3);overflow:hidden;
 }
 .op-booth-curtain-l,.op-booth-curtain-r{position:absolute;top:0;width:14px;height:100%;background:repeating-linear-gradient(180deg,#1a0a30,#1a0a30 6px,#120820 6px,#120820 12px);opacity:.7}
 .op-booth-curtain-l{left:0}.op-booth-curtain-r{right:0}
-.op-booth-mask{position:relative;z-index:2;filter:drop-shadow(0 0 10px rgba(201,168,76,.5))}
+.op-booth-mask{position:relative;z-index:1;filter:drop-shadow(0 0 10px rgba(201,168,76,.5))}
 .op-booth-balloons{position:absolute;top:4px;right:4px;display:flex;gap:1px;z-index:3}
 .op-balloon{font-size:12px;animation:op-bsway 3s ease-in-out infinite alternate}
 .b1{animation-delay:0s}.b2{animation-delay:.8s}.b3{animation-delay:1.5s}
 @keyframes op-bsway{from{transform:rotate(-6deg)}to{transform:rotate(6deg)}}
 
-/* ── Instant Print Machine ─────────────────────────────── */
-.op-printer-wrap{display:flex;flex-direction:column;align-items:center;gap:4px}
+/* Instant camera positioned facing posers */
+.op-printer-center{
+  position:absolute;top:84px;left:50%;transform:translateX(-50%);
+  z-index:2;pointer-events:none;
+}
 .op-printer{position:relative;display:flex;flex-direction:column;align-items:center}
 .op-printer-body{
-  width:40px;height:40px;
+  width:36px;height:36px;
   background:linear-gradient(180deg,#333,#1a1a1a);
   border:2px solid #555;border-radius:4px;
-  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;
   box-shadow:2px 2px 0 #000;position:relative;z-index:2;
 }
-.op-printer-lens{width:16px;height:16px;border-radius:50%;background:radial-gradient(circle,#1a3a8c,#06091a);border:2px solid #888;box-shadow:0 0 6px rgba(26,58,140,.5)}
-.op-printer-label{font-size:3px;color:#aaa;text-align:center;line-height:1.2;letter-spacing:.3px}
-.op-printer-flash .op-printer-lens{box-shadow:0 0 18px 8px rgba(255,255,220,.95),0 0 32px 12px rgba(201,168,76,.6)!important}
+.op-printer-lens{width:14px;height:14px;border-radius:50%;background:radial-gradient(circle,#1a3a8c,#06091a);border:2px solid #888;box-shadow:0 0 6px rgba(26,58,140,.5)}
+.op-printer-label{font-size:3px;color:#aaa;text-align:center;line-height:1.1;letter-spacing:.3px}
+.op-printer-flash .op-printer-lens{box-shadow:0 0 20px 10px rgba(255,255,220,.95),0 0 35px 14px rgba(201,168,76,.7)!important}
 .op-flash-burst{
-  position:absolute;top:-10px;left:50%;transform:translateX(-50%);
-  width:80px;height:80px;border-radius:50%;
-  background:radial-gradient(circle,rgba(255,255,220,.85),rgba(201,168,76,.25) 40%,transparent 70%);
-  pointer-events:none;z-index:10;animation:op-flash .18s ease-out forwards;
+  position:absolute;top:-18px;left:50%;transform:translateX(-50%);
+  width:140px;height:140px;border-radius:50%;
+  background:radial-gradient(circle,rgba(255,255,230,.9),rgba(201,168,76,.35) 45%,transparent 70%);
+  pointer-events:none;z-index:10;animation:op-flash .24s ease-out forwards;
 }
-@keyframes op-flash{from{opacity:1;transform:translateX(-50%) scale(.3)}to{opacity:0;transform:translateX(-50%) scale(1.5)}}
-.op-printer-output{width:30px;height:10px;background:#e8e4dc;border:1px solid #aaa;border-top:0;border-radius:0 0 2px 2px;margin-top:-2px;position:relative;z-index:1}
-.op-printer-photo-out{width:24px;height:6px;background:linear-gradient(135deg,#2a4a9a,#c9a84c);margin:2px auto 0;border:1px solid #888}
-.op-booth-posers{display:flex;justify-content:center;gap:2px;image-rendering:pixelated}
-.op-booth-poser{image-rendering:pixelated}
+@keyframes op-flash{from{opacity:1;transform:translateX(-50%) scale(.4)}to{opacity:0;transform:translateX(-50%) scale(1.6)}}
+.op-printer-output{width:26px;height:8px;background:#e8e4dc;border:1px solid #aaa;border-top:0;border-radius:0 0 2px 2px;margin-top:-2px;position:relative;z-index:1}
+.op-printer-photo-out{width:20px;height:5px;background:linear-gradient(135deg,#2a4a9a,#c9a84c);margin:1px auto 0;border:1px solid #888}
 
-/* ── Photo Stack on Round Table (Surrounded by 6 Characters) ── */
-.op-pstack-wrap{display:flex;flex-direction:column;align-items:center;gap:3px;margin-top:8px}
-.op-pstack-label{font-size:5px;color:var(--gold);letter-spacing:1px}
-.op-pstack-surround{
-  position:relative;display:flex;align-items:center;justify-content:center;
-  padding:14px 18px 16px;min-height:120px;
+/* The round table anchor in the lower half of PhotoCorner */
+.op-corner-table-anchor{
+  position:absolute;top:218px;left:50%;transform:translateX(-50%);
+  z-index:5;
 }
-.op-pstack-char{
-  position:absolute;z-index:4;image-rendering:pixelated;
-  filter:drop-shadow(1px 2px 0 rgba(0,0,0,.6));
-}
-.op-pstack-char.char-tl{top:-4px;left:4px}
-.op-pstack-char.char-tr{top:-4px;right:4px;transform:scaleX(-1)}
-.op-pstack-char.char-left{left:-10px;top:48%;transform:translateY(-50%)}
-.op-pstack-char.char-right{right:-10px;top:48%;transform:translateY(-50%) scaleX(-1)}
-.op-pstack-char.char-bl{bottom:-8px;left:10px}
-.op-pstack-char.char-br{bottom:-8px;right:10px;transform:scaleX(-1)}
-
 .op-pstack-table{
   position:relative;cursor:pointer;background:transparent;border:none;padding:0;
   display:flex;flex-direction:column;align-items:center;gap:2px;
 }
 .op-pstack-surface{
   position:relative;
-  width:72px;height:72px;border-radius:50%;
+  width:68px;height:68px;border-radius:50%;
   background:radial-gradient(circle,#8B4513 0%,#6B3410 60%,#5a2d0c 100%);
   border:2px solid #000;box-shadow:2px 2px 0 #000;
   display:flex;align-items:center;justify-content:center;
   overflow:hidden;
 }
 .op-pstack-card{
-  position:absolute;width:28px;height:20px;border:1px solid rgba(0,0,0,.6);
+  position:absolute;width:26px;height:18px;border:1px solid rgba(0,0,0,.6);
   overflow:hidden;border-radius:1px;
   box-shadow:1px 1px 0 rgba(0,0,0,.4);
   image-rendering:auto;
 }
 .op-pstack-card img{width:100%;height:100%;object-fit:cover;display:block}
-.op-pstack-card.c1{top:8px;left:8px;transform:rotate(-12deg)}
-.op-pstack-card.c2{top:14px;left:22px;transform:rotate(5deg)}
-.op-pstack-card.c3{top:6px;right:8px;transform:rotate(-3deg)}
-.op-pstack-card.c4{bottom:10px;left:16px;transform:rotate(8deg)}
-.op-pstack-card.c5{bottom:14px;right:10px;transform:rotate(-6deg)}
+.op-pstack-card.c1{top:6px;left:6px;transform:rotate(-12deg)}
+.op-pstack-card.c2{top:12px;left:20px;transform:rotate(5deg)}
+.op-pstack-card.c3{top:5px;right:6px;transform:rotate(-3deg)}
+.op-pstack-card.c4{bottom:8px;left:14px;transform:rotate(8deg)}
+.op-pstack-card.c5{bottom:12px;right:8px;transform:rotate(-6deg)}
 .op-pstack-hint{font-size:4px;color:var(--gold);letter-spacing:1px;animation:op-hpulse 1.5s steps(2) infinite alternate;white-space:nowrap}
 @keyframes op-hpulse{from{opacity:.5}to{opacity:1}}
-.op-pstack-table:hover .op-pstack-surface{box-shadow:2px 2px 0 #000,0 0 10px 3px rgba(201,168,76,.3)}
+.op-pstack-table:hover .op-pstack-surface{box-shadow:2px 2px 0 #000,0 0 12px 4px rgba(201,168,76,.4)}
 .op-pstack-table:hover .op-pstack-hint{color:#fff}
+
+/* The 8 Attendees in PhotoCorner smoothly transitioning between slots */
+.op-corner-attendee{
+  image-rendering:pixelated;
+  filter:drop-shadow(1px 2px 0 rgba(0,0,0,.6));
+}
 
 /* ── WHITE SILVERY REGISTRATION BOOTH (Hana & Seif BEHIND) */
 .op-reg{

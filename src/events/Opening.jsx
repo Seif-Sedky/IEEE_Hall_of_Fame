@@ -11,7 +11,7 @@ const OPENING_PHOTOS = Array.from({ length: 27 }, (_, i) => `opening/${i + 1}.jp
 const ROLE_PROFILES = {
   'hala-aboraya': {
     openingRole: 'NIGHT HOST / MC 🎤',
-    openingDesc: 'Co-hosted the Masquerade Ball alongside Tebry, electrifying the ballroom with charisma and keeping the entire crowd hyped all night long from the stage!',
+    openingDesc: 'Co-hosted the Masquerade Ball alongside Tebry, electrifying the ballroom with charisma and keeping the entire crowd hyped all night long! (She lost her voice in the process)',
     badgeColor: '#c9a84c',
   },
   'abdelrahman-tebry': {
@@ -41,7 +41,7 @@ const ROLE_PROFILES = {
   },
   'saif-abdelaziz': {
     openingRole: 'REGISTRATION & WELCOME LEAD 🖊️',
-    openingDesc: 'Manned the silvery check-in counter with Hana, coordinating the ~100 attendee arrivals and checking in guests as they arrived!',
+    openingDesc: 'Manned the silvery check-in counter with Hana, coordinating the attendees arrivals and checking in guests as they arrived!',
     badgeColor: '#58a0b0',
   },
 }
@@ -94,25 +94,41 @@ const MASKED_ARCHETYPES = {
 function MasquCharSprite({ archetype = 'short', skinColor = '#f5c396', hairColor = '#1a110b',
   maskColor = '#1a3a8c', shirtColor = '#181020', pantsColor = '#1a1a2e',
   shoesColor = '#c9a84c', accessoryColor = '#c9a84c', frame = 0, seated = false,
-  size = 1 }) {
+  moving = false, size = 1 }) {
 
   const hairRows = MASKED_ARCHETYPES[archetype] || MASKED_ARCHETYPES.short
   const isHijab = archetype === 'hijab'
   const isLong = archetype === 'long'
 
-  const rows = seated ? [
-    hairRows[0], hairRows[1], hairRows[2], hairRows[3], hairRows[4],
-    isHijab ? '..AASSSSAA..' : '....SSSS....',
-    isLong ? '.HHTTTTTTHH.' : isHijab ? '.AATTTTTTAA.' : '.TTTTTTTTTT.',
-    isLong ? '.HHTTTTTTHH.' : '.TTTTTTTTTT.',
-    '..TTTTTTTT..', '..PPPPPPPP..', '..PP....PP..', '..PP....PP..',
-  ] : [
+  // Legs rule: unless moving === true, legs stay strictly planted (no fidgeting/marching in place)
+  const legRows = seated
+    ? [
+      '..PP....PP..',
+      '..PP....PP..',
+    ]
+    : moving && (frame % 2 !== 0)
+      ? [
+        '..PPPPPPPP..',
+        '...PPPPPP...',
+        '....PPPP....',
+        '...BB..BB...',
+        '...BB..BB...',
+      ]
+      : [
+        '..PP....PP..',
+        '.PP......PP.',
+        '.PP......PP.',
+        'BB........BB',
+        'BB........BB',
+      ]
+
+  const rows = [
     hairRows[0], hairRows[1], hairRows[2], hairRows[3], hairRows[4],
     isHijab ? '..AASSSSAA..' : '....SSSS....',
     isLong ? '.HHTTTTTTHH.' : isHijab ? '.AATTTTTTAA.' : '.TTTTTTTTTT.',
     isLong ? '.HHTTTTTTHH.' : '.TTTTTTTTTT.',
     '..TTTTTTTT..', '..PPPPPPPP..',
-    '..PP....PP..', '.PP......PP.', '.PP......PP.', 'BB........BB', 'BB........BB',
+    ...legRows,
   ]
 
   const colorMap = { H: hairColor, S: skinColor, E: '#c9a84c', M: maskColor, T: shirtColor, P: pantsColor, B: shoesColor, A: accessoryColor, C: '#1a110b' }
@@ -333,27 +349,115 @@ function PhotoBrowser({ photos, onClose }) {
   )
 }
 
-// ─── Photo Stack on Round Table (Surrounded by 6 Characters) ──────────────────
-function PhotoStack({ onOpen }) {
-  const frame = useFrame(500)
-  return (
-    <div className="op-pstack-wrap">
-      <div className="op-pstack-label px">📸 PHOTO TABLE</div>
-      <div className="op-pstack-surround">
-        {/* Top-left attendee */}
-        <div className="op-pstack-char char-tl" title="Browsing photos">
-          <MasquCharSprite {...cfgAt(9)} frame={frame} size={0.55} />
-        </div>
-        {/* Top-right attendee */}
-        <div className="op-pstack-char char-tr" title="Browsing photos">
-          <MasquCharSprite {...cfgAt(5)} frame={frame} size={0.55} />
-        </div>
-        {/* Middle-left attendee */}
-        <div className="op-pstack-char char-left" title="Browsing photos">
-          <MasquCharSprite {...cfgAt(2)} frame={frame} size={0.55} />
-        </div>
+// ─── Photo Corner (Booth + Table with Continuous Swap Loop) ──────────────────
+function PhotoCorner({ onOpen }) {
+  const frame = useFrame(380)
+  const [cycle, setCycle] = useState(0)
+  const [isMoving, setIsMoving] = useState(false)
+  const [flash, setFlash] = useState(false)
 
-        {/* Round table with printed photos */}
+  useEffect(() => {
+    let tFlash, tFlashOff, tWalk, tArrive
+
+    function runCycle() {
+      // 1. Flash bursts at 2800ms
+      tFlash = setTimeout(() => {
+        setFlash(true)
+        tFlashOff = setTimeout(() => setFlash(false), 240)
+      }, 2800)
+
+      // 2. Posers leave and 2 table attendees swap at 3400ms
+      tWalk = setTimeout(() => {
+        setIsMoving(true)
+        setCycle(c => c + 1)
+        // 3. Arrive after 2000ms transition
+        tArrive = setTimeout(() => {
+          setIsMoving(false)
+        }, 2000)
+      }, 3400)
+    }
+
+    runCycle()
+    const interval = setInterval(runCycle, 5600)
+
+    return () => {
+      clearInterval(interval)
+      clearTimeout(tFlash)
+      clearTimeout(tFlashOff)
+      clearTimeout(tWalk)
+      clearTimeout(tArrive)
+    }
+  }, [])
+
+  // 8 Slot Coordinates within the PhotoCorner container:
+  // Slots 0 & 1: Photo Booth posers (in front of backdrop)
+  // Slots 2 & 3: Table Top
+  // Slots 4 & 5: Table Middle (Sides)
+  // Slots 6 & 7: Table Bottom
+  const SLOTS = useMemo(() => [
+    { top: 28, left: 34, zIndex: 3, flip: false, isBooth: true },
+    { top: 28, left: 54, zIndex: 3, flip: true, isBooth: true },
+    { top: 168, left: 16, zIndex: 4, flip: false, isBooth: false },
+    { top: 168, left: 72, zIndex: 4, flip: true, isBooth: false },
+    { top: 215, left: 8, zIndex: 5, flip: false, isBooth: false },
+    { top: 215, left: 80, zIndex: 5, flip: true, isBooth: false },
+    { top: 268, left: 20, zIndex: 6, flip: false, isBooth: false },
+    { top: 268, left: 68, zIndex: 6, flip: true, isBooth: false },
+  ], [])
+
+  const CORNER_ATTENDEES = useMemo(() => [
+    { id: 0, cfg: cfgAt(0) },
+    { id: 1, cfg: cfgAt(2) },
+    { id: 2, cfg: cfgAt(5) },
+    { id: 3, cfg: cfgAt(6) },
+    { id: 4, cfg: cfgAt(9) },
+    { id: 5, cfg: cfgAt(11) },
+    { id: 6, cfg: cfgAt(13) },
+    { id: 7, cfg: cfgAt(14) },
+  ], [])
+
+  return (
+    <div className="op-photo-corner">
+      <div className="op-corner-header px">📸 PHOTO BOOTH & PRINTS</div>
+
+      {/* ── 1. The Booth Backdrop at top ── */}
+      <div className="op-booth-backdrop">
+        <div className="op-booth-curtain-l" aria-hidden="true" />
+        <div className="op-booth-curtain-r" aria-hidden="true" />
+        <div className="op-booth-mask" aria-hidden="true">
+          <svg viewBox="0 0 80 36" width="70" height="30">
+            <ellipse cx="40" cy="20" rx="38" ry="16" fill="#1a3a8c" stroke="#c9a84c" strokeWidth="1.5" />
+            <ellipse cx="22" cy="18" rx="12" ry="10" fill="#0a1a4a" stroke="#c9a84c" strokeWidth="1" />
+            <ellipse cx="58" cy="18" rx="12" ry="10" fill="#0a1a4a" stroke="#c9a84c" strokeWidth="1" />
+            <path d="M32 18 Q40 24 48 18" fill="none" stroke="#c9a84c" strokeWidth="1" />
+            <path d="M2 20 Q8 10 14 16 Q10 20 6 24 Q4 22 2 20Z" fill="#c9a84c" opacity="0.7" />
+            <path d="M78 20 Q72 10 66 16 Q70 20 74 24 Q76 22 78 20Z" fill="#c9a84c" opacity="0.7" />
+            <circle cx="40" cy="14" r="2" fill="#c9a84c" />
+          </svg>
+        </div>
+        <div className="op-booth-balloons" aria-hidden="true">
+          <span className="op-balloon b1">🎈</span>
+          <span className="op-balloon b2">🎈</span>
+          <span className="op-balloon b3">🎈</span>
+        </div>
+      </div>
+
+      {/* ── 2. The Instant Camera / Printer facing posers ── */}
+      <div className="op-printer-center">
+        <div className={`op-printer${flash ? ' op-printer-flash' : ''}`}>
+          <div className="op-printer-body">
+            <div className="op-printer-lens" />
+            <div className="op-printer-label px">INSTANT<br />PRINT</div>
+          </div>
+          {flash && <div className="op-flash-burst" aria-hidden="true" />}
+          <div className="op-printer-output">
+            <div className="op-printer-photo-out" />
+          </div>
+        </div>
+      </div>
+
+      {/* ── 3. The Round Table with printed photos (Clickable) ── */}
+      <div className="op-corner-table-anchor">
         <button className="op-pstack-table" onClick={onOpen} title="Browse the printed photos!">
           <div className="op-pstack-surface">
             <div className="op-pstack-card c1"><img src={B + OPENING_PHOTOS[0]} alt="" /></div>
@@ -364,124 +468,100 @@ function PhotoStack({ onOpen }) {
           </div>
           <span className="op-pstack-hint px">TAP TO BROWSE</span>
         </button>
-
-        {/* Middle-right attendee */}
-        <div className="op-pstack-char char-right" title="Browsing photos">
-          <MasquCharSprite {...cfgAt(11)} frame={frame} size={0.55} />
-        </div>
-        {/* Bottom-left attendee leaning in */}
-        <div className="op-pstack-char char-bl" title="Browsing photos">
-          <MasquCharSprite {...cfgAt(7)} frame={frame} seated size={0.5} />
-        </div>
-        {/* Bottom-right attendee leaning in */}
-        <div className="op-pstack-char char-br" title="Browsing photos">
-          <MasquCharSprite {...cfgAt(13)} frame={frame} seated size={0.5} />
-        </div>
       </div>
+
+      {/* ── 4. The 8 Characters (Continuous swap between Booth & Table) ── */}
+      {CORNER_ATTENDEES.map((att, i) => {
+        const slotIdx = (i + 2 * cycle) % 8
+        const slot = SLOTS[slotIdx]
+        return (
+          <div
+            key={att.id}
+            className="op-corner-attendee"
+            style={{
+              position: 'absolute',
+              top: `${slot.top}px`,
+              left: `${slot.left}%`,
+              transform: `translate(-50%, 0) scaleX(${slot.flip ? -1 : 1})`,
+              transition: 'top 2s ease-in-out, left 2s ease-in-out',
+              zIndex: slot.zIndex,
+            }}
+            title={slot.isBooth ? 'Posing for photo' : 'Browsing photos at table'}
+          >
+            <MasquCharSprite
+              {...att.cfg}
+              frame={frame}
+              moving={isMoving}
+              size={slot.isBooth ? 0.65 : 0.54}
+            />
+          </div>
+        )
+      })}
     </div>
   )
 }
 
-// ─── Photo Booth (with printing machine + flash) ─────────────────────────────
-function PhotoBooth() {
-  const frame = useFrame(600)
-  const [flash, setFlash] = useState(false)
+// ─── Man2osha Tables (3 round tables - surrounded by eaters + bounded walkers)
+function ManqoushaTables() {
+  const frame = useFrame(400)
+  const [walkerPhase, setWalkerPhase] = useState(0)
 
   useEffect(() => {
-    const id = setInterval(() => {
-      setFlash(true)
-      setTimeout(() => setFlash(false), 180)
-    }, 3200)
+    const id = setInterval(() => setWalkerPhase(p => (p + 1) % 4), 3600)
     return () => clearInterval(id)
   }, [])
 
-  return (
-    <div className="op-booth-area">
-      {/* The printing machine in front */}
-      <div className="op-printer-wrap">
-        <div className={`op-printer${flash ? ' op-printer-flash' : ''}`}>
-          <div className="op-printer-body">
-            <div className="op-printer-lens" />
-            <div className="op-printer-label px">INSTANT<br/>PRINT</div>
-          </div>
-          {flash && <div className="op-flash-burst" aria-hidden="true" />}
-          <div className="op-printer-output">
-            <div className="op-printer-photo-out" />
-          </div>
-        </div>
-        <div className="op-booth-posers">
-          <div className="op-booth-poser"><MasquCharSprite {...cfgAt(2)} frame={frame} size={0.72} /></div>
-          <div className="op-booth-poser"><MasquCharSprite {...cfgAt(6)} frame={frame} size={0.72} /></div>
-        </div>
-      </div>
+  // Walker 1 (pacing vertically between Table 1 & 2): 0=stop T1, 1=walk down, 2=stop T2, 3=walk up
+  const w1Walking = walkerPhase === 1 || walkerPhase === 3
+  const w1Y = (walkerPhase === 1 || walkerPhase === 2) ? 42 : 0
 
-      {/* The booth backdrop */}
-      <div className="op-booth-wrap">
-        <div className="op-booth-label px">📷 PHOTO BOOTH</div>
-        <div className="op-booth">
-          <div className="op-booth-backdrop">
-            <div className="op-booth-curtain-l" aria-hidden="true" />
-            <div className="op-booth-curtain-r" aria-hidden="true" />
-            <div className="op-booth-mask" aria-hidden="true">
-              <svg viewBox="0 0 80 36" width="70" height="30">
-                <ellipse cx="40" cy="20" rx="38" ry="16" fill="#1a3a8c" stroke="#c9a84c" strokeWidth="1.5" />
-                <ellipse cx="22" cy="18" rx="12" ry="10" fill="#0a1a4a" stroke="#c9a84c" strokeWidth="1" />
-                <ellipse cx="58" cy="18" rx="12" ry="10" fill="#0a1a4a" stroke="#c9a84c" strokeWidth="1" />
-                <path d="M32 18 Q40 24 48 18" fill="none" stroke="#c9a84c" strokeWidth="1" />
-                <path d="M2 20 Q8 10 14 16 Q10 20 6 24 Q4 22 2 20Z" fill="#c9a84c" opacity="0.7" />
-                <path d="M78 20 Q72 10 66 16 Q70 20 74 24 Q76 22 78 20Z" fill="#c9a84c" opacity="0.7" />
-                <circle cx="40" cy="14" r="2" fill="#c9a84c" />
-              </svg>
-            </div>
-            <div className="op-booth-balloons" aria-hidden="true">
-              <span className="op-balloon b1">🎈</span>
-              <span className="op-balloon b2">🎈</span>
-              <span className="op-balloon b3">🎈</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  )
-}
+  // Walker 2 (pacing vertically between Table 2 & 3): 0=walk down, 1=stop T3, 2=walk up, 3=stop T2
+  const w2Walking = walkerPhase === 0 || walkerPhase === 2
+  const w2Y = (walkerPhase === 0 || walkerPhase === 1) ? 42 : 0
 
-// ─── Man2osha Tables (3 round tables - surrounded by attendees) ──────────────
-function ManqoushaTables() {
-  const frame = useFrame(450)
+  // Walker 3 (pacing horizontally in mingler corridor): -20px <-> +20px
+  const w3Walking = walkerPhase === 1 || walkerPhase === 3
+  const w3X = (walkerPhase === 1 || walkerPhase === 2) ? 20 : -20
+
+  // Walker 4 (pacing horizontally in opposite direction): +16px <-> -16px
+  const w4Walking = walkerPhase === 0 || walkerPhase === 2
+  const w4X = (walkerPhase === 0 || walkerPhase === 1) ? -16 : 16
+
   const tables = [
     {
-      items: ['🫓','🫓','☕','🫓'],
-      topEaters: [0, 6],
+      items: ['🫓', '🫓', '☕', '🫓'],
+      topEaters: [0, 6, 12],
       sideLeft: 3,
       sideRight: 14,
-      bottomEaters: [1, 8],
+      bottomEaters: [1, 8, 15],
     },
     {
-      items: ['🫓','☕','🫓','🫓'],
-      topEaters: [7, 2],
+      items: ['🫓', '☕', '🫓', '🫓'],
+      topEaters: [7, 2, 9],
       sideLeft: 13,
       sideRight: 10,
-      bottomEaters: [4, 12],
+      bottomEaters: [4, 12, 5],
     },
     {
-      items: ['☕','🫓','🫓','☕'],
-      topEaters: [5, 11],
+      items: ['☕', '🫓', '🫓', '☕'],
+      topEaters: [5, 11, 1],
       sideLeft: 9,
       sideRight: 15,
-      bottomEaters: [3, 7],
+      bottomEaters: [3, 7, 10],
     },
   ]
+
   return (
     <div className="op-mq-area">
       <div className="op-mq-area-label px">🫓 MAN2OSHA TABLES</div>
       <div className="op-mq-grid">
         {tables.map((t, ti) => (
           <div key={ti} className="op-mq-unit-surround">
-            {/* Top eaters standing behind table */}
+            {/* Top eaters standing behind table (planted legs) */}
             <div className="op-mq-top-eaters">
               {t.topEaters.map((ei, j) => (
                 <div key={j} className="op-mq-eater" title="Eating man2osha">
-                  <MasquCharSprite {...cfgAt(ei)} frame={frame} size={0.5} />
+                  <MasquCharSprite {...cfgAt(ei)} frame={frame} moving={false} size={0.48} />
                 </div>
               ))}
             </div>
@@ -489,7 +569,7 @@ function ManqoushaTables() {
             {/* Middle row: Left eater - Table - Right eater */}
             <div className="op-mq-middle-row">
               <div className="op-mq-eater side" title="Eating man2osha">
-                <MasquCharSprite {...cfgAt(t.sideLeft)} frame={frame} size={0.5} />
+                <MasquCharSprite {...cfgAt(t.sideLeft)} frame={frame} moving={false} size={0.48} />
               </div>
 
               <div className="op-mq-table-round">
@@ -501,35 +581,114 @@ function ManqoushaTables() {
               </div>
 
               <div className="op-mq-eater side" title="Drinking tea" style={{ transform: 'scaleX(-1)' }}>
-                <MasquCharSprite {...cfgAt(t.sideRight)} frame={frame} size={0.5} />
+                <MasquCharSprite {...cfgAt(t.sideRight)} frame={frame} moving={false} size={0.48} />
               </div>
             </div>
 
-            {/* Bottom eaters in front of table */}
+            {/* Bottom eaters in front of table (planted legs) */}
             <div className="op-mq-bottom-eaters">
               {t.bottomEaters.map((ei, j) => (
                 <div key={j} className="op-mq-eater" title="Eating man2osha">
-                  <MasquCharSprite {...cfgAt(ei)} frame={frame} seated size={0.48} />
+                  <MasquCharSprite {...cfgAt(ei)} frame={frame} seated moving={false} size={0.46} />
                 </div>
               ))}
             </div>
           </div>
         ))}
       </div>
-      {/* Mingling crowd with food and drinks */}
+
+      {/* Bounded Active Walkers moving between food tables */}
+      <div className="op-mq-walkers-row" aria-hidden="true">
+        <div
+          className="op-mq-walker"
+          style={{
+            transform: `translateY(${w1Y}px)`,
+            transition: 'transform 2s ease-in-out',
+          }}
+          title="Fetching man2osha"
+        >
+          <MasquCharSprite {...cfgAt(2)} frame={frame} moving={w1Walking} size={0.5} />
+          <span className="op-mq-walker-prop">🫓</span>
+        </div>
+
+        <div
+          className="op-mq-walker"
+          style={{
+            transform: `translateY(${w2Y}px)`,
+            transition: 'transform 2s ease-in-out',
+          }}
+          title="Carrying tea"
+        >
+          <MasquCharSprite {...cfgAt(8)} frame={frame} moving={w2Walking} size={0.5} />
+          <span className="op-mq-walker-prop">☕</span>
+        </div>
+      </div>
+
+      {/* Mingling crowd with bounded horizontal walkers & socializers */}
       <div className="op-mq-crowd">
-        <div className="op-mq-mingler"><MasquCharSprite {...cfgAt(4)} frame={frame} size={0.52} /><span className="op-mq-mingler-food">🫓</span></div>
-        <div className="op-mq-mingler"><MasquCharSprite {...cfgAt(8)} frame={frame} size={0.52} /><span className="op-mq-mingler-food">☕</span></div>
-        <div className="op-mq-mingler"><MasquCharSprite {...cfgAt(10)} frame={frame} size={0.52} /><span className="op-mq-mingler-food">🫓</span></div>
-        <div className="op-mq-mingler"><MasquCharSprite {...cfgAt(14)} frame={frame} size={0.52} /><span className="op-mq-mingler-food">☕</span></div>
+        <div
+          className="op-mq-mingler op-mq-corridor-walker"
+          style={{
+            transform: `translateX(${w3X}px) scaleX(${w3Walking && w3X > 0 ? 1 : -1})`,
+            transition: 'transform 2s ease-in-out',
+          }}
+          title="Socializing"
+        >
+          <MasquCharSprite {...cfgAt(4)} frame={frame} moving={w3Walking} size={0.5} />
+          <span className="op-mq-mingler-food">🫓</span>
+        </div>
+
+        <div className="op-mq-mingler">
+          <MasquCharSprite {...cfgAt(10)} frame={frame} moving={false} size={0.5} />
+          <span className="op-mq-mingler-food">☕</span>
+        </div>
+
+        <div
+          className="op-mq-mingler op-mq-corridor-walker"
+          style={{
+            transform: `translateX(${w4X}px) scaleX(${w4Walking && w4X > 0 ? 1 : -1})`,
+            transition: 'transform 2s ease-in-out',
+          }}
+          title="Socializing"
+        >
+          <MasquCharSprite {...cfgAt(14)} frame={frame} moving={w4Walking} size={0.5} />
+          <span className="op-mq-mingler-food">☕</span>
+        </div>
+
+        <div className="op-mq-mingler">
+          <MasquCharSprite {...cfgAt(7)} frame={frame} moving={false} size={0.5} />
+          <span className="op-mq-mingler-food">🫓</span>
+        </div>
       </div>
     </div>
   )
 }
 
-// ─── Stage (Hala & Tebry - Clickable) ─────────────────────────────────────────
+// ─── Stage (Hala & Tebry - Clickable & Pacing Stage Halves) ───────────────────
 function Stage({ onSelectProfile }) {
   const frame = useFrame(350)
+  const [halaPhase, setHalaPhase] = useState(0)
+  const [tebryPhase, setTebryPhase] = useState(0)
+
+  useEffect(() => {
+    const idH = setInterval(() => setHalaPhase(p => (p + 1) % 4), 3800)
+    const idT = setInterval(() => setTebryPhase(p => (p + 1) % 4), 3400)
+    return () => {
+      clearInterval(idH)
+      clearInterval(idT)
+    }
+  }, [])
+
+  // Hala: 0 = at mic (speaking), 1 = walk left, 2 = at wing (hyping), 3 = walk right (back to mic)
+  const halaWalking = halaPhase === 1 || halaPhase === 3
+  const halaX = (halaPhase === 1 || halaPhase === 2) ? -28 : 0
+  const halaFlip = halaPhase === 1
+
+  // Tebry: 0 = at wing (hyping), 1 = walk left (to mic), 2 = at mic (speaking), 3 = walk right (to wing)
+  const tebryWalking = tebryPhase === 1 || tebryPhase === 3
+  const tebryX = (tebryPhase === 0 || tebryPhase === 3) ? 28 : 0
+  const tebryFlip = tebryPhase === 3
+
   return (
     <div className="op-stage">
       <div className="op-stage-platform">
@@ -544,20 +703,46 @@ function Stage({ onSelectProfile }) {
 
         <div className="op-hosts">
           {/* Hala */}
-          <button className="op-char-btn op-host-btn" onClick={() => onSelectProfile('hala-aboraya')} title="Click to view Hala's profile!">
-            <div className="op-host-tag px">HALA 🔍</div>
-            <MasquCharSprite {...HOST_STYLES['hala-aboraya']} frame={frame} size={0.9} />
-            <span className="op-host-mic">🎤</span>
-          </button>
+          <div
+            className="op-host-pos-wrap"
+            style={{
+              transform: `translateX(${halaX}px)`,
+              transition: 'transform 2s ease-in-out',
+            }}
+          >
+            <button
+              className="op-char-btn op-host-btn"
+              onClick={() => onSelectProfile('hala-aboraya')}
+              title="Click to view Hala's profile!"
+              style={{ transform: `scaleX(${halaFlip ? -1 : 1})` }}
+            >
+              <div className="op-host-tag px" style={{ transform: `scaleX(${halaFlip ? -1 : 1})` }}>HALA 🔍</div>
+              <MasquCharSprite {...HOST_STYLES['hala-aboraya']} frame={frame} moving={halaWalking} size={0.9} />
+              <span className="op-host-mic">🎤</span>
+            </button>
+          </div>
 
           <div className="op-mic-stand" aria-hidden="true">🎙️</div>
 
           {/* Tebry */}
-          <button className="op-char-btn op-host-btn" style={{ transform: 'scaleX(-1)' }} onClick={() => onSelectProfile('abdelrahman-tebry')} title="Click to view Tebry's profile!">
-            <div className="op-host-tag px" style={{ transform: 'scaleX(-1)' }}>TEBRY 🔍</div>
-            <MasquCharSprite {...HOST_STYLES['abdelrahman-tebry']} frame={frame} size={0.9} />
-            <span className="op-host-mic">🎤</span>
-          </button>
+          <div
+            className="op-host-pos-wrap"
+            style={{
+              transform: `translateX(${tebryX}px)`,
+              transition: 'transform 2s ease-in-out',
+            }}
+          >
+            <button
+              className="op-char-btn op-host-btn"
+              onClick={() => onSelectProfile('abdelrahman-tebry')}
+              title="Click to view Tebry's profile!"
+              style={{ transform: `scaleX(${tebryFlip ? 1 : -1})` }}
+            >
+              <div className="op-host-tag px" style={{ transform: `scaleX(${tebryFlip ? 1 : -1})` }}>TEBRY 🔍</div>
+              <MasquCharSprite {...HOST_STYLES['abdelrahman-tebry']} frame={frame} moving={tebryWalking} size={0.9} />
+              <span className="op-host-mic">🎤</span>
+            </button>
+          </div>
         </div>
 
         <div className="op-footlights" aria-hidden="true">
@@ -586,21 +771,22 @@ function ProjectorDesk({ onSelectProfile }) {
       <div className="op-pc-operators">
         <button className="op-char-btn" onClick={() => onSelectProfile('shahd-hisham')} title="Click to view Shahd's profile!">
           <div className="op-pc-op-label px">SHAHD 🔍</div>
-          <MasquCharSprite {...HOST_STYLES['shahd-hisham']} frame={frame} seated size={0.62} />
+          <MasquCharSprite {...HOST_STYLES['shahd-hisham']} frame={frame} seated moving={false} size={0.62} />
         </button>
         <button className="op-char-btn" onClick={() => onSelectProfile('roaa-wael')} title="Click to view Roaa's profile!">
           <div className="op-pc-op-label px">ROAA 🔍</div>
-          <MasquCharSprite {...HOST_STYLES['roaa-wael']} frame={frame} seated size={0.62} />
+          <MasquCharSprite {...HOST_STYLES['roaa-wael']} frame={frame} seated moving={false} size={0.62} />
         </button>
       </div>
     </div>
   )
 }
 
-// ─── Celebration (Youssef thrown - Clickable) ─────────────────────────────────
+// ─── Celebration (Youssef thrown + moving cameras & dancers) ─────────────────
 function CelebrationScene({ onSelectProfile }) {
   const frame = useFrame(300)
   const [youssefY, setYoussefY] = useState(0)
+  const [camPhase, setCamPhase] = useState(0)
   const rafRef = useRef(null)
   const t = useRef(0)
 
@@ -614,19 +800,48 @@ function CelebrationScene({ onSelectProfile }) {
     return () => cancelAnimationFrame(rafRef.current)
   }, [])
 
+  useEffect(() => {
+    const id = setInterval(() => setCamPhase(p => (p + 1) % 4), 2800)
+    return () => clearInterval(id)
+  }, [])
+
+  // Camera Left: moves between -14px and +8px
+  const camLWalking = camPhase === 1 || camPhase === 3
+  const camLX = (camPhase === 1 || camPhase === 2) ? -14 : 8
+
+  // Camera Right: moves between +14px and -8px
+  const camRWalking = camPhase === 0 || camPhase === 2
+  const camRX = (camPhase === 0 || camPhase === 1) ? 14 : -8
+
+  // Dance sway for shoulder riders
+  const danceStep = frame % 4
+  const danceX = danceStep === 1 ? -4 : danceStep === 3 ? 4 : 0
+
   return (
     <div className="op-celeb">
       <div className="op-celeb-row">
-        {/* Camera left */}
-        <div className="op-cam-person">
+        {/* Camera left (pacing back and forth) */}
+        <div
+          className="op-cam-person"
+          style={{
+            transform: `translateX(${camLX}px) scaleX(${camLWalking && camLX > 0 ? -1 : 1})`,
+            transition: 'transform 1.8s ease-in-out',
+          }}
+        >
           <span className="op-cam-icon">📹</span>
-          <MasquCharSprite {...cfgAt(4)} frame={frame} size={0.65} />
+          <MasquCharSprite {...cfgAt(4)} frame={frame} moving={camLWalking} size={0.65} />
         </div>
 
-        {/* Shoulder rider left */}
-        <div className="op-shoulder">
-          <div className="op-rider"><MasquCharSprite {...cfgAt(8)} frame={frame} seated size={0.52} /></div>
-          <div className="op-carrier"><MasquCharSprite {...cfgAt(5)} frame={frame} size={0.65} /></div>
+        {/* Shoulder rider left (dancing around) */}
+        <div
+          className="op-shoulder"
+          style={{
+            transform: `translateX(${danceX}px)`,
+            transition: 'transform 0.3s ease',
+          }}
+        >
+          <div className="op-rider"><MasquCharSprite {...cfgAt(8)} frame={frame} seated moving={false} size={0.52} /></div>
+          <div className="op-carrier"><MasquCharSprite {...cfgAt(5)} frame={frame} moving={true} size={0.65} /></div>
         </div>
 
         {/* Youssef thrown (Clickable) */}
@@ -634,26 +849,38 @@ function CelebrationScene({ onSelectProfile }) {
           <button className="op-char-btn op-thrown-btn" onClick={() => onSelectProfile('youssef-mostafa')}
             title="Click to view Youssef's profile!" style={{ transform: `translateY(${youssefY}px)` }}>
             <div className="op-thrown-crown">👑</div>
-            <MasquCharSprite {...HOST_STYLES['youssef-mostafa']} frame={frame} size={0.72} />
+            <MasquCharSprite {...HOST_STYLES['youssef-mostafa']} frame={frame} moving={false} size={0.72} />
             <div className="op-thrown-name px">YOUSSEF 🔍</div>
           </button>
           <div className="op-throwers">
-            <MasquCharSprite {...cfgAt(0)} frame={frame} size={0.58} />
-            <MasquCharSprite {...cfgAt(11)} frame={frame} size={0.58} />
-            <MasquCharSprite {...cfgAt(1)} frame={frame} size={0.58} />
+            <MasquCharSprite {...cfgAt(0)} frame={frame} moving={false} size={0.58} />
+            <MasquCharSprite {...cfgAt(11)} frame={frame} moving={false} size={0.58} />
+            <MasquCharSprite {...cfgAt(1)} frame={frame} moving={false} size={0.58} />
           </div>
           <div className="op-thrown-hands px" aria-hidden="true">▲ ▲ ▲</div>
         </div>
 
-        {/* Shoulder rider right */}
-        <div className="op-shoulder">
-          <div className="op-rider"><MasquCharSprite {...cfgAt(10)} frame={frame} seated size={0.52} /></div>
-          <div className="op-carrier"><MasquCharSprite {...cfgAt(14)} frame={frame} size={0.65} /></div>
+        {/* Shoulder rider right (dancing around) */}
+        <div
+          className="op-shoulder"
+          style={{
+            transform: `translateX(${-danceX}px)`,
+            transition: 'transform 0.3s ease',
+          }}
+        >
+          <div className="op-rider"><MasquCharSprite {...cfgAt(10)} frame={frame} seated moving={false} size={0.52} /></div>
+          <div className="op-carrier"><MasquCharSprite {...cfgAt(14)} frame={frame} moving={true} size={0.65} /></div>
         </div>
 
-        {/* Camera right */}
-        <div className="op-cam-person">
-          <MasquCharSprite {...cfgAt(6)} frame={frame} size={0.65} />
+        {/* Camera right (pacing back and forth) */}
+        <div
+          className="op-cam-person"
+          style={{
+            transform: `translateX(${camRX}px) scaleX(${camRWalking && camRX > 0 ? 1 : -1})`,
+            transition: 'transform 1.8s ease-in-out',
+          }}
+        >
+          <MasquCharSprite {...cfgAt(6)} frame={frame} moving={camRWalking} size={0.65} />
           <span className="op-cam-icon">📸</span>
         </div>
       </div>
@@ -819,8 +1046,7 @@ export default function Opening() {
             </div>
           </div>
           <div className="op-map-col">
-            <PhotoBooth />
-            <PhotoStack onOpen={() => setPhotoBrowserOpen(true)} />
+            <PhotoCorner onOpen={() => setPhotoBrowserOpen(true)} />
           </div>
         </div>
 
