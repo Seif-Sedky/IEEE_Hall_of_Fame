@@ -9,24 +9,25 @@ const OPENING_PHOTOS = Array.from({ length: 27 }, (_, i) => `opening/${i + 1}.jp
 
 // ─── Named Character Role Profiles ──────────────────────────────────────────
 const ROLE_PROFILES = {
+  // ─── VIP Organizers & Hosts ───────────────────────────────────────────────
   'hala-aboraya': {
     openingRole: 'NIGHT HOST / MC 🎤',
-    openingDesc: 'Co-hosted the opening night alongside Tebry, electrifying the ballroom with charisma and keeping the entire crowd hyped all night long! (She lost her voice in the process)',
+    openingDesc: 'Co-hosted the opening night alongside Tebry, electrifying the ballroom with charisma (She lost her voice in the process)',
     badgeColor: '#c9a84c',
   },
   'abdelrahman-tebry': {
     openingRole: 'NIGHT HOST / MC 🎙️',
-    openingDesc: 'Co-hosted the night with Hala, commanding the mic with jokes and stage presence, leading all the ceremonies and crowd games!',
+    openingDesc: 'Co-hosted the night with Hala, commanding the mic stage presence, leading all the ceremonies and crowd games!',
     badgeColor: '#3888e8',
   },
   'youssef-mostafa': {
     openingRole: 'PRESIDENT · THE TOSS 👑',
-    openingDesc: 'Our President who was hoisted up into the air and tossed repeatedly by cheering members in an iconic moment of pure chapter joy and energy!',
+    openingDesc: 'Our President who was hoisted up into the air and tossed repeatedly (almost hit the projector, assasination plan failed)',
     badgeColor: '#f8a808',
   },
   'shahd-hisham': {
     openingRole: 'PROJECTOR & VISUALS LEAD 🖥️',
-    openingDesc: 'Stationed at the control laptop desk with Roaa, directing visuals, cueing presentation slides, and getting the IT to work',
+    openingDesc: 'Stationed at the control laptop desk with Roaa, w gabet 7a2ena men el IT',
     badgeColor: '#3888e8',
   },
   'roaa-wael': {
@@ -44,6 +45,99 @@ const ROLE_PROFILES = {
     openingDesc: 'Manned the silvery check-in counter with Hana, coordinating the attendees arrivals and checking in guests as they arrived!',
     badgeColor: '#58a0b0',
   },
+
+  // ─── Masquerade Guests (fill in your descriptions below) ──────────────────
+  
+  'omar-elsamalouty': {
+    openingRole: 'MASQUERADE ATTENDEE 🎭',
+    openingDesc: 'Made his elegant presence as the IEEE Pirate, and Rocked the camera for some top tier shots',
+    badgeColor: '#c9a84c',
+  },
+
+  'ismaeel-awad': {
+    openingRole: 'MASQUERADE ATTENDEE 🎭',
+    openingDesc: 'Joined the IEEE 27 Masquerade Ball opening night celebration, rocking the DUCK SQUAD caravatte',
+    badgeColor: '#58a0b0',
+  },
+  'mohamed-magedd': {
+    openingRole: 'MASQUERADE ATTENDEE 🎭',
+    openingDesc: 'Was hunted for by the entire software directory for stealing the photobooth photos, also geh without a mask😛',
+    badgeColor: '#3888e8',
+  },
+  'seif-alaa': {
+    openingRole: 'MASQUERADE ATTENDEE 🎭',
+    openingDesc: 'His mask was martyred in the battle',
+    badgeColor: '#c9a84c',
+  },
+  'sama-fayez': {
+    openingRole: 'MASQUERADE ATTENDEE 🎭',
+    openingDesc: 'Came late for her speech😛, but ROCKED the stage tho',
+    badgeColor: '#c9a84c',
+  },
+  'omar-abouelnaga': {
+    openingRole: 'MASQUERADE ATTENDEE 🎭',
+    openingDesc: 'In case we become candles, I want to have a nice pose. Zorro Aboelnaga, 2026',
+    badgeColor: '#3888e8',
+  },
+  'lojaine': {
+    openingRole: 'MASQUERADE ATTENDEE 🎭',
+    openingDesc: 'El me2akelana.',
+    badgeColor: '#c9a84c',
+  },
+  'albarra-mohamed': {
+    openingRole: 'MASQUERADE ATTENDEE 🎭',
+    openingDesc: 'The man who carried our pres (quite literally), also geh without a mask😛',
+    badgeColor: '#f8a808',
+  },
+  'ahmed-tamer': {
+    openingRole: 'MASQUERADE ATTENDEE 🎭',
+    openingDesc: 'Life is GOOD without responsibillity :), tamer was having the time of his life',
+    badgeColor: '#3888e8',
+  },
+  'malak-abdelgawad': {
+    openingRole: 'MASQUERADE ATTENDEE 🎭',
+    openingDesc: 'Our exposure therapist came, also camped the photobooth to hunt the photos :)',
+    badgeColor: '#f06292',
+  },
+  'muhammed-walid': {
+    openingRole: 'MASQUERADE ATTENDEE 🎭',
+    openingDesc: 'Our Hardware for AI head was busy stabbing people with Roaas swords (peak swords btw)',
+    badgeColor: '#c9a84c',
+  },
+  'aly-saleh': {
+    openingRole: 'MASQUERADE ATTENDEE 🎭',
+    openingDesc: 'Our iconic picture photobomber',
+    badgeColor: '#3888e8',
+  }
+  ,
+  'shams-raafat': {
+    openingRole: 'MASQUERADE ATTENDEE 🎭',
+    openingDesc: 'Kept losing her hardware children for photos, and debated people on their hot takes🔥',
+    badgeColor: '#c41535',
+  },
+  'yassin-nashy': {
+    openingRole: 'MASQUERADE ATTENDEE 🎭',
+    openingDesc: 'To confuse your enemy, you must first confuse yourself - Probably Yassin while wearing his mask backwards',
+    badgeColor: '#3888e8',
+  },
+  'jana-saleh': {
+    openingRole: 'MASQUERADE ATTENDEE 🎭',
+    openingDesc: 'Professional Balloon Boxer',
+    badgeColor: '#c9a84c',
+  },
+  'judy-yasser': {
+    openingRole: 'MASQUERADE ATTENDEE 🎭',
+    openingDesc: 'Came in as a lone solider from AI, but carried the vibes :)',
+    badgeColor: '#c41535',
+  },
+  'abdelmoneam-elbaz': {
+    openingRole: 'MASQUERADE ATTENDEE 🎭',
+    openingDesc: 'Ebnena el charisma, also came without a mask',
+    badgeColor: '#58a0b0',
+  }
+
+
+
 }
 
 // ─── Floating Particle ───────────────────────────────────────────────────────
