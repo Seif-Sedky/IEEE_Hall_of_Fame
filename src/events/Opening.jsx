@@ -1355,7 +1355,7 @@ export default function Opening() {
             className="op-zoom-btn px"
             onClick={() => setFitMode(m => !m)}
           >
-            {fitMode ? '🔍 ZOOM IN | PC Preferred for this section' : '🗺️ ZOOM OUT'}
+            {fitMode ? '🔍 ZOOM IN' : '🗺️ ZOOM OUT'}
           </button>
         </div>
       )}
@@ -1366,11 +1366,7 @@ export default function Opening() {
         className="op-map-scroll"
         style={
           isScaled
-            ? {
-              overflow: 'hidden',          // both axes, not just X
-              overscrollBehavior: 'none',
-              height: dims.height !== 'auto' ? Math.ceil(dims.height * dims.scale) : 'auto',
-            }
+            ? { overflowX: 'hidden', height: dims.height !== 'auto' ? Math.ceil(dims.height * dims.scale) + 8 : 'auto' }
             : undefined
         }
       >
