@@ -1306,7 +1306,7 @@ export default function Opening() {
   const [photoBrowserOpen, setPhotoBrowserOpen] = useState(false)
   const [selectedProfile, setSelectedProfile] = useState(null)
   const [fitMode, setFitMode] = useState(true)
-  const [dims, setDims] = useState({ scale: 1, height: 'auto', offsetX: 0 })
+  const [dims, setDims] = useState({ scale: 1, height: 'auto' })
   const mapWrapRef = useRef(null)
   const mapRef = useRef(null)
 
@@ -1323,33 +1323,15 @@ export default function Opening() {
     if (!wrap || !map) return
 
     const update = () => {
-      const wrapW = wrap.clientWidth
-      let scale = Math.min(1, wrapW / 860)
-
-      // Mobile only: also make sure the whole arena fits the visible screen height
-      if (wrapW < 860 && map.offsetHeight > 0) {
-        const vh = window.visualViewport?.height ?? window.innerHeight
-        scale = Math.min(scale, (vh - 24) / map.offsetHeight)
-      }
-
-      setDims({
-        scale,
-        height: map.offsetHeight,
-        offsetX: Math.max(0, (wrapW - 860 * scale) / 2), // center when height-limited
-      })
+      const scale = Math.min(1, wrap.clientWidth / 860)
+      setDims({ scale, height: map.offsetHeight })
     }
 
     update()
     const ro = new ResizeObserver(update)
     ro.observe(wrap)
     ro.observe(map)
-    window.addEventListener('resize', update)
-    window.visualViewport?.addEventListener('resize', update)
-    return () => {
-      ro.disconnect()
-      window.removeEventListener('resize', update)
-      window.visualViewport?.removeEventListener('resize', update)
-    }
+    return () => ro.disconnect()
   }, [])
 
   const isScaled = fitMode && dims.scale < 1
@@ -1395,12 +1377,7 @@ export default function Opening() {
           aria-label="Opening Night Map"
           style={
             isScaled
-              ? {
-                width: '860px',
-                minWidth: '860px',
-                transform: `translateX(${dims.offsetX}px) scale(${dims.scale})`,
-                transformOrigin: 'top left',
-              }
+              ? { width: '860px', minWidth: '860px', transform: `scale(${dims.scale})`, transformOrigin: 'top left' }
               : undefined
           }
         >
