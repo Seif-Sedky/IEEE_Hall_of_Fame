@@ -1355,7 +1355,7 @@ export default function Opening() {
             className="op-zoom-btn px"
             onClick={() => setFitMode(m => !m)}
           >
-            {fitMode ? '🔍 ZOOM IN' : '🗺️ ZOOM OUT'}
+            {fitMode ? '🔍 ZOOM IN | PC Provides Better Experience for this Section' : '🗺️ ZOOM OUT | PC Provides Better Experience for this Section'}
           </button>
         </div>
       )}
